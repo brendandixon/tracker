@@ -64,7 +64,7 @@ class Feature < ActiveRecord::Base
   
   def ensure_release_date
     return unless self.release_date.present?
-    self.release_date = DateTime.parse(self.release_date) if self.release_date.is_a?(String)
+    self.release_date = ActiveSupport::TimeZone.new(Tracker::Application.config.time_zone).parse(self.release_date) if self.release_date.is_a?(String)
     self.release_date = self.release_date.to_datetime if self.release_date.is_a?(Date)
     self.release_date = self.release_date.utc if self.release_date.is_a?(DateTime)
   end

@@ -2,8 +2,6 @@ class FeaturesController < ApplicationController
   DEFAULT_SORT = ['-date']
   STATUS = [:all, :complete, :incomplete]
   
-  before_filter :normalize_dates, only: [:create, :update]
-
   # GET /features
   # GET /features.json
   def index
@@ -108,20 +106,5 @@ class FeaturesController < ApplicationController
       format.html { redirect_to features_path }
       format.json { head :no_content }
     end
-  end
-  
-  private
-  
-  def normalize_dates
-    return unless params[:feature].present?
-
-    feature = params[:feature]
-    return unless feature[:release_date].present?
-
-    release_date = ActiveSupport::TimeZone.new(Tracker::Application.config.time_zone).parse(feature[:release_date]).utc
-    feature.delete(:release_date)
-    feature["release_date(1i)"] = release_date.year.to_s
-    feature["release_date(2i)"] = release_date.month.to_s
-    feature["release_date(3i)"] = release_date.mday.to_s
   end
 end
