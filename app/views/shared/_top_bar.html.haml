@@ -3,19 +3,22 @@
 - current_area = current_area.to_sym
 
 .twelve.centered
-	.fixed.contain-to-grid
-		%nav.top-bar
-			%ul
-				%li.name
-					%h1
-						= link_to current_name, url_for(controller: current_area, action: :index)
-				%li.toggle-topbar
-					= link_to current_name, url_for(controller: current_area, action: :index)
-			%section
-				%ul.right
-					%li.divider
-					%li
-						= link_to "Add #{current_name.singularize}", url_for(controller: current_area, action: :new)
-					%li.divider
-					%li
-						= content_tag 'a', 'Filter', class:'filter-toggle', data: { filter_toggle: true}
+  .fixed.contain-to-grid
+    %nav.top-bar
+      %ul
+        %li.name
+          %h1
+            = link_to current_name, url_for(controller: current_area, action: :index)
+        %li.toggle-topbar
+          = link_to current_name, url_for(controller: current_area, action: :index)
+        - if notice.present?
+          %li
+            #notice= notice
+      %section
+        %ul.right
+          %li.divider
+          %li
+            = link_to "Add #{current_name.singularize}", url_for(controller: current_area, action: :new)
+          %li.divider
+          %li
+            = content_tag 'a', 'Filter', class:'filter-toggle', data: { filter_toggle: true}
