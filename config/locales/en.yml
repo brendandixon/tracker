@@ -1,0 +1,31 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  controllers:
+    actions:
+      advance: 'Advance'
+      completed: 'Complete'
+      create: 'Create'
+      destroy: 'Destroy'
+      edit: 'Edit'
+      in_progress: 'Begin development'
+      scheduled: 'Schedule'
+  activerecord:
+    attributes:
+      feature:
+        contact_us_number: 'Contact Us'
+        create_stories: 'Ensure Stories'
+        release_date: 'Release Date'
+        service_id: 'Service'
+        title: 'Title'
+    labels:
+      feature:
+        create_stories: 'Create stories for the feature?'
+      story:
+        unscheduled: 'Unscheduled'
+        scheduled: 'Scheduled'
+        in_progress: 'In Progress'
+        completed: 'Completed'
+    models:
+      feature: 'Feature'

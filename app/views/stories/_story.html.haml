@@ -1,0 +1,17 @@
+- classes = 'status label radius ' + (story.completed? ? 'success' : (story.unscheduled? ? 'alert' : ''))
+
+%tr
+  %td= story.feature.title
+  %td= story.feature.service.abbreviation
+  %td= story.project.name
+  %td= content_tag('span', I18n.t(story.status, scope: [:activerecord, :labels, :story]), class: classes)
+  %td
+    - options = {class: 'sprite advance', }
+    - if story.completed?
+      - options[:class] = 'sprite advance disabled'
+      - options[:disabled] = 'disabled'
+    - else
+      - options[:class] = 'sprite advance has-tip'
+      - options[:title] = I18n.t story.next_status, scope: [:controllers, :actions]
+    = button_to 'Advance', url_for(controller: :stories, action: :advance, id: story.id), options
+    = render partial: 'shared/links', locals: { links: [:complete, :edit, :destroy], object: story}

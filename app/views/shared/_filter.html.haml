@@ -1,0 +1,22 @@
+- filter = session[:filter]
+
+.reveal-modal.medium{data: {filter: 'data-filter'}}
+  = form_tag url_for(controller: controller.controller_name, action: :index), method: :get do
+    .row
+      .three.columns
+        = label_tag 'status', 'Status'
+        = select_tag 'status', options_for_select(FeaturesController::STATUS.map{|status| [status.to_s.titleize, status]}, filter[:status])
+      .four.columns
+        = label_tag 'projects', 'Projects'
+        = select_tag 'projects', options_for_select(Project.active.map{|project| [project.name, project.name]}.uniq, filter[:projects]), multiple: true, class: 'height-medium'
+      .four.columns.end
+        = label_tag 'services', 'Services'
+        = select_tag 'services', options_for_select(Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }, filter[:services]), multiple: true, class: 'height-medium'
+    .row
+      .actions
+        = submit_tag 'Filter'
+        \|
+        = link_to 'Reset', url_for(controller: controller.controller_name, action: :reset), class:'reset-filter'
+        \|
+        = link_to 'Cancel', '', class: 'close-filter'
+  = link_to '&#215'.html_safe, '#', class: 'close-reveal-modal'

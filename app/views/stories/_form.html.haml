@@ -1,0 +1,23 @@
+= form_for @story do |f|
+  - if @story.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@story.errors.count, "error")} prohibited this story from being saved:"
+      %ul
+        - @story.errors.full_messages.each do |msg|
+          %li= msg
+
+  .row
+    .four.columns
+      = f.label :feature_id
+      = f.select :feature_id, Feature.in_title_order.all.collect {|f| [ f.title, f.id ] }
+    .two.columns
+      = f.label :project_id
+      = f.select :project_id, Project.in_name_order.all.collect {|s| [ s.name, s.id ] }
+    .two.columns.end
+      = f.label :status
+      = f.select :status, Story::STATUS.map{|s| [I18n.t(s, scope: [:activerecord, :labels, :story]), s]}
+  .row
+    .actions
+      = f.submit 'Save'
+      \|
+      = link_to 'Cancel', :back

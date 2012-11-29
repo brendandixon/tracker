@@ -1,0 +1,9 @@
+- sort = session[:filter][:sort][controller.controller_name] || []
+- descending_field = "-#{field}"
+- sorted_descending = sort.include?(descending_field)
+- classes = 'sprite ' + (sorted_descending ? 'ascending' : 'descending')
+
+.sortable
+  = link_to url_for(controller: controller.controller_name, action: :index, sort: sorted_descending ? field : descending_field) do
+    = name
+    = content_tag('span', 'sort', class: classes) if sorted_descending || sort.include?(field)

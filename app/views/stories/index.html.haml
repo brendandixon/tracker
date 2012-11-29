@@ -1,0 +1,19 @@
+= render 'shared/filter'
+
+.row
+  = render 'shared/top_bar'
+
+.row
+  = render 'shared/side_navigation'
+
+  %table.eleven
+    %thead
+      %tr
+        %th.three= render partial: 'shared/sortable', locals: {name: 'Feature', field: 'feature'}
+        %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
+        %th.three= render partial: 'shared/sortable', locals: {name: 'Project', field: 'project'}
+        %th.two= render partial: 'shared/sortable', locals: {name: 'Status', field: 'status'}
+        %th.two
+
+    %tbody
+      = render @stories
