@@ -1,4 +1,10 @@
 - classes = 'status label radius ' + (story.completed? ? 'success' : (story.unscheduled? ? 'alert' : ''))
+- options = {}
+- if story.completed?
+  - options[:class] = 'sprite disabled'
+  - options[:disabled] = 'disabled'
+- else
+  - options[:class] = 'sprite has-tip'
 
 %tr
   %td= story.feature.title
@@ -6,12 +12,6 @@
   %td= story.project.name
   %td= content_tag('span', I18n.t(story.status, scope: [:activerecord, :labels, :story]), class: classes)
   %td
-    - options = {class: 'sprite advance', }
-    - if story.completed?
-      - options[:class] = 'sprite advance disabled'
-      - options[:disabled] = 'disabled'
-    - else
-      - options[:class] = 'sprite advance has-tip'
-      - options[:title] = I18n.t story.next_status, scope: [:controllers, :actions]
-    = button_to 'Advance', url_for(controller: :stories, action: :advance, id: story.id), options
+    = button_to 'Advance', url_for(controller: :stories, action: :advance, id: story.id), options.merge(class: options[:class] + ' advance', title: I18n.t(story.next_status, scope: [:controllers, :actions]))
+    = button_to 'Complete', url_for(controller: :stories, action: :complete, id: story.id), options.merge(class: options[:class] + ' complete', title: I18n.t(:complete, scope: [:controllers, :actions]))
     = render partial: 'shared/links', locals: { links: [:complete, :edit, :destroy], object: story}

@@ -122,4 +122,16 @@ class StoriesController < ApplicationController
     end
     
   end
+  
+  # POST /stories/1/complete
+  def complete
+    @story = Story.find(params[:id])
+    @story.completed!
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { render json: @stories }
+    end
+    
+  end
 end

@@ -5,7 +5,7 @@ en:
   controllers:
     actions:
       advance: 'Advance'
-      completed: 'Complete'
+      complete: 'Complete'
       create: 'Create'
       destroy: 'Destroy'
       edit: 'Edit'

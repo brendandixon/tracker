@@ -10,6 +10,7 @@ Tracker::Application.routes.draw do
   resources :stories do
     member do
       post 'advance'
+      post 'complete'
     end
   end
 

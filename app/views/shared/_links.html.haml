@@ -3,4 +3,3 @@
 - current_area = current_area.to_sym
 
 = link_to 'Edit', url_for(controller: current_area, action: :edit, id: object.id), class: 'sprite edit has-tip', title: I18n.t('edit', scope: [:controllers, :actions])
-= link_to 'Destroy', url_for(controller: controller.controller_name, action: :destroy, id: object.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'sprite destroy has-tip', title: I18n.t('destroy', scope: [:controllers, :actions])
