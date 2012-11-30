@@ -1,0 +1,16 @@
+= render 'shared/filter'
+
+.row
+  = render 'shared/top_bar'
+
+.row
+  = render 'shared/side_navigation'
+
+  %table.eleven
+    %thead
+      %tr
+        %th.four= render partial: 'shared/sortable', locals: {name: 'Name', field: 'name'}
+        %th.one.end
+
+    %tbody
+      = render @projects

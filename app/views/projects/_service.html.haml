@@ -1,0 +1,10 @@
+- edit ||= false
+- classes = 'services three columns'
+- classes << ' disabled' unless edit || @project.services.include?(service)
+- classes << ' end' if last < length
+%p{class: classes}
+  - if edit
+    = check_box_tag service.abbreviation, 1, @project.services.include?(service)
+    = label_tag service.abbreviation, service.abbreviation
+  - else
+    = service.abbreviation

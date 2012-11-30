@@ -14,4 +14,4 @@
   %td
     = button_to 'Advance', url_for(controller: :stories, action: :advance, id: story.id), options.merge(class: options[:class] + ' advance', title: I18n.t(story.next_status, scope: [:controllers, :actions]))
     = button_to 'Complete', url_for(controller: :stories, action: :complete, id: story.id), options.merge(class: options[:class] + ' complete', title: I18n.t(:complete, scope: [:controllers, :actions]))
-    = render partial: 'shared/links', locals: { links: [:complete, :edit, :destroy], object: story}
+    = render partial: 'shared/links', locals: {object: story}

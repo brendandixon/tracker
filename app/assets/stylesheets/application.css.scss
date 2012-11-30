@@ -18,6 +18,10 @@
   padding:5px 0 0;
 }
 
+.disabled {
+  opacity: 0.4;
+}
+
 .filter {
   background-color:#fff;
   border:1px solid #ddd;
@@ -28,6 +32,10 @@
 }
 .filter-toggle {
   cursor:pointer;
+}
+
+.services label {
+  display:inline-block;
 }
 
 .sortable .sprite {
@@ -44,9 +52,6 @@
   text-indent:-10000px;
   width:19px;
   height:19px;
-}
-.sprite.disabled {
-  opacity: 0.4;
 }
 .advance {
   background-position:-76px 0;
@@ -117,6 +122,17 @@
 /*
  * Foundation Overrides
  */
+.active {
+  position:relative;
+}
+.active span {
+  background-color:#2ba6cb;
+  position:absolute;
+  left:-6px;
+  width:4px;
+  height:95%;
+}
+
 .has-tip.label {
 	color:#fff;
 }

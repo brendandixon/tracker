@@ -1,8 +1,12 @@
 - current_area = controller.controller_name.to_sym
 
 %ul.one.columns.side-nav
-  - [:features, :stories].each do |area|
-    - if area == current_area && controller.action_name == 'index'
-      %li.active= current_area.to_s.titleize
+  - [:features, :stories, :projects].each do |area|
+    - if area == :divider
+      %li.divider
+    - elsif area == current_area && controller.action_name == 'index'
+      %li.active
+        = content_tag 'span', ''
+        = current_area.to_s.titleize
     - else
       %li= link_to area.to_s.titleize, url_for(controller: area, action: :index)

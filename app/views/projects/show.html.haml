@@ -1,0 +1,18 @@
+.row
+  = render 'shared/top_bar'
+
+.row
+  = render 'shared/side_navigation'
+
+  .eleven.columns
+    %h3.subheader= 'Project'
+    .row
+      %h4.tweleve.columns= @project.name
+    - Service.active.each_slice(4) do |services|
+      .row
+        = render partial: 'service', collection: services, locals: {last: services.length, length: 4}
+    .row
+      .actions
+        = link_to 'Edit', edit_project_path(@project)
+        \|
+        = link_to 'Back', projects_path
