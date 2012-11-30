@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
     'Android'
   ]
 
-  attr_accessible :name
+  attr_accessible :name, :services
 
   has_many :supported_services, dependent: :destroy
   has_many :services, through: :supported_services

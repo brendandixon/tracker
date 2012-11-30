@@ -4,7 +4,7 @@
 - classes << ' end' if last < length
 %p{class: classes}
   - if edit
-    = check_box_tag service.abbreviation, 1, @project.services.include?(service)
-    = label_tag service.abbreviation, service.abbreviation
+    = check_box_tag 'project[services][]', service.id, @project.services.include?(service), id: "project_service_#{service.id}"
+    = label_tag "project_service_#{service.id}", service.abbreviation
   - else
     = service.abbreviation

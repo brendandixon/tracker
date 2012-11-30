@@ -40,6 +40,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
+    params[:project][:services] = Service.find_all_by_id(params[:project][:services]) if params[:project][:services].present?
     @project = Project.new(params[:project])
 
     respond_to do |format|
@@ -56,6 +57,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
+    params[:project][:services] = Service.find_all_by_id(params[:project][:services]) if params[:project][:services].present?
     @project = Project.find(params[:id])
 
     respond_to do |format|
