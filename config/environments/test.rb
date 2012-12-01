@@ -35,3 +35,6 @@ Tracker::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 end
+
+Tracker::Application.jquery_version = '1.8.3'
+Tracker::Application.jquery_ui_version = '1.9.2'

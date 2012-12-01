@@ -195,7 +195,7 @@ namespace :tracker do
     [ 'Instance Modulator', 'EC2', '2013-01-31', 111 ],
     [ 'Data Destroyer', 'DynamoDB', '2013-02-05', 666],
     [ 'Dead Letter Box', 'SES', '2013-01-10', 124],
-    [ 'Task Dropper', 'SQS', '2012-01-28', 234],
+    [ 'Task Dropper', 'SQS', '2013-01-28', 234],
     [ 'No-One\'s Data Compression', 'S3', '2013-03-11', 235 ],
     [ 'Data Dribbler', 'CloudWatch', '2013-02-12', 324],
     [ 'Scale-a-matic', 'Auto Scaling', '2013-03-22', 236],

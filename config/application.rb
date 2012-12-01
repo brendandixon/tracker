@@ -15,8 +15,36 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+module Rails
+  class <<self
+    
+    def is_development?
+      !is_production? && !is_staging && !is_test?
+    end
+    
+    def is_production?
+      [:batch, :production].include?(Rails.env.to_sym)
+    end
+    
+    def is_staging?
+      [:review, :staging].include?(Rails.env.to_sym)
+    end
+    
+    def is_test?
+      [:cruise, :mini_cruise, :test].include?(Rails.env.to_sym)
+    end
+    
+  end
+end
+
 module Tracker
   class Application < Rails::Application
+    class << self
+      attr_accessor :jquery_version
+      attr_accessor :jquery_ui_version
+    end
+
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -66,8 +94,7 @@ module Tracker
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    config.assets.precompile += ['jquery.js']    
+    # config.assets.precompile += ['jquery.js']    
     
     config.generators do |g|
       g.template_engine :haml

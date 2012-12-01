@@ -65,3 +65,6 @@ Tracker::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
+
+Tracker::Application.jquery_version = '1.8.3'
+Tracker::Application.jquery_ui_version = '1.9.2'

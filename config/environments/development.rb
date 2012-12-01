@@ -35,3 +35,6 @@ Tracker::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 end
+
+Tracker::Application.jquery_version = '1.8.3'
+Tracker::Application.jquery_ui_version = '1.9.2'
