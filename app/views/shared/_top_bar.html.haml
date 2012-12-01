@@ -2,15 +2,13 @@
 - current_name = current_area.titleize
 - current_area = current_area.to_sym
 
-.twelve.centered
+.tweleve.columns.centered
   .fixed.contain-to-grid
     %nav.top-bar
       %ul
         %li.name
-          %h1
-            = link_to current_name, url_for(controller: current_area, action: :index)
-        %li.toggle-topbar
-          = link_to current_name, url_for(controller: current_area, action: :index)
+          %h1 Tracker
+        %li.toggle-topbar Tracker
         - if notice.present?
           %li
             #notice= notice

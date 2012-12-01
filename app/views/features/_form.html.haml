@@ -12,8 +12,10 @@
           %li= msg
 
   .row
-    = f.label :title
-    = f.text_field :title, size: 25
+    .six.columns.end
+      = f.label :title
+      = f.text_field :title, size: 25
+  .row
     .two.columns
       = f.label :service_id
       = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }
