@@ -1,0 +1,11 @@
+%table.eleven#Stories
+  %thead
+    %tr
+      %th.four= render partial: 'shared/sortable', locals: {name: 'Feature', field: 'feature'}
+      %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
+      %th.two= render partial: 'shared/sortable', locals: {name: 'Project', field: 'project'}
+      %th.two= render partial: 'shared/sortable', locals: {name: 'Status', field: 'status'}
+      %th.two.end
+
+  %tbody
+    = render @stories

@@ -5,16 +5,4 @@
 
 .row
   = render 'shared/side_navigation'
-
-  %table.eleven.end
-    %thead
-      %tr
-        %th.three= render partial: 'shared/sortable', locals: {name: 'Title', field: 'feature'}
-        %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
-        %th.two= render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date'}
-        %th.one ContactUs
-        %th.three Projects
-        %th.one
-
-    %tbody
-      = render @features
+  = render 'features'

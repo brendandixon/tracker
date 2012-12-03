@@ -4,6 +4,6 @@
 - classes = 'sprite ' + (sorted_descending ? 'ascending' : 'descending')
 
 .sortable
-  = link_to url_for(controller: controller.controller_name, action: :index, sort: sorted_descending ? field : descending_field) do
+  = link_to url_for(controller: controller.controller_name, action: :index, sort: sorted_descending ? field : descending_field), remote: true do
     = name
     = content_tag('span', 'sort', class: classes) if sorted_descending || sort.include?(field)

@@ -1,7 +1,7 @@
 - filter = session[:filter]
 
-.reveal-modal.medium{data: {filter: 'data-filter'}}
-  = form_tag url_for(controller: controller.controller_name, action: :index), method: :get do
+#Filter.reveal-modal.medium{data: {filter: 'data-filter'}}
+  = form_tag url_for(controller: controller.controller_name, action: :index), method: :get, remote: true do
     .row
       .three.columns
         = label_tag 'status', 'Status'
@@ -16,7 +16,7 @@
       .actions
         = submit_tag 'Filter'
         \|
-        = link_to 'Reset', url_for(controller: controller.controller_name, action: :reset), class:'reset-filter'
+        = link_to 'Reset', url_for(controller: controller.controller_name, action: :reset), class:'reset-filter', remote: true
         \|
-        = link_to 'Cancel', '', class: 'close-filter'
+        = link_to 'Cancel', '#', class: 'close-filter'
   = link_to '&#215'.html_safe, '#', class: 'close-reveal-modal'
