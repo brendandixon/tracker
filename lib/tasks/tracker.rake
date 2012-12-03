@@ -4,6 +4,7 @@ namespace :tracker do
     ['Amazon CloudFront',                         'CloudFront'],
     ['Amazon CloudSearch',                        'CloudSearch'],
     ['Amazon CloudWatch',                         'CloudWatch'],
+    ['Amazon Data Pipeline',                      'Data Pipeline'],
     ['Amazon DynamoDB',                           'DynamoDB'],
     ['Amazon ElastiCache',                        'ElastiCache'],
     ['Amazon Elastic Block Store (EBS)',          'EBS'],
@@ -140,6 +141,13 @@ namespace :tracker do
                   'STS',
                   'ELB'
                 ]
+    ],
+    ['JavaScript', [
+                    'DynamoDB',
+                    'EC2',
+                    'S3',
+                    'SWF'
+                  ]
     ],
     ['iOS', [
                   'CloudWatch',

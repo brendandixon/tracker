@@ -5,6 +5,7 @@ gem 'mysql2'
 gem 'rails', '3.2.8'
 
 group :development do
+  gem 'capistrano'
   gem 'foreman'
   gem 'haml-rails'
   gem 'quiet_assets'
@@ -13,6 +14,10 @@ end
 group :development, :test do
   gem 'annotate'
   gem 'rspec-rails', '~> 2.0'
+end
+
+group :production do
+  gem 'passenger'
 end
 
 group :assets do
