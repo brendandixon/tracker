@@ -118,6 +118,7 @@ class StoriesController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to :back }
+      format.js { render 'story.js.erb' }
       format.json { render json: @stories }
     end
     
@@ -130,6 +131,7 @@ class StoriesController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to :back }
+      format.js { render 'story.js.erb' }
       format.json { render json: @stories }
     end
     

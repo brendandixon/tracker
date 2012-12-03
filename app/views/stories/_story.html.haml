@@ -6,12 +6,12 @@
 - else
   - options[:class] = 'sprite has-tip'
 
-%tr
+%tr#Story{id: story.id}
   %td= story.feature.title
   %td= story.feature.service.abbreviation
   %td= story.project.name
   %td= content_tag('span', I18n.t(story.status, scope: [:activerecord, :labels, :story]), class: classes)
   %td
-    = button_to 'Advance', url_for(controller: :stories, action: :advance, id: story.id), options.merge(class: options[:class] + ' advance', title: I18n.t(story.next_status, scope: [:controllers, :actions]))
-    = button_to 'Complete', url_for(controller: :stories, action: :complete, id: story.id), options.merge(class: options[:class] + ' complete', title: I18n.t(:complete, scope: [:controllers, :actions]))
+    = button_to 'Advance', {controller: :stories, action: :advance, id: story.id}, options.merge(class: options[:class] + ' advance', title: I18n.t(story.next_status, scope: [:controllers, :actions]), remote: true)
+    = button_to 'Complete', {controller: :stories, action: :complete, id: story.id}, options.merge(class: options[:class] + ' complete', title: I18n.t(:complete, scope: [:controllers, :actions]), remote: true)
     = render partial: 'shared/links', locals: {object: story}
