@@ -11,6 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require foundation
+//= require jquery_ujs
+//= require jquery-tooltip/jquery.tooltip.js
 //= require_tree .
 
 $(function() {
