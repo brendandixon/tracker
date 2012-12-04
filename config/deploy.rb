@@ -9,7 +9,7 @@ set :use_sudo, false
 
 set :application, 'tracker'
 set :deploy_to, '/Users/dixonb/Sites/tracker'
-set :port, '8080'
+set :passenger_port, '8080'
 
 set :scm, :git
 set :repository, 'git@github.com:aws/tracker.git'
@@ -24,11 +24,11 @@ after "deploy:restart", "deploy:cleanup"
 
 namespace :deploy do
   task :start do
-    run "bundle exec passenger start -d -p #{port}"
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec passenger start -d -p #{passenger_port}"
   end
   
   task :stop do
-    run "bundle exec passenger stop -p #{port}"
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec passenger stop -p #{passenger_port}"
   end
   
   task :restart, :roles => :app, :except => { :no_release => true } do
