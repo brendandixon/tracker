@@ -7,8 +7,13 @@ class FeaturesController < ApplicationController
   def index
     query = Feature
 
-    status = @filter[:status] == :complete || @filter[:status] == :all ? Story::COMPLETED : []
-    status += @filter[:status] == :incomplete || @filter[:status] == :all ? Story::INCOMPLETE : []
+    status = if @filter[:status] == :complete
+              Story::COMPLETED
+            elsif @filter[:status] == :incomplete
+              Story::INCOMPLETE
+            else
+              []
+            end
     query = query.in_status(status) if status.present?
 
     query = query.for_projects(@filter[:projects].map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if @filter[:projects].present?
