@@ -25,6 +25,8 @@ class FeaturesController < ApplicationController
     
     @filter[:sort][self.controller_name].each do |sort|
       case sort
+      when '-cu' then query = query.in_contact_us_order('ASC')
+      when 'cu' then query = query.in_contact_us_order('DESC')
       when '-date' then query = query.in_date_order('ASC')
       when 'date' then query = query.in_date_order('DESC')
       when '-feature' then query = query.in_title_order('ASC')
