@@ -1,0 +1,4 @@
+$('.tooltip').hide();
+$('#Filter').trigger('reveal:close');
+$('#Services')
+  .replaceWith('<%= escape_javascript(render(partial: "services"))%>');

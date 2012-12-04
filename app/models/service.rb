@@ -25,11 +25,12 @@ class Service < ActiveRecord::Base
   scope :with_abbreviation, lambda {|abbreviation| where(abbreviation: abbreviation)}
   scope :with_name, lambda {|name| where(name: name)}
 
-  scope :in_abbreviation_order, order(:abbreviation)
+  scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
+  scope :in_service_order, lambda{|dir = 'ASC'| order("abbreviation #{dir}")}
   
   class<<self
     def active
-      @active ||= Service.in_abbreviation_order.all
+      @active ||= Service.in_service_order.all
     end
   end
 

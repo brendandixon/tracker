@@ -3,18 +3,4 @@
 
 .row
   = render 'shared/side_navigation'
-
-  %table.eleven
-    %thead
-      %tr
-        %th Service
-        %th Abbreviation
-        %th
-
-    %tbody
-      - @services.each do |service|
-        %tr
-          %td= service.name
-          %td= service.abbreviation
-          %td
-            = render partial: 'shared/links', locals: { links: [:edit, :destroy], object: service}
+  = render 'services'

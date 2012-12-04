@@ -2,10 +2,22 @@ class ServicesController < ApplicationController
   # GET /services
   # GET /services.json
   def index
-    @services = Service.all
+    query = Service
+    
+    @filter[:sort][self.controller_name].each do |sort|
+      case sort
+      when '-name' then query = query.in_name_order('ASC')
+      when 'name' then query = query.in_name_order('DESC')
+      when '-service' then query = query.in_service_order('ASC')
+      when 'service' then query = query.in_service_order('DESC')
+      end
+    end
+
+    @services = query.all
 
     respond_to do |format|
       format.html # index.html.erb
+      format.js # index.js.erb
       format.json { render json: @services }
     end
   end

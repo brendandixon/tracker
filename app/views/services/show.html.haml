@@ -1,9 +1,15 @@
-%p#notice= notice
+.row
+  = render 'shared/top_bar'
 
-%p
-  %b Name:
-  = @service.name
+.row
+  = render 'shared/side_navigation'
 
-= link_to 'Edit', edit_service_path(@service)
-\|
-= link_to 'Back', services_path
+  .eleven.columns
+    %h3.subheader= 'Service'
+    .row
+      %h4.tweleve.columns= "#{@service.name}(#{@service.abbreviation})"
+    .row
+      .actions
+        = link_to 'Edit', edit_service_path(@service)
+        \|
+        = link_to 'Back', services_path
