@@ -11,6 +11,8 @@
 
 class Service < ActiveRecord::Base
   attr_accessible :name, :abbreviation
+  
+  after_save :refresh_active
 
   has_many :features, dependent: :destroy
   has_many :supported_services, dependent: :destroy
@@ -32,6 +34,16 @@ class Service < ActiveRecord::Base
     def active
       @active ||= Service.in_service_order.all
     end
+    
+    def refresh_active
+      @active = nil
+    end
+  end
+  
+  private
+  
+  def refresh_active
+    self.class.refresh_active
   end
 
 end
