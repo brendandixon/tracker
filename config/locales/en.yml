@@ -13,19 +13,19 @@ en:
       scheduled: 'Schedule'
   activerecord:
     attributes:
-      feature:
+      story:
         contact_us_number: 'Contact Us'
-        create_stories: 'Ensure Stories'
+        create_tasks: 'Ensure Tasks'
         release_date: 'Release Date'
         service_id: 'Service'
         title: 'Title'
     labels:
-      feature:
-        create_stories: 'Create stories for the feature?'
       story:
+        create_tasks: 'Create tasks for the story?'
+      task:
         unscheduled: 'Unscheduled'
         scheduled: 'Scheduled'
         in_progress: 'In Progress'
         completed: 'Completed'
     models:
-      feature: 'Feature'
+      story: 'Story'

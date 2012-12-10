@@ -1,0 +1,4 @@
+$('.tooltip').hide()
+$('#Task_<%= @task.id%>')
+  .replaceWith('<%= escape_javascript(render(partial: @task))%>')
+$('#Task_<%= @task.id%>').effect('highlight',{duration: 750})

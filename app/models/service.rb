@@ -4,9 +4,9 @@
 #
 #  id           :integer          not null, primary key
 #  name         :string(255)
+#  abbreviation :string(255)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  abbreviation :string(255)
 #
 
 class Service < ActiveRecord::Base
@@ -14,7 +14,7 @@ class Service < ActiveRecord::Base
   
   after_save :refresh_active
 
-  has_many :features, dependent: :destroy
+  has_many :stories, dependent: :destroy
   has_many :supported_services, dependent: :destroy
   has_many :projects, through: :supported_services
   

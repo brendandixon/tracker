@@ -1,4 +1,0 @@
-$('.tooltip').hide()
-$('#Story_<%= @story.id%>')
-  .replaceWith('<%= escape_javascript(render(partial: @story))%>')
-$('#Story_<%= @story.id%>').effect('highlight',{duration: 750})

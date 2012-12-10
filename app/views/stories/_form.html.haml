@@ -1,4 +1,9 @@
-= form_for @story do |f|
+- options= {'controller' => controller.controller_name}
+- options['action'] = @story.new_record? ? :create : :update
+- options['id'] = @story.id unless @story.new_record?
+- @story.release_date = @story.release_date.to_date if @story.release_date.present? && @story.release_date.acts_like?(:time)
+
+= form_for @story, url: url_for(options)  do |f|
   - if @story.errors.any?
     #error_explanation
       %h2= "#{pluralize(@story.errors.count, "error")} prohibited this story from being saved:"
@@ -7,15 +12,23 @@
           %li= msg
 
   .row
-    .four.columns
-      = f.label :feature_id
-      = f.select :feature_id, Feature.in_title_order.all.collect {|f| [ f.title, f.id ] }
+    .six.columns.end
+      = f.label :title
+      = f.text_field :title, size: 25
+  .row
     .two.columns
-      = f.label :project_id
-      = f.select :project_id, Project.in_name_order.all.collect {|s| [ s.name, s.id ] }
+      = f.label :service_id
+      = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }
+    .two.column
+      = f.label :contact_us_number, I18n.t(:contact_us_number, scope: [:activerecord, :attributes, :story])
+      = f.text_field :contact_us_number, size: 5
     .two.columns.end
-      = f.label :status
-      = f.select :status, Story::STATUS.map{|s| [I18n.t(s, scope: [:activerecord, :labels, :story]), s]}
+      = f.label :release_date
+      = f.text_field :release_date, data: {datefield: true}
+  .row
+    = f.label :create_tasks, {} do
+      = f.check_box :create_tasks
+      = I18n.t(:create_tasks, scope: [:activerecord, :labels, :story])
   .row
     .actions
       = f.submit 'Save'

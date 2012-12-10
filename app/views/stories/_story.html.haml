@@ -1,17 +1,9 @@
-- classes = 'status label radius ' + (story.completed? ? 'success' : (story.unscheduled? ? 'alert' : ''))
-- options = {}
-- if story.completed?
-  - options[:class] = 'sprite disabled'
-  - options[:disabled] = 'disabled'
-- else
-  - options[:class] = 'sprite has-tip'
-
 %tr#Story{id: story.id}
-  %td= story.feature.title
-  %td= story.feature.service.abbreviation
-  %td= story.project.name
-  %td= content_tag('span', I18n.t(story.status, scope: [:activerecord, :labels, :story]), class: classes)
+  %td= story.title
+  %td= story.service.abbreviation
+  %td= story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if story.release_date.present?
   %td
-    = button_to 'Advance', {controller: :stories, action: :advance, id: story.id}, options.merge(class: options[:class] + ' advance', title: I18n.t(story.next_status, scope: [:controllers, :actions]), remote: true)
-    = button_to 'Complete', {controller: :stories, action: :complete, id: story.id}, options.merge(class: options[:class] + ' complete', title: I18n.t(:complete, scope: [:controllers, :actions]), remote: true)
+    %a{href: story.contact_us_link}= story.contact_us_number
+  %td= project_labels(story)
+  %td
     = render partial: 'shared/links', locals: {object: story}

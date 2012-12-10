@@ -1,38 +1,43 @@
 class StoriesController < ApplicationController
-  DEFAULT_SORT = ['-project']
-
+  DEFAULT_SORT = ['-date']
+  STATES = [:all, :complete, :incomplete]
+  
   # GET /stories
   # GET /stories.json
   def index
-    features = params[:features]
-    features = features.split(',') if features.is_a?(String)
-
     query = Story
 
-    unless features.present?
-      status = @filter[:status] == :complete || @filter[:status] == :all ? Story::COMPLETED : []
-      status += @filter[:status] == :incomplete || @filter[:status] == :all ? Story::INCOMPLETE : []
-      query = query.in_status(status) if status.present?
-    end
+    state = if @filter[:state] == :complete
+              Task::COMPLETED
+            elsif @filter[:state] == :incomplete
+              Task::INCOMPLETE
+            else
+              []
+            end
+    query = query.in_state(state) if state.present?
+    puts "FILTERING FOR COMPLETION #{state}" if state.present?
 
-    query = query.for_features(features.map{|feature| feature =~ /^\d+$/ ? feature : nil}.flatten.compact) if features.present?
     query = query.for_projects(@filter[:projects].map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if @filter[:projects].present?
     query = query.for_services(@filter[:services].map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if @filter[:services].present?
+    query = query.for_contact_us(@filter[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter[:contact_us].present?
 
+    query = query.after_date(@filter[:after]) if @filter[:after].present?
+    query = query.before_date(@filter[:before]) if @filter[:before].present?
+    
     @filter[:sort][self.controller_name].each do |sort|
       case sort
-      when '-feature' then query = query.in_feature_order('ASC')
-      when 'feature' then query = query.in_feature_order('DESC')
-      when '-project' then query = query.in_project_order('ASC')
-      when 'project' then query = query.in_project_order('DESC')
+      when '-cu' then query = query.in_contact_us_order('ASC')
+      when 'cu' then query = query.in_contact_us_order('DESC')
+      when '-date' then query = query.in_date_order('ASC')
+      when 'date' then query = query.in_date_order('DESC')
+      when '-story' then query = query.in_title_order('ASC')
+      when 'story' then query = query.in_title_order('DESC')
       when '-service' then query = query.in_service_order('ASC')
       when 'service' then query = query.in_service_order('DESC')
-      when '-status' then query = query.in_status_order('ASC')
-      when 'status' then query = query.in_status_order('DESC')
       end
     end
-    
-    @stories = query.includes(:feature).includes(:project).uniq.all
+
+    @stories = query.includes(:service).includes(:projects).uniq.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -75,7 +80,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       if @story.save
-        format.html { redirect_to stories_path(feature_id: @story.feature_id), notice: 'Story was successfully created.' }
+        format.html { redirect_to stories_path, notice: 'Story was successfully created.' }
         format.json { render json: @story, status: :created, location: @story }
       else
         format.html { render action: "new" }
@@ -91,7 +96,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       if @story.update_attributes(params[:story])
-        format.html { redirect_to stories_path(feature_id: @story.feature_id), notice: 'Story was successfully updated.' }
+        format.html { redirect_to stories_path, notice: 'Story was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -110,31 +115,5 @@ class StoriesController < ApplicationController
       format.html { redirect_to stories_path }
       format.json { head :no_content }
     end
-  end
-  
-  # POST /stories/1/advance
-  def advance
-    @story = Story.find(params[:id])
-    @story.advance!
-    
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.js { render 'story.js.erb' }
-      format.json { render json: @stories }
-    end
-    
-  end
-  
-  # POST /stories/1/complete
-  def complete
-    @story = Story.find(params[:id])
-    @story.completed!
-    
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.js { render 'story.js.erb' }
-      format.json { render json: @stories }
-    end
-    
   end
 end

@@ -1,13 +1,12 @@
 Tracker::Application.routes.draw do
-  root to: 'features#index'
+  root to: 'stories#index'
   match ':controller/:action', action: /reset/
-
-  resources :features
 
   resources :projects
   resources :services
+  resources :stories
 
-  resources :stories do
+  resources :tasks do
     member do
       post 'advance'
       post 'complete'

@@ -7,15 +7,19 @@
   .eleven.columns
     %h3.subheader= 'Story'
     .row
+      .twelve.columns
+        = 'Title: '
+        = @story.title
+    .row
       %p.three.columns
-        = 'Feature: '
-        = @story.feature.title
+        = 'Service: '
+        = @story.service.abbreviation
       %p.three.columns
-        = 'Project: '
-        = @story.project.name
+        = 'ContactUs: '
+        %a{href: @story.contact_us_link}= @story.contact_us_number
       %p.three.columns.end
-        = 'Status: '
-        = I18n.t @story.status, scope: [:activerecord, :labels, :story]
+        = 'Release Date: '
+        = @story.release_date.to_date.to_s(:mm_dd_yy)
     .row
       .actions
         = link_to 'Edit', edit_story_path(@story)

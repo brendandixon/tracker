@@ -1,0 +1,17 @@
+- classes = 'status label radius ' + (task.completed? ? 'success' : (task.unscheduled? ? 'alert' : ''))
+- options = {}
+- if task.completed?
+  - options[:class] = 'sprite disabled'
+  - options[:disabled] = 'disabled'
+- else
+  - options[:class] = 'sprite has-tip'
+
+%tr#Task{id: task.id}
+  %td= task.story.title
+  %td= task.story.service.abbreviation
+  %td= task.project.name
+  %td= content_tag('span', I18n.t(task.status, scope: [:activerecord, :labels, :task]), class: classes)
+  %td
+    = button_to 'Advance', {controller: :tasks, action: :advance, id: task.id}, options.merge(class: options[:class] + ' advance', title: I18n.t(task.next_status, scope: [:controllers, :actions]), remote: true)
+    = button_to 'Complete', {controller: :tasks, action: :complete, id: task.id}, options.merge(class: options[:class] + ' complete', title: I18n.t(:complete, scope: [:controllers, :actions]), remote: true)
+    = render partial: 'shared/links', locals: {object: task}

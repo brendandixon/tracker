@@ -24,7 +24,10 @@ describe ServicesController do
   # Service. As you add validations to Service, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {
+      name: 'Test Service',
+      abbreviation: 'ts'
+    }
   end
 
   # This should return the minimal set of values that should be in the session

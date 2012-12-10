@@ -1,0 +1,25 @@
+= form_for @task do |f|
+  - if @task.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
+      %ul
+        - @task.errors.full_messages.each do |msg|
+          %li= msg
+
+  .row
+    .four.columns
+      = f.label :story_id
+      = f.select :story_id, Story.in_title_order.all.collect {|s| [ s.title, s.id ] }
+    .two.columns
+      = f.label :project_id
+      = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
+    .two.columns.end
+      = f.label :status
+      = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
+  .row
+    .actions
+      = f.submit 'Save'
+      \|
+      = link_to 'Delete', @task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }
+      \|
+      = link_to 'Cancel', :back

@@ -11,20 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121121203110) do
-
-  create_table "features", :force => true do |t|
-    t.datetime "release_date"
-    t.string   "title"
-    t.integer  "service_id"
-    t.integer  "contact_us_number"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
-
-  add_index "features", ["contact_us_number"], :name => "index_features_on_contact_us_number", :unique => true
-  add_index "features", ["release_date"], :name => "index_features_on_release_date"
-  add_index "features", ["service_id"], :name => "index_features_on_service_id"
+ActiveRecord::Schema.define(:version => 20121210040229) do
 
   create_table "projects", :force => true do |t|
     t.string   "name"
@@ -46,16 +33,17 @@ ActiveRecord::Schema.define(:version => 20121121203110) do
   add_index "services", ["name"], :name => "index_services_on_name", :unique => true
 
   create_table "stories", :force => true do |t|
-    t.integer  "feature_id"
-    t.integer  "project_id"
-    t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "release_date"
+    t.string   "title"
+    t.integer  "service_id"
+    t.integer  "contact_us_number"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
-  add_index "stories", ["feature_id"], :name => "index_stories_on_feature_id"
-  add_index "stories", ["project_id"], :name => "index_stories_on_project_id"
-  add_index "stories", ["status"], :name => "index_stories_on_status"
+  add_index "stories", ["contact_us_number"], :name => "index_features_on_contact_us_number", :unique => true
+  add_index "stories", ["release_date"], :name => "index_features_on_release_date"
+  add_index "stories", ["service_id"], :name => "index_features_on_service_id"
 
   create_table "supported_services", :force => true do |t|
     t.integer  "project_id"
@@ -67,5 +55,33 @@ ActiveRecord::Schema.define(:version => 20121121203110) do
   add_index "supported_services", ["project_id", "service_id"], :name => "index_supported_services_on_project_id_and_service_id", :unique => true
   add_index "supported_services", ["project_id"], :name => "index_supported_services_on_project_id"
   add_index "supported_services", ["service_id"], :name => "index_supported_services_on_service_id"
+
+  create_table "tagged_items", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.string   "category"
+    t.string   "scope"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "tasks", :force => true do |t|
+    t.integer  "story_id"
+    t.integer  "project_id"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "tasks", ["project_id"], :name => "index_stories_on_project_id"
+  add_index "tasks", ["status"], :name => "index_stories_on_status"
+  add_index "tasks", ["story_id"], :name => "index_stories_on_feature_id"
 
 end

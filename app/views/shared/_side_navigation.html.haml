@@ -1,7 +1,7 @@
 - current_area = controller.controller_name.to_sym
 
 %ul.one.column.side-nav
-  - [:features, :stories, :divider, :services, :projects].each do |area|
+  - [:stories, :tasks, :divider, :services, :projects].each do |area|
     - if area == :divider
       %li.divider
     - elsif area == current_area && controller.action_name == 'index'

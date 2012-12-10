@@ -1,0 +1,23 @@
+.row
+  = render 'shared/top_bar'
+
+.row
+  = render 'shared/side_navigation'
+
+  .eleven.columns
+    %h3.subheader= 'Task'
+    .row
+      %p.three.columns
+        = 'Feature: '
+        = @task.story.title
+      %p.three.columns
+        = 'Project: '
+        = @task.project.name
+      %p.three.columns.end
+        = 'Status: '
+        = I18n.t @task.status, scope: [:activerecord, :labels, :task]
+    .row
+      .actions
+        = link_to 'Edit', edit_task_path(@task)
+        \|
+        = link_to 'Back', tasks_path

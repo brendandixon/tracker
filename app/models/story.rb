@@ -2,74 +2,74 @@
 #
 # Table name: stories
 #
-#  id         :integer          not null, primary key
-#  feature_id :integer
-#  project_id :integer
-#  status     :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                :integer          not null, primary key
+#  release_date      :datetime
+#  title             :string(255)
+#  service_id        :integer
+#  contact_us_number :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 class Story < ActiveRecord::Base
-  include FieldExtensions
+  # include Validations
 
-  INCOMPLETE = [:unscheduled, :scheduled, :in_progress]
-  COMPLETED = [:completed]
-  STATUS = INCOMPLETE + COMPLETED
+  attr_accessor :create_tasks
+  attr_accessible :contact_us_number, :create_tasks, :release_date, :service_id, :title
 
-  attr_accessible :feature_id, :project_id, :status
-    
-  belongs_to :feature
-  belongs_to :project
+  after_initialize :initialize_create_tasks
+  after_save :ensure_tasks
   
-  symbolize :status
+  belongs_to :service
+  has_many :tasks, dependent: :destroy
+  has_many :projects, through: :tasks
+  has_many :tagged_items, as: :taggable
+  has_many :tags, through: :tagged_items
   
-  validates_uniqueness_of :feature_id, scope: :project_id
-  validates_inclusion_of :status, in: STATUS
+  before_validation :ensure_release_date
   
-  scope :for_features, lambda {|features| where(feature_id: features)}
-  scope :for_projects, lambda {|projects| where(project_id: projects)}
-  scope :for_services, lambda{|services| joins(:feature).where(features: {service_id: services})}
+  validates_presence_of :service, :title
+  validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
+  # validates_date_of :release_date, allow_nil: true
 
-  scope :in_status, lambda{|status| where(status: status)}
-  scope :completed, where(status: Story::COMPLETED)
-  scope :incomplete, where(status: Story::INCOMPLETE)
-
-  scope :in_feature_order, lambda{|dir = 'ASC'| joins(:feature).order("features.title #{dir}")}
-  scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
-  scope :in_service_order, lambda{|dir = 'ASC'| joins(feature: :service).order("services.abbreviation #{dir}")}
-  scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
+  scope :in_state, lambda{|state| joins(:tasks).where(tasks: {status: state})}
+  scope :completed, joins(:tasks).where(tasks: {status: Task::COMPLETED})
+  scope :incomplete, joins(:tasks).where(tasks: {status: Task::INCOMPLETE})
   
-  STATUS.each do |s|
-    class_eval <<-EOM
-      def #{s}?
-        self.status == :#{s}
-      end
-      def #{s}!
-        self.status = :#{s}
-        self.save unless self.new_record?
-      end
-    EOM
+  scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
+  scope :for_services, lambda{|services| where(service_id: services)}
+  scope :for_contact_us, lambda{|cu| where(contact_us_number: cu)}
+  
+  scope :after_date, lambda{|date| where('release_date > ?', date)}
+  scope :before_date, lambda{|date| where('release_date < ?', date)}
+  scope :on_date, lambda{|date| where('release_date = ?', date)}
+  
+  scope :in_contact_us_order, lambda{|dir = 'ASC'| order("contact_us_number #{dir}")}
+  scope :in_date_order, lambda{|dir = 'ASC'| order("release_date #{dir}")}
+  scope :in_service_order, lambda{|dir = 'ASC'| joins(:service).order("services.abbreviation #{dir}")}
+  scope :in_title_order, lambda{|dir = 'ASC'| order("title #{dir}")}
+  
+  def contact_us_link
+    return nil unless self.contact_us_number.present?
+    "https://contactus.amazon.com/contact-us/ContactUsIssue.cgi?issue=#{self.contact_us_number}&profile=aws-dr-tools"
   end
   
-  class<<self
-    
-    def ensure_feature_stories(f)
-      f.service.projects.each do |project|
-        Story.create(feature_id:f.id, project_id:project.id, status: :unscheduled) unless Story.for_features(f).for_projects(project).first
-      end
-    end
-
+  private
+  
+  def initialize_create_tasks
+    self.create_tasks ||= true
   end
   
-  def advance!
-    return if self.completed?
-    self.status = self.next_status
-    self.save unless self.new_record?
+  def ensure_tasks
+    return unless self.create_tasks
+    Task.ensure_story_tasks(self)
   end
   
-  def next_status
-    STATUS[STATUS.find_index(self.status)+1]
+  def ensure_release_date
+    return unless self.release_date.present?
+    self.release_date = ActiveSupport::TimeZone.new(Tracker::Application.config.time_zone).parse(self.release_date) if self.release_date.is_a?(String)
+    self.release_date = self.release_date.to_datetime if self.release_date.is_a?(Date)
+    self.release_date = self.release_date.utc if self.release_date.is_a?(DateTime)
   end
   
 end

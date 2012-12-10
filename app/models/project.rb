@@ -26,8 +26,8 @@ class Project < ActiveRecord::Base
   has_many :supported_services, dependent: :destroy
   has_many :services, through: :supported_services
 
-  has_many :stories, dependent: :destroy
-  has_many :features, through: :stories
+  has_many :tasks, dependent: :destroy
+  has_many :stories, through: :tasks
   
   validates_presence_of :name
   
