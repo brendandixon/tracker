@@ -1,22 +1,22 @@
 require 'spec_helper'
 
-describe "features/edit" do
+describe "stories/edit" do
   before(:each) do
-    @feature = assign(:feature, stub_model(Feature,
-      :contact_us_link => "MyText",
+    @story = assign(:story, stub_model(Story,
+      :contact_us_number => "MyText",
       :title => "MyText",
       :service_id => 1
     ))
   end
 
-  it "renders the edit feature form" do
+  it "renders the edit story form" do
     render
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form", :action => features_path(@feature), :method => "post" do
-      assert_select "textarea#feature_contact_us_link", :name => "feature[contact_us_link]"
-      assert_select "textarea#feature_title", :name => "feature[title]"
-      assert_select "input#feature_service_id", :name => "feature[service_id]"
+    assert_select "form", :action => stories_path(@story), :method => "post" do
+      assert_select "input#story_contact_us_number", :name => "story[contact_us_number]"
+      assert_select "input#story_title", :name => "story[title]"
+      assert_select "select#story_service_id", :name => "story[service_id]"
     end
   end
 end

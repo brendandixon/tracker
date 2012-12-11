@@ -12,6 +12,8 @@ Tracker::Application.routes.draw do
       post 'complete'
     end
   end
+  
+  resources :test if Rails.is_test?
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,4 +1,4 @@
-- filter = session[:filter]
+- filter = session[:filter] || {}
 
 #Filter.reveal-modal.medium{data: {filter: 'data-filter'}}
   = form_tag url_for(controller: controller.controller_name, action: :index), method: :get, remote: true do

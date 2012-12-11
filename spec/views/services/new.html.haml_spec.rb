@@ -12,7 +12,7 @@ describe "services/new" do
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form", :action => services_path, :method => "post" do
-      assert_select "textarea#service_name", :name => "service[name]"
+      assert_select "input#service_name", :name => "service[name]"
     end
   end
 end

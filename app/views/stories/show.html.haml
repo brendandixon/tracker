@@ -13,13 +13,13 @@
     .row
       %p.three.columns
         = 'Service: '
-        = @story.service.abbreviation
+        = @story.service.abbreviation if @story.service.present?
       %p.three.columns
         = 'ContactUs: '
         %a{href: @story.contact_us_link}= @story.contact_us_number
       %p.three.columns.end
         = 'Release Date: '
-        = @story.release_date.to_date.to_s(:mm_dd_yy)
+        = @story.release_date.to_date.to_s(:mm_dd_yy) if @story.release_date.present?
     .row
       .actions
         = link_to 'Edit', edit_story_path(@story)
