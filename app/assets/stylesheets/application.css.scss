@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require foundation_and_overrides
+ *= require glyphicons
  *= require_self
  */
 
@@ -142,7 +143,11 @@
 
 .name h1 {
   color:#fff;
-  font-size:32px;
+  font-size:30px;
+  opacity:0.85;
+  padding:4px 0 0 38px;
+  position:relative;
+  top:-4px;
 }
 
 .reveal-modal {
