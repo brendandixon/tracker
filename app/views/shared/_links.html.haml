@@ -2,4 +2,4 @@
 - current_name = current_area.titleize
 - current_area = current_area.to_sym
 
-= link_to 'Edit', url_for(controller: current_area, action: :edit, id: object.id), class: 'sprite edit has-tip', title: I18n.t('edit', scope: [:controllers, :actions])
+= link_to content_tag('i'), url_for(controller: current_area, action: :edit, id: object.id), class: 'glyphicons edit has-tip', title: I18n.t('edit', scope: [:controllers, :actions])

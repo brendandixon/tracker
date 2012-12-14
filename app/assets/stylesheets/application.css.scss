@@ -121,6 +121,18 @@
 }
 
 /*
+ * Glyphicons Overrides
+ */
+.glyphicons.cyan i:before {
+  color: #2ba6cb;
+}
+
+h1.glyphicons i:before {
+  top:13px;
+  left:6px;
+};
+
+/*
  * Foundation Overrides
  */
 .active {
@@ -134,6 +146,9 @@
   height:95%;
 }
 
+.has-tip {
+  border:none;
+}
 .has-tip.label {
 	color:#fff;
 }

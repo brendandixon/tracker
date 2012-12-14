@@ -12,7 +12,7 @@
 //
 //= require foundation
 //= require jquery_ujs
-//= require jquery-tooltip/jquery.tooltip.js
+//= require jquery-tooltip/jquery.tooltip
 //= require_tree .
 
 $(function() {
