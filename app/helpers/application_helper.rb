@@ -26,11 +26,13 @@ module ApplicationHelper
     html_options = convert_options_to_data_attributes(options, html_options)
 
     html_options.merge!("type" => "submit", "value" => name)
+    
+    wrapper_classes = "glyphicons iconic #{html_options.delete('glyph')} #{'disabled' if html_options.has_key?('disabled')}"
 
     form_options.merge!(method: form_method, action: url)
     form_options.merge!("data-remote" => "true") if remote
         
-    "#{tag(:form, form_options, true)}<div class='glyphicons iconic #{html_options.delete('glyph')}'><i></i>#{method_tag}#{tag("input", html_options)}#{request_token_tag}</div></form>".html_safe
+    "#{tag(:form, form_options, true)}<div class='#{wrapper_classes}'><i></i>#{method_tag}#{tag("input", html_options)}#{request_token_tag}</div></form>".html_safe
   end
 
   def glyph_link_to(*args)

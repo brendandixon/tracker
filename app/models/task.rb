@@ -71,7 +71,7 @@ class Task < ActiveRecord::Base
   end
   
   def next_status
-    STATUS[STATUS.find_index(self.status)+1]
+    STATUS[STATUS.find_index(self.status)+1] || STATUS.last
   end
   
 end
