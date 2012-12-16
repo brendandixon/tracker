@@ -1,24 +1,30 @@
 - current_area = controller.controller_name
 - current_name = current_area.titleize
 - current_area = current_area.to_sym
+- logger.debug "IT IS HERE!" if notice.present?
 
-.tweleve.columns.centered
-  .fixed.contain-to-grid
-    %nav.top-bar
-      %ul
+.twelve.columns.centered<
+  .fixed.contain-to-grid<
+    %nav.top-bar<
+      %ul.two.columns
         %li.name
-          %h1.glyphicons.white.show_thumbnails_with_lines
+          %h1.glyphicons.white.show_thumbnails_with_lines<
             %i
             = 'Tracker'
         %li.toggle-topbar Tracker
-        - if notice.present?
+      - if notice.present?
+        %ul.six.columns
           %li
             #notice= notice
-      %section
-        %ul.right
-          %li.divider
-          %li
-            = link_to "Add #{current_name.singularize}", url_for(controller: current_area, action: :new)
-          %li.divider
-          %li
-            = content_tag 'a', 'Filter', class:'filter-toggle', data: { filter_toggle: true}
+      .four.columns
+        .right
+          %ul
+            - [:stories, :tasks, :projects].each do |area|
+              %li.divider
+              %li{class: current_area == area ? 'active' : nil}
+                = link_to area.to_s.titleize, url_for(controller: area, action: :index)
+          %ul
+            %li.divider
+            %li.glyph_commands
+              = glyph_link_to url_for(controller: controller.controller_name, action: :new), class: 'has-tip', small:true, glyph: 'circle_plus', title: I18n.t(:new, scope: [:controllers, current_area])
+              = glyph_link_to '#', class: 'has-tip filter-toggle', data: {filter_toggle: true}, small:true, glyph: 'filter', title: I18n.t(:filter, scope: :general)

@@ -1,12 +1,12 @@
-%table.eleven.end#Stories
-  %thead
-    %tr
-      %th.three= render partial: 'shared/sortable', locals: {name: 'Title', field: 'story'}
-      %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
-      %th.two= render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date'}
-      %th.one= render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu'}
-      %th.three Projects
-      %th.one
+.twelve#Stories
+  %table.eleven
+    %thead
+      %tr
+        %th.three= render partial: 'shared/sortable', locals: {name: 'Title', field: 'story'}
+        %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
+        %th.two= render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date'}
+        %th.one= render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu'}
+        %th.four Projects
 
-  %tbody
-    = render @stories
+    %tbody
+      = render @stories

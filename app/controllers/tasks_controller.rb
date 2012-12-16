@@ -35,7 +35,7 @@ class TasksController < ApplicationController
     @tasks = query.includes(:story).includes(:project).uniq.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render 'shared/index'}
       format.js # index.js.erb
       format.json { render json: @tasks }
     end

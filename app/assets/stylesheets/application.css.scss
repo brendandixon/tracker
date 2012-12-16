@@ -13,6 +13,14 @@
  *= require_self
  */
 
+.commands {
+  display:inline-block;
+  visibility:hidden;
+}
+tr:hover .commands {
+  visibility:visible;
+};
+
 .actions {
   border-top:1px solid #ddd;
   margin:10px 0 0;
@@ -23,16 +31,9 @@
   opacity: 0.4;
 }
 
-.filter {
-  background-color:#fff;
-  border:1px solid #ddd;
-  border-top:none;
-  display:none;
-  margin:0;
-  padding:0;
-}
-.filter-toggle {
-  cursor:pointer;
+.glyph_commands {
+  display:inline-block;
+  margin:0 10px 0 15px;
 }
 
 .services label {
@@ -44,48 +45,8 @@
   float:right;
 }
 
-.sprite {
-  background-image:url('/assets/icon-sprite.png');
-  background-color:transparent;
-  border:none;
-  display:inline-block;
-  margin:0;
-  padding:0;
-  text-indent:-10000px;
-  width:19px;
-  height:19px;
-}
-.advance {
-  background-position:-76px 0;
-}
-.ascending {
-  background-position:-38px -38px;
-}
-.complete {
-  background-position:-76px -76px;
-}
-.descending {
-  background-position:0 -38px;
-}
-.destroy {
-  background-position:-19px 0;
-}
-.edit {
-  background-position:-152px -19px;
-}
-.filter {
-  background-position:-133px 0;
-}
-.refresh {
-  background-position:-76px 0;
-}
-.show {
-  background-position:-38px 0;
-}
-
 .projects {
   display:inline-block;
-	width:210px;
 }
 .projects span, .projects a {
 	display:inline-block;
@@ -104,23 +65,6 @@
   width:85px;
 }
 
-.height-medium {
-  height:130px;
-}
-
-.width-narrow {
-  width:50px;
-}
-.width-medium {
-  width:80px;
-}
-.width-large {
-  width:125px;
-}
-.width-xlarge {
-  width:200px;
-}
-
 /*
  * Glyphicons Overrides
  */
@@ -133,6 +77,19 @@
   padding:0;
   height:12px;
   width:14px;
+}
+
+.top-bar ul > li a.glyphicons.small-iconic {
+  display:inline-block;
+  line-height:14px;
+  margin:7px 6px 0 0;
+  padding:0;
+  height:12px;
+  width:14px;
+}
+
+.top-bar ul > li a.glyphicons.small-iconic i:before{
+  color:#fff;
 }
 
 .glyphicons.small-iconic i:before {
@@ -158,13 +115,14 @@
 }
 
 h1.glyphicons i:before {
-  top:13px;
+  top:6px;
   left:6px;
 };
 
 /*
  * Foundation Overrides
  */
+/*
 .active {
   position:relative;
 }
@@ -174,6 +132,22 @@ h1.glyphicons i:before {
   left:-6px;
   width:4px;
   height:95%;
+}
+*/
+
+.top-bar ul > li:not(.name).active {
+  background: #2ba6cb;
+  border-color: #2284a1;
+}
+
+.top-bar ul > li:not(.name).active a {
+  color:#fff;
+  background: #2ba6cb;
+  border-color: #2284a1;
+}
+
+.fixed {
+  height:30px;
 }
 
 .has-tip {
@@ -188,7 +162,7 @@ h1.glyphicons i:before {
 
 .name h1 {
   color:#fff;
-  font-size:30px;
+  font-size:26px;
   opacity:0.85;
   padding:4px 0 0 38px;
   position:relative;
@@ -200,6 +174,12 @@ h1.glyphicons i:before {
 }
 .reveal-modal form {
   margin:0 0;
+}
+
+ul.side-nav {
+  margin-left:-20px;
+  position:fixed;
+  top:30px;
 }
 
 form.custom div.custom.dropdown {

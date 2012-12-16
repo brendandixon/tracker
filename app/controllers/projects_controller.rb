@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
     @projects = Project.in_name_order.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render 'shared/index'}
       format.json { render json: @projects }
     end
   end

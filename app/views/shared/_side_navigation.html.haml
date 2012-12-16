@@ -1,12 +1,10 @@
 - current_area = controller.controller_name.to_sym
 
-%ul.one.column.side-nav
-  - [:stories, :tasks, :divider, :services, :projects].each do |area|
-    - if area == :divider
-      %li.divider
-    - elsif area == current_area && controller.action_name == 'index'
-      %li.active
-        = content_tag 'span', ''
-        = current_area.to_s.titleize
-    - else
-      %li= link_to area.to_s.titleize, url_for(controller: area, action: :index)
+.one.column
+  %ul.side-nav
+    %li= glyph_link_to url_for(controller: controller.controller_name, action: :new), class: 'has-tip', glyph: 'circle_plus', title: I18n.t(:new, scope: [:controllers, current_area])
+/ 
+/ 
+/ %li.divider
+/ %li
+/   = content_tag 'a', 'Filter', class:'filter-toggle', data: { filter_toggle: true}

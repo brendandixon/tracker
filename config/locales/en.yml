@@ -2,6 +2,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  general:
+    filter: 'Filter'
   controllers:
     actions:
       advance: 'Advance'
@@ -12,6 +14,15 @@ en:
       scheduled: 'Schedule'
       in_progress: 'Begin development'
       completed: 'Complete'
+    projects:
+      new: 'Add Project'
+      edit: 'Edit Project'
+    stories:
+      new: 'Add Story'
+      edit: 'Edit Story'
+    tasks:
+      new: 'Add Task'
+      edit: 'Edit Task'
   activerecord:
     attributes:
       story:
@@ -29,4 +40,6 @@ en:
         in_progress: 'In Progress'
         completed: 'Completed'
     models:
+      project: 'Project'
       story: 'Story'
+      task: 'Task'
