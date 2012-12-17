@@ -1,22 +1,21 @@
 - filter = session[:filter] || {}
 
-#Filter.reveal-modal.medium{data: {filter: 'data-filter'}}
+.filter.eleven.columns#Filter{data: {filter: 'data-filter'}}
   = form_tag url_for(controller: controller.controller_name, action: :index), method: :get, remote: true do
     .row
       .three.columns
         = label_tag 'state', 'State'
         = select_tag 'state', options_for_select(StoriesController::STATES.map{|state| [state.to_s.titleize, state]}, filter[:state])
-      .four.columns
+      .three.columns
         = label_tag 'projects', 'Projects'
         = select_tag 'projects', options_for_select(Project.active.map{|project| [project.name, project.name]}.uniq, filter[:projects]), multiple: true, class: 'height-medium'
-      .four.columns.end
+      .three.columns.end
         = label_tag 'services', 'Services'
         = select_tag 'services', options_for_select(Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }, filter[:services]), multiple: true, class: 'height-medium'
     .row
-      .actions
-        = submit_tag 'Filter'
+      .right.actions
+        = submit_tag 'Apply'
         \|
-        = link_to 'Reset', url_for(controller: controller.controller_name, action: :reset), class:'reset-filter', remote: true
+        = link_to 'Clear', url_for(controller: controller.controller_name, action: :reset), class:'reset-filter', remote: true
         \|
-        = link_to 'Cancel', '#', class: 'close-filter'
-  = link_to '&#215'.html_safe, '#', class: 'close-reveal-modal'
+        = link_to 'Close', '#', class: 'close-filter'

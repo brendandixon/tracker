@@ -22,13 +22,22 @@ tr:hover .commands {
 };
 
 .actions {
-  border-top:1px solid #ddd;
-  margin:10px 0 0;
-  padding:5px 0 0;
+  padding:15px 0 0;
 }
 
 .disabled {
   opacity: 0.4;
+}
+
+.filter {
+  display:none;
+  border:1px solid #ccc;
+  border-top:none;
+}
+
+.filter form {
+  margin:0 0 10px;
+  padding:18px 5px 0;
 }
 
 .glyph_commands {
@@ -62,7 +71,7 @@ tr:hover .commands {
   display:inline-block;
   font-size:85%;
   padding:2px;
-  width:85px;
+  width:75%;
 }
 
 /*
