@@ -74,6 +74,14 @@ tr:hover .commands {
   width:75%;
 }
 
+.item-commands {
+  visibility:hidden;
+}
+
+tr:hover .item-commands {
+  visibility:visible;
+};
+
 /*
  * Glyphicons Overrides
  */
@@ -81,14 +89,21 @@ tr:hover .commands {
   color: #2ba6cb;
 }
 
-.glyphicons.small-iconic {
+.glyphicons.small {
   line-height:14px;
   padding:0;
   height:12px;
   width:14px;
 }
 
-.top-bar ul > li a.glyphicons.small-iconic {
+.glyphicons.medium {
+  padding:0 2px 0 0;
+  line-height:18px;
+  height:16px;
+  width:16px;
+}
+
+.top-bar ul > li a.glyphicons.small {
   display:inline-block;
   line-height:14px;
   margin:7px 6px 0 0;
@@ -97,30 +112,30 @@ tr:hover .commands {
   width:14px;
 }
 
-.top-bar ul > li a.glyphicons.small-iconic i:before{
+.top-bar ul > li a.glyphicons.small i:before{
   color:#fff;
 }
 
-.glyphicons.small-iconic i:before {
+.glyphicons.small i:before {
   font-size:14px;
 };
 
-.glyphicons.iconic {
-  line-height:24px;
-  padding:0;
-  height:25px;
-  width:25px;
-}
-
-.glyphicons.iconic input {
+.glyphicons input {
   background:transparent;
   border:none;
   padding:0;
   position:relative;
   text-indent:-10000px;
-  height:25px;
-  width:25px;
   z-index:1;
+}
+
+.glyphicons.small input {
+  height:12px;
+  width:14px;
+}
+.glyphicons.medium input {
+  height:16px;
+  width:16px;
 }
 
 h1.glyphicons i:before {

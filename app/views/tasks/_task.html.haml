@@ -9,5 +9,8 @@
   %td= task.project.name
   %td
     = task_status_tag(task)
-    = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'new_window', title: I18n.t(task.next_status, scope: [:controllers, :actions]))
-/ %td= content_tag('span', I18n.t(task.status, scope: [:activerecord, :labels, :task]), class: classes)
+  %td
+    .item-commands
+      = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'medium new_window', title: I18n.t(task.next_status, scope: [:controllers, :actions]))
+      = glyph_button_to 'Complete', url_for(controller: :tasks, action: :complete, id: task.id), options.merge(glyph: 'medium check', title: I18n.t(:complete, scope: [:controllers, :actions]))
+      = render partial: 'shared/links', locals: {object: task}

@@ -1,11 +1,12 @@
 .twelve#Tasks
-  %table.eleven
+  %table.twelve
     %thead
       %tr
         %th.four= render partial: 'shared/sortable', locals: {name: 'Story', field: 'story'}
         %th.three= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
         %th.two= render partial: 'shared/sortable', locals: {name: 'Project', field: 'project'}
         %th.two= render partial: 'shared/sortable', locals: {name: 'Status', field: 'status'}
+        %th.one
 
     %tbody
       = render @tasks

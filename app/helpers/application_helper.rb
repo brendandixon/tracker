@@ -27,7 +27,7 @@ module ApplicationHelper
 
     html_options.merge!("type" => "submit", "value" => name)
     
-    wrapper_classes = "glyphicons iconic #{html_options.delete('glyph')} #{'disabled' if html_options.has_key?('disabled')}"
+    wrapper_classes = "glyphicons #{html_options.delete('glyph')} #{'disabled' if html_options.has_key?('disabled')}"
 
     form_options.merge!(method: form_method, action: url)
     form_options.merge!("data-remote" => "true") if remote
@@ -42,7 +42,7 @@ module ApplicationHelper
     
     html_options = html_options.stringify_keys
     html_options['class'] ||= ''
-    html_options['class'] << " glyphicons #{html_options['small'] ? 'small-iconic' : 'iconic'} #{html_options.delete('glyph')}"
+    html_options['class'] << " glyphicons #{html_options.delete('glyph')}"
 
     html_options = convert_options_to_data_attributes(options, html_options)
     url = url_for(options)
