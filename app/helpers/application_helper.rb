@@ -27,12 +27,13 @@ module ApplicationHelper
 
     html_options.merge!("type" => "submit", "value" => name)
     
-    wrapper_classes = "glyphicons #{html_options.delete('glyph')} #{'disabled' if html_options.has_key?('disabled')}"
+    glyph_classes = "glyphicon #{html_options.delete('glyph')}"
+    wrapper_classes = "glyphbutton #{'disabled' if html_options.has_key?('disabled')}"
 
     form_options.merge!(method: form_method, action: url)
     form_options.merge!("data-remote" => "true") if remote
         
-    "#{tag(:form, form_options, true)}<div class='#{wrapper_classes}'><i></i>#{method_tag}#{tag("input", html_options)}#{request_token_tag}</div></form>".html_safe
+    "#{tag(:form, form_options, true)}<div class='#{wrapper_classes}'><i class='#{glyph_classes}'></i>#{method_tag}#{tag("input", html_options)}#{request_token_tag}</div></form>".html_safe
   end
 
   def glyph_link_to(*args)

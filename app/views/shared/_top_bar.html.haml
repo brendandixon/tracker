@@ -26,5 +26,5 @@
           %ul
             %li.divider
             %li.glyph_commands
-              = glyph_link_to url_for(controller: controller.controller_name, action: :new), class: 'has-tip', glyph: 'gray small circle_plus', title: I18n.t(:new, scope: [:controllers, current_area])
-              = glyph_link_to '#', class: 'has-tip filter-toggle', data: {filter_toggle: true}, glyph: 'gray small cogwheels', title: I18n.t(:filter, scope: :general)
+              = glyph_link_to url_for(controller: controller.controller_name, action: :new), class: 'has-tip', glyph: 'white small circle_plus', title: I18n.t(:new, scope: [:controllers, current_area])
+              = glyph_link_to '#', class: 'has-tip filter-toggle', data: {filter_toggle: true}, glyph: 'white small cogwheels', title: I18n.t(:filter, scope: :general)

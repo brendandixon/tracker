@@ -110,11 +110,11 @@ li.name h1 i:before {
   width:14px;
 }
 
-.top-bar ul > li a.small i:before{
-  color:#fff;
-}
+.glyphbutton i:before {
+  position:absolute;
+};
 
-.glyphicons input {
+.glyphbutton input {
   background:transparent;
   border:none;
   padding:0;
@@ -123,11 +123,11 @@ li.name h1 i:before {
   z-index:1;
 }
 
-.glyphicons.small input {
+.glyphbutton input {
   height:12px;
   width:14px;
 }
-.glyphicons.medium input {
+.glyphicon.medium input {
   height:16px;
   width:16px;
 }
