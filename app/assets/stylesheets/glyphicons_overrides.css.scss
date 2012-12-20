@@ -1,0 +1,21 @@
+.glyphbutton i:before {
+  position:absolute;
+};
+
+.glyphbutton input {
+  background:transparent;
+  border:none;
+  padding:0;
+  position:relative;
+  text-indent:-10000px;
+  z-index:1;
+}
+
+.glyphbutton input {
+  height:12px;
+  width:14px;
+}
+.glyphicon.medium input {
+  height:16px;
+  width:16px;
+}

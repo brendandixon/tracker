@@ -1,0 +1,66 @@
+.cyan {
+ color:#2ba6cb;
+}
+.gray {
+  color:#D9D9D9;
+}
+.white {
+  color:#fff;
+}
+
+.actions {
+  padding:15px 0 0;
+}
+
+.disabled {
+  opacity: 0.4;
+}
+
+.filter_container {
+  display:none;
+  border:1px solid #ccc;
+  border-top:none;
+}
+
+.filter form {
+  margin:0 0 10px;
+  padding:18px 5px 0;
+}
+
+.command_block {
+  display:inline-block;
+  margin:0 10px 0 15px;
+}
+
+.sortable span {
+  color:#222;
+  float:right;
+}
+
+.projects {
+  display:inline-block;
+}
+.projects span, .projects a {
+	display:inline-block;
+	font-size:80%;
+	margin:0 2px;
+	width:65px;
+}
+.projects span.secondary, .projects a.secondary {
+	color:#999;
+}
+
+.status {
+  display:inline-block;
+  font-size:85%;
+  padding:2px;
+  width:75%;
+}
+
+.item-commands {
+  visibility:hidden;
+}
+
+li:hover .item-commands {
+  visibility:visible;
+};

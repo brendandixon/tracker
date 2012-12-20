@@ -1,5 +1,5 @@
 Tracker::Application.routes.draw do
-  root to: 'stories#index'
+  root to: 'tasks#index'
   match ':controller/:action', action: /reset/
 
   resources :projects

@@ -1,0 +1,65 @@
+li.name h1 i:before {
+ padding:0 6px 0 0;
+ position:relative;
+ top:2px;
+};
+
+.top-bar ul > li.command_block a {
+ display:inline-block;
+ line-height:14px;
+ margin:7px 6px 0 0;
+ padding:0;
+ height:12px;
+ width:14px;
+}
+
+.top-bar ul > li:not(.name).active {
+  background: #2ba6cb;
+  border-color: #2284a1;
+}
+
+.top-bar ul > li:not(.name).active a {
+  color:#fff;
+  background: #2ba6cb;
+  border-color: #2284a1;
+}
+
+.fixed {
+  height:30px;
+}
+
+.has-tip {
+  border:none;
+}
+.has-tip.label {
+	color:#fff;
+}
+.has-tip:hover {
+  border:none;
+};
+
+.name h1 {
+  color:#fff;
+  font-size:26px;
+  opacity:0.85;
+  padding:0;
+  position:relative;
+  top:-4px;
+}
+
+.reveal-modal {
+  padding:15px 15px 0;
+}
+.reveal-modal form {
+  margin:0 0;
+}
+
+ul.side-nav {
+  margin-left:-20px;
+  position:fixed;
+  top:30px;
+}
+
+form.custom div.custom.dropdown {
+  display:inline-block;
+}

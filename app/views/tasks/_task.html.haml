@@ -3,14 +3,12 @@
 - options[:class] = 'has-tip' unless task.completed?
 - options[:disabled] = 'disabled' if task.completed?
 
-%tr#Task{id: task.id}
-  %td= task.story.title
-  %td= task.story.service.abbreviation
-  %td= task.project.name
-  %td
-    = task_status_tag(task)
-  %td
-    .item-commands
-      = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'medium new_window', title: I18n.t(task.next_status, scope: [:controllers, :actions]))
-      = glyph_button_to 'Complete', url_for(controller: :tasks, action: :complete, id: task.id), options.merge(glyph: 'medium check', title: I18n.t(:complete, scope: [:controllers, :actions]))
-      = render partial: 'shared/links', locals: {object: task}
+%li#Task{id: task.id}
+  %div= task.story.title
+  %div= task.story.service.abbreviation
+  %div= task.project.name
+  %div= task_status_tag(task)
+  .item-commands
+    = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'medium new_window', title: I18n.t(task.next_status, scope: [:controllers, :actions]))
+    = glyph_button_to 'Complete', url_for(controller: :tasks, action: :complete, id: task.id), options.merge(glyph: 'medium check', title: I18n.t(:complete, scope: [:controllers, :actions]))
+    = render partial: 'shared/links', locals: {object: task}
