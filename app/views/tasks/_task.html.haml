@@ -1,14 +1,27 @@
 - classes = cycle('odd', 'even')
+- edit_tasks ||= []
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 
-%li.task_inline#Task{id: task.id, class: classes}
-  .row
-    .four.columns= task.title
-    .one.columns= task.project.name
-    .two.columns= task.story.service.abbreviation
-    .three.columns.last.text-right
-      = task_status_tag(task)
-      .item-commands<
-        = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
-        = glyph_link_to edit_task_path(task), glyph: 'edit'
+- if edit_tasks.include?(task.id)
+  %li.task_edit#Task{id: task.id, class: classes}
+    .row
+      .four.columns= task.title
+      .one.columns= task.project.name
+      .two.columns= task.story.service.abbreviation
+      .three.columns.last.text-right
+        = task_status_tag(task)
+        .item-commands<
+          = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
+          = glyph_link_to edit_task_path(task), glyph: 'edit', remote: true
+- else
+  %li.task_inline#Task{id: task.id, class: classes}
+    .row
+      .four.columns= task.title
+      .one.columns= task.project.name
+      .two.columns= task.story.service.abbreviation
+      .three.columns.last.text-right
+        = task_status_tag(task)
+        .item-commands<
+          = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
+          = glyph_link_to edit_task_path(task), glyph: 'edit', remote: true

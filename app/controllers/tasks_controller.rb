@@ -76,6 +76,13 @@ class TasksController < ApplicationController
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
+    @edit_tasks = [@task.id]
+
+    respond_to do |format|
+      format.html
+      format.js { render 'task.js.erb' }
+      format.json { render json: @task }
+    end
   end
 
   # POST /tasks
@@ -85,7 +92,8 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to tasks_path(story_id: @task.story_id), notice: 'Task was successfully created.' }
+        flash[:notice] = 'Task was successfully created.'
+        format.html { redirect_to tasks_path(story_id: @task.story_id) }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }
@@ -98,10 +106,13 @@ class TasksController < ApplicationController
   # PUT /tasks/1.json
   def update
     @task = Task.find(params[:id])
+    @edit_tasks = []
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
-        format.html { redirect_to tasks_path(story_id: @task.story_id), notice: 'Task was successfully updated.' }
+        flash[:notice] = 'Task was successfully updated.'
+        format.html { redirect_to tasks_path(story_id: @task.story_id) }
+        format.js { render 'task.js.erb' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

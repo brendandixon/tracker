@@ -113,3 +113,10 @@ li:hover .item-commands {
     padding-right:4px;
   }
 }
+
+.task_edit {
+  height:400px;
+}
+.task_edit.odd {
+  background-color:#eee;
+}

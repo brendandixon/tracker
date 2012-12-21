@@ -1,4 +1,6 @@
-$('.tooltip').hide()
+$('.tooltip').hide();
 $('#Task_<%= @task.id%>')
-  .replaceWith('<%= escape_javascript(render(partial: @task))%>')
-$('#Task_<%= @task.id%>').effect('highlight',{duration: 750})
+  .replaceWith('<%= escape_javascript(render(partial: @task, locals: {edit_tasks: @edit_tasks}))%>');
+$('#Tasks li:nth-child(even)').removeClass('odd').addClass('even');
+$('#Tasks li:nth-child(odd)').removeClass('even').addClass('odd');
+$('#Task_<%= @task.id%>').effect('highlight',{duration: 750});
