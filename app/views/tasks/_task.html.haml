@@ -6,22 +6,17 @@
 - if edit_tasks.include?(task.id)
   %li.task_edit#Task{id: task.id, class: classes}
     .row
-      .four.columns= task.title
-      .one.columns= task.project.name
-      .two.columns= task.story.service.abbreviation
-      .three.columns.last.text-right
-        = task_status_tag(task)
-        .item-commands<
-          = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
-          = glyph_link_to edit_task_path(task), glyph: 'edit', remote: true
+      .tweleve.columns
+        = render 'form'
 - else
   %li.task_inline#Task{id: task.id, class: classes}
     .row
-      .four.columns= task.title
-      .one.columns= task.project.name
-      .two.columns= task.story.service.abbreviation
+      %h1.seven.columns= task.title
       .three.columns.last.text-right
         = task_status_tag(task)
         .item-commands<
           = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
-          = glyph_link_to edit_task_path(task), glyph: 'edit', remote: true
+          = glyph_link_to edit_task_path(task), options.merge(glyph: 'edit', remote: true)
+    .row
+      .one.columns= task.project.name
+      .two.end.columns= task.story.service.abbreviation
