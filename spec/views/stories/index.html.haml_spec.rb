@@ -18,8 +18,7 @@ describe "stories/index" do
 
   it "renders a list of stories" do
     render
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => "MyText".to_s, :count => 1
-    assert_select "tr>td", :text => "TheirText".to_s, :count => 1
+    expect(rendered).to match /MyText/
+    expect(rendered).to match /TheirText/
   end
 end

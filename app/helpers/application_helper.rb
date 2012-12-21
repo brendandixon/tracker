@@ -37,11 +37,11 @@ module ApplicationHelper
   end
 
   def glyph_link_to(*args)
-    name         = '&nbsp;'.html_safe
     options      = args[0] || {}
     html_options = args[1] || {}
     
     html_options = html_options.stringify_keys
+    html_options = html_options.merge('class' => 'glyphlink')
     glyph = html_options.delete('glyph')
 
     html_options = convert_options_to_data_attributes(options, html_options)
@@ -51,7 +51,7 @@ module ApplicationHelper
     tag_options = tag_options(html_options)
 
     href_attr = "href=\"#{ERB::Util.html_escape(url)}\"" unless href
-    "<a #{href_attr}#{tag_options}><i class='glyphicon #{glyph}'></i>#{ERB::Util.html_escape(name || url)}</a>".html_safe
+    "<a #{href_attr}#{tag_options}><i class='glyphicon #{glyph}'></i></a>".html_safe
   end
 
 end

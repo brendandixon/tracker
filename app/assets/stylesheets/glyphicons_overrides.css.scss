@@ -1,8 +1,13 @@
+.glyphbutton {
+  position:relative;
+}
 .glyphbutton i:before {
   position:absolute;
+  top:0;
+  left:0;
 };
-
 .glyphbutton input {
+  cursor:pointer;
   background:transparent;
   border:none;
   padding:0;
@@ -10,12 +15,25 @@
   text-indent:-10000px;
   z-index:1;
 }
-
 .glyphbutton input {
-  height:12px;
-  width:14px;
-}
-.glyphicon.medium input {
   height:16px;
   width:16px;
+}
+
+.glyphicon input {
+  height:16px;
+  width:16px;
+}
+
+.glyphlink {
+  color:inherit;
+  display:inline-block;
+  padding:0;
+  position:relative;
+  top:2px; // Needed to vertically align with a glyph button!!
+  height:16px;
+  width:16px;
+}
+.glyphlink:hover {
+  color:inherit;
 }

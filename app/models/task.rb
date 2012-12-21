@@ -8,6 +8,7 @@
 #  status     :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  title      :string(255)
 #
 
 class Task < ActiveRecord::Base
@@ -26,12 +27,15 @@ class Task < ActiveRecord::Base
   
   symbolize :status
   
-  validates_uniqueness_of :story_id, scope: :project_id
+  before_validation :normalize_title
+
+  validate :has_title_or_story
+  validates_uniqueness_of :story_id, scope: :project_id, allow_blank: true
   validates_inclusion_of :status, in: STATUS
   
   scope :for_stories, lambda {|stories| where(story_id: stories)}
   scope :for_projects, lambda {|projects| where(project_id: projects)}
-  scope :for_services, lambda{|services| joins(:stories).where(stories: {service_id: services})}
+  scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
 
   scope :in_status, lambda{|status| where(status: status)}
   scope :completed, where(status: Task::COMPLETED)
@@ -72,6 +76,27 @@ class Task < ActiveRecord::Base
   
   def next_status
     STATUS[STATUS.find_index(self.status)+1] || STATUS.last
+  end
+  
+  def title
+    self.story.present? ? self.story.title : read_attribute(:title)
+  end
+  
+  def title=(s)
+    write_attribute(:title, s) unless story.present?
+  end
+  
+  private
+  
+  def has_title_or_story
+    if self.title.blank? && self.story.blank?
+      self.errors.add(:story, :title_or_story_required)
+      self.errors.add(:title, :title_or_story_required)
+    end
+  end
+  
+  def normalize_title
+    write_attribute(:title, nil) if story.present? && read_attribute(:title)
   end
   
 end

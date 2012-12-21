@@ -2,4 +2,4 @@
 - current_name = current_area.titleize
 - current_area = current_area.to_sym
 
-= glyph_link_to url_for(controller: current_area, action: :edit, id: object.id), class: 'has-tip', glyph: 'medium edit', title: I18n.t('edit', scope: [:controllers, :actions])
+= glyph_link_to url_for(controller: current_area, action: :edit, id: object.id), glyph: 'medium edit'

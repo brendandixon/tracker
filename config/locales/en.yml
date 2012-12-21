@@ -31,6 +31,10 @@ en:
         release_date: 'Release Date'
         service_id: 'Service'
         title: 'Title'
+    errors:
+      models:
+        task:
+          title_or_story_required: 'Either a Story or Title are required'
     labels:
       story:
         create_tasks: 'Create tasks for the story?'

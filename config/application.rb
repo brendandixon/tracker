@@ -31,7 +31,7 @@ module Rails
     end
     
     def is_test?
-      [:cruise, :mini_cruise, :test].include?(Rails.env.to_sym)
+      [:test].include?(Rails.env.to_sym)
     end
     
   end

@@ -1,17 +1,18 @@
 module TasksHelper
   
   def task_status_tag(task, project = nil)
-    status = if task.unscheduled?
-              ' has-tip alert'
+    status = if task.blank?
+              ' secondary'
+             elsif task.unscheduled?
+              ' alert'
              elsif task.completed?
-              ' has-tip success'
+              ' success'
              else
-              ' has-tip'
-             end if task.present?
+              ''
+             end
     options = {
-      class: 'status label radius' + (status.present? ? status : ' secondary')
+      class: 'status label radius' << status
     }
-    options[:title] = I18n.t(task.status, scope: [:activerecord, :labels, :task]) if task.present?
     content_tag('span', (project.present? ? project.name : I18n.t(task.status, scope: [:activerecord, :labels, :task])), options)
   end
 

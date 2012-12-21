@@ -4,8 +4,8 @@
   = form_tag url_for(controller: controller.controller_name, action: :index), method: :get, remote: true do
     .row
       .three.columns
-        = label_tag 'state', 'State'
-        = select_tag 'state', options_for_select(StoriesController::STATES.map{|state| [state.to_s.titleize, state]}, filter[:state])
+        = label_tag 'status', 'Status'
+        = select_tag 'status', options_for_select(StoriesController::STATES.map{|state| [state.to_s.titleize, state]}, filter[:status])
       .three.columns
         = label_tag 'projects', 'Projects'
         = select_tag 'projects', options_for_select(Project.active.map{|project| [project.name, project.name]}.uniq, filter[:projects]), multiple: true, class: 'height-medium'

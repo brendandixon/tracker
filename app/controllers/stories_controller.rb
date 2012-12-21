@@ -7,15 +7,14 @@ class StoriesController < ApplicationController
   def index
     query = Story
 
-    state = if @filter[:state] == :complete
+    status = if @filter[:status] == :complete
               Task::COMPLETED
-            elsif @filter[:state] == :incomplete
+            elsif @filter[:status] == :incomplete
               Task::INCOMPLETE
             else
               []
             end
-    query = query.in_state(state) if state.present?
-    puts "FILTERING FOR COMPLETION #{state}" if state.present?
+    query = query.in_status(status) if status.present?
 
     query = query.for_projects(@filter[:projects].map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if @filter[:projects].present?
     query = query.for_services(@filter[:services].map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if @filter[:services].present?
@@ -38,7 +37,7 @@ class StoriesController < ApplicationController
     end
 
     @stories = query.includes(:service).includes(:projects).uniq.all
-
+    
     respond_to do |format|
       format.html { render 'shared/index' }
       format.js # index.js.erb

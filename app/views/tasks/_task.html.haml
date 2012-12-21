@@ -1,14 +1,14 @@
-- classes = 'status label radius ' + (task.completed? ? 'success' : (task.unscheduled? ? 'alert' : ''))
+- classes = cycle('odd', 'even')
 - options = {remote: true}
-- options[:class] = 'has-tip' unless task.completed?
 - options[:disabled] = 'disabled' if task.completed?
 
-%li#Task{id: task.id}
-  %div= task.story.title
-  %div= task.story.service.abbreviation
-  %div= task.project.name
-  %div= task_status_tag(task)
-  .item-commands
-    = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'medium new_window', title: I18n.t(task.next_status, scope: [:controllers, :actions]))
-    = glyph_button_to 'Complete', url_for(controller: :tasks, action: :complete, id: task.id), options.merge(glyph: 'medium check', title: I18n.t(:complete, scope: [:controllers, :actions]))
-    = render partial: 'shared/links', locals: {object: task}
+%li.task_inline#Task{id: task.id, class: classes}
+  .row
+    .four.columns= task.title
+    .one.columns= task.project.name
+    .two.columns= task.story.service.abbreviation
+    .three.columns.last.text-right
+      = task_status_tag(task)
+      .item-commands<
+        = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'new_window')
+        = glyph_link_to edit_task_path(task), glyph: 'edit'
