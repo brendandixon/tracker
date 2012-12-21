@@ -1,5 +1,4 @@
 class TasksController < ApplicationController
-  DEFAULT_SORT = ['-project']
 
   # GET /tasks
   # GET /tasks.json

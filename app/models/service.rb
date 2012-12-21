@@ -35,6 +35,10 @@ class Service < ActiveRecord::Base
       @active ||= Service.in_service_order.all
     end
     
+    def all_services
+      @all_services ||= ['All'] + Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }
+    end
+    
     def refresh_active
       @active = nil
     end

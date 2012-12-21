@@ -1,6 +1,5 @@
 class StoriesController < ApplicationController
   DEFAULT_SORT = ['-date']
-  STATES = [:all, :complete, :incomplete]
   
   # GET /stories
   # GET /stories.json

@@ -17,6 +17,7 @@ class Task < ActiveRecord::Base
   INCOMPLETE = [:unscheduled, :scheduled, :in_progress]
   COMPLETED = [:completed]
   STATUS = INCOMPLETE + COMPLETED
+  STATES = [:all, :complete, :incomplete]
 
   attr_accessible :story_id, :project_id, :status
     
@@ -59,6 +60,10 @@ class Task < ActiveRecord::Base
   end
   
   class<<self
+
+    def all_states
+      STATES.map{|state| [state.to_s.titleize, state]}
+    end
     
     def ensure_story_tasks(f)
       f.service.projects.each do |project|

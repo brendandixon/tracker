@@ -5,13 +5,13 @@
     .row
       .three.columns
         = label_tag 'status', 'Status'
-        = select_tag 'status', options_for_select(StoriesController::STATES.map{|state| [state.to_s.titleize, state]}, filter[:status])
+        = select_tag 'status', options_for_select(Task.all_states, filter[:status])
       .three.columns
         = label_tag 'projects', 'Projects'
-        = select_tag 'projects', options_for_select(Project.active.map{|project| [project.name, project.name]}.uniq, filter[:projects]), multiple: true, class: 'height-medium'
+        = select_tag 'projects', options_for_select(Project.all_projects, filter[:projects]), multiple: true, class: 'height-medium'
       .three.columns.end
         = label_tag 'services', 'Services'
-        = select_tag 'services', options_for_select(Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }, filter[:services]), multiple: true, class: 'height-medium'
+        = select_tag 'services', options_for_select(Service.all_services, filter[:services]), multiple: true, class: 'height-medium'
     .row
       .right.actions
         = submit_tag 'Apply'

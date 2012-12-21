@@ -9,17 +9,6 @@
 #
 
 class Project < ActiveRecord::Base
-  ALL = [
-    'Java',
-    '.NET',
-    'Python',
-    'PHP',
-    'PHPv2',
-    'Ruby',
-    'JavaScript',
-    'iOS',
-    'Android'
-  ]
 
   attr_accessible :name, :services
 
@@ -36,17 +25,13 @@ class Project < ActiveRecord::Base
   scope :in_name_order, order('name ASC')
 
   class<<self
-    ALL.each do |project|
-      project_symbol = project.downcase.gsub(/[^\w]/,'')
-      class_eval <<-METHODS
-        def #{project_symbol}
-          @#{project_symbol} ||= self.with_name('#{project}').first
-        end
-      METHODS
-    end
-
     def active
       @active ||= self.in_name_order.all
     end
+
+    def all_projects
+      @all_projects ||= ['All'] + Project.active.map{|project| [project.name, project.name]}.uniq
+    end
   end
+
 end

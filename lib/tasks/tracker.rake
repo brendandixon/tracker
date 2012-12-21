@@ -1,4 +1,17 @@
 namespace :tracker do
+
+  PROJECTS = [
+    'Java',
+    '.NET',
+    'Python',
+    'PHP',
+    'PHPv2',
+    'Ruby',
+    'JavaScript',
+    'iOS',
+    'Android'
+  ]
+
   
   SERVICES = [
     ['Amazon CloudFront',                         'CloudFront'],
@@ -181,7 +194,7 @@ namespace :tracker do
 
   desc 'Install Tracker'
   task :install => :environment do
-    Project::ALL.each do |project|
+    PROJECTS.each do |project|
       Project.where(name:project).first_or_create
     end
   
