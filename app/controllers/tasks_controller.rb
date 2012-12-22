@@ -1,5 +1,7 @@
 class TasksController < ApplicationController
 
+  before_filter :ensure_initial_state
+
   # GET /tasks
   # GET /tasks.json
   def index
@@ -42,7 +44,7 @@ class TasksController < ApplicationController
       end
     end
     
-    @tasks = query.includes(:story).includes(:project).uniq.all
+    @tasks = query.includes(:story).includes(:project).uniq
 
     respond_to do |format|
       format.html { render 'shared/index'}
@@ -58,6 +60,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.js { render 'task.js.erb' }
       format.json { render json: @task }
     end
   end
@@ -76,7 +79,7 @@ class TasksController < ApplicationController
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
-    @edit_tasks = [@task.id]
+    @in_edit_mode << @task.id
 
     respond_to do |format|
       format.html
@@ -93,6 +96,8 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.save
         flash[:notice] = 'Task was successfully created.'
+        @was_changed << @task.id
+        
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
         format.json { render json: @task, status: :created, location: @task }
       else
@@ -106,16 +111,19 @@ class TasksController < ApplicationController
   # PUT /tasks/1.json
   def update
     @task = Task.find(params[:id])
-    @edit_tasks = []
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
         flash[:notice] = 'Task was successfully updated.'
+        @was_changed << @task.id
+
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'task.js.erb' }
         format.json { head :no_content }
       else
+        @in_edit_mode << @task.id
+
         format.html { render action: "edit" }
+        format.js { render 'task.js.erb' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -137,7 +145,8 @@ class TasksController < ApplicationController
   def advance
     @task = Task.find(params[:id])
     @task.advance!
-    
+    @was_changed << @task.id
+
     respond_to do |format|
       format.html { redirect_to :back }
       format.js { render 'task.js.erb' }
@@ -150,6 +159,7 @@ class TasksController < ApplicationController
   def complete
     @task = Task.find(params[:id])
     @task.completed!
+    @was_changed << @task.id
     
     respond_to do |format|
       format.html { redirect_to :back }
@@ -157,5 +167,12 @@ class TasksController < ApplicationController
       format.json { render json: @tasks }
     end
     
+  end
+
+  private
+
+  def ensure_initial_state
+    @in_edit_mode = []
+    @was_changed = []
   end
 end

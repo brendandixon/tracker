@@ -1,23 +1,22 @@
-= form_for @task do |f|
+= form_for @task, remote:true do |f|
   - if @task.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
-      %ul
-        - @task.errors.full_messages.each do |msg|
-          %li= msg
+    .row
+      .twelve.columns#error_explanation
+        %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
+        %ul
+          - @task.errors.full_messages.each do |msg|
+            %li= msg
 
   .row
-    .four.columns
-      = f.label :story_id
+    .seven.columns
       = f.select :story_id, Story.in_title_order.all.collect {|s| [ s.title, s.id ] }
-    .two.columns
-      = f.label :project_id
-      = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
-    .two.columns.end
-      = f.label :status
+    .three.columns.offset_by_two
       = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
   .row
-    .actions
+    .two.columns.end
+      = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
+  .row
+    .two.columns.offset-by-ten
       = f.submit 'Save'
       \|
-      = link_to 'Cancel', :back
+      = link_to 'Cancel', task_path(@task), remote: true

@@ -1,7 +1,6 @@
 - current_area = controller.controller_name
 - current_name = current_area.titleize
 - current_area = current_area.to_sym
-- logger.debug "IT IS HERE!" if notice.present?
 
 .twelve.columns.centered<
   .fixed.contain-to-grid<
@@ -12,10 +11,9 @@
             %i.white.glyphicon.show_thumbnails_with_lines
             = 'Tracker'
         %li.toggle-topbar Tracker
-      - if notice.present?
-        %ul.six.columns
-          %li
-            #notice= notice
+      %ul.six.columns
+        %li
+          #notice= notice
       .four.columns
         .right
           %ul

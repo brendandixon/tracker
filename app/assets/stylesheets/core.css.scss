@@ -29,11 +29,17 @@ $thickest:900;
   font-weight:$thickest;
 }
 
-.text-left {
+.text_left {
   text-align:left;
 }
-.text-right {
+.text_right {
   text-align:right;
+}
+
+.even {
+}
+.odd {
+  background-color:#eee;
 }
 
 .actions {
@@ -46,8 +52,19 @@ $thickest:900;
 
 .command_block {
   display:inline-block;
-  margin:0 10px 0 15px;
+  line-height:10px;
 }
+
+.on_hover {
+  visibility:hidden;
+}
+li:hover .on_hover {
+  visibility:visible;
+}
+tr:hover .on_hover {
+  visibility:visible;
+}
+
 
 .filter_container {
   display:none;
@@ -59,15 +76,6 @@ $thickest:900;
   margin:0 0 10px;
   padding:18px 5px 0;
 }
-
-.item-commands {
-  display:inline-block;
-  visibility:hidden;
-}
-
-li:hover .item-commands {
-  visibility:visible;
-};
 
 .sortable span {
   color:#222;
@@ -94,34 +102,12 @@ li:hover .item-commands {
   width:100px;
 }
 
-.task_edit.odd {
-  background-color:#eee;
-}
 .task_edit {
   li:hover {
     background-color:inherit;
   }
 }
 
-.task_list {
-  border:1px solid #ccc;
-  border-top:none;
-  margin-bottom:3em;
-  padding:0;
-  li {
-    list-style-type:none;
-    margin:0;
-    padding:4px 8px;
-  }
-  li:hover {
-    background-color:#ffc;
-    outline:1px solid #999;
-  }
-}
-
-.task_inline.odd {
-  background-color:#eee;
-}
 .task_inline {
   font-size:12px;
   
@@ -139,5 +125,23 @@ li:hover .item-commands {
     .columns.last {
       padding-right:4px;
     }
+  }
+}
+
+.task_list {
+  border:1px solid #ccc;
+  border-top:none;
+  margin-bottom:3em;
+  padding:0;
+  li {
+    list-style-type:none;
+    margin:0;
+    padding:4px 8px;
+  }
+  li:hover {
+    outline:1px solid #999;
+  }
+  li.task_inline:hover {
+    background-color:#ffc;
   }
 }

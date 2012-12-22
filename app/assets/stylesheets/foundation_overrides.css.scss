@@ -1,8 +1,21 @@
+/*
+.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten, .eleven, .twelve {
+  outline:1px solid blue;
+}
+ */
+
+form {
+  margin:0;
+}
+form.custom div.custom.dropdown {
+  display:inline-block;
+}
+
 li.name h1 i:before {
  padding:0 6px 0 0;
  position:relative;
  top:2px;
-};
+}
 
 .columns {
   text-overflow:ellipsis;
@@ -29,23 +42,6 @@ li.name h1 i:before {
   padding:0;
   position:relative;
   top:-4px;
-}
-
-.reveal-modal {
-  padding:15px 15px 0;
-}
-.reveal-modal form {
-  margin:0 0;
-}
-
-ul.side-nav {
-  margin-left:-20px;
-  position:fixed;
-  top:30px;
-}
-
-form.custom div.custom.dropdown {
-  display:inline-block;
 }
 
 .top-bar ul > li.command_block a {

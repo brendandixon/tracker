@@ -1,6 +1,8 @@
-$('.tooltip').hide();
-$('#Task_<%= @task.id%>')
-  .replaceWith('<%= escape_javascript(render(partial: @task, locals: {edit_tasks: @edit_tasks}))%>');
+<%= render 'shared/reset_transients' %>
+$('#Task_<%= @task.id%>').replaceWith('<%= escape_javascript(render(partial: @task, locals: {in_edit_mode: @in_edit_mode}))%>');
 $('#Tasks li:nth-child(even)').removeClass('odd').addClass('even');
 $('#Tasks li:nth-child(odd)').removeClass('even').addClass('odd');
+<% if @was_changed.include?(@task.id) %>
 $('#Task_<%= @task.id%>').effect('highlight',{duration: 750});
+<% end %>
+<%= render 'shared/notice' if flash.present? && flash[:notice].present? %>

@@ -1,20 +1,21 @@
 - classes = cycle('odd', 'even')
-- edit_tasks ||= []
+- in_edit_mode ||= []
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 
-- if edit_tasks.include?(task.id)
+- if in_edit_mode.include?(task.id)
   %li.task_edit#Task{id: task.id, class: classes}
     .row
-      .tweleve.columns
+      .twelve.columns
         = render 'form'
 - else
   %li.task_inline#Task{id: task.id, class: classes}
     .row
-      %h1.seven.columns= task.title
-      .three.columns.last.text-right
+      .seven.columns
+        %h1= task.title
+      .three.columns.offset_by_two.last.text_right
         = task_status_tag(task)
-        .item-commands<
+        .command_block.on_hover<
           = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
           = glyph_link_to edit_task_path(task), options.merge(glyph: 'edit', remote: true)
     .row
