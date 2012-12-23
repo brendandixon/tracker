@@ -13,9 +13,9 @@
 //= require foundation
 //= require jquery_ujs
 //= require jquery-tooltip/jquery.tooltip
-//= require_tree .
+//= require dates
+//= require filter
 
 $(function() {
   $('#notice').delay(1250).fadeOut(800);
 });
-

@@ -39,22 +39,37 @@ $errorColor:#b00;
 #error_explanation {
   border:2px solid $errorColor;
   color:$errorColor;
-  margin:-10px 0 15px;
+  margin:0 0 10px;
   padding:0;
   h2 {
     background-color:#c00;
     color:#fff;
     text-align: left;
     font-weight: bold;
-    margin:0 0 5px;
-    padding: 5px 5px 5px 10px;
-    font-size: 85%;
+    margin:0;
+    padding:5px 5px 5px 10px;
+    font-size:85%;
   }
   ul {
-    margin:0 10px 5px 22px;
-  }
-  ul li {
-    font-size:90%;
-    list-style:disc;
+    background-color:#fff;
+    margin:0;
+    padding:4px;
+    li:before {
+      content:'-';
+      display:inline-block;
+      font-weight:bold;
+      padding:0 2px 0 0;
+      width:8px;
+    }
+    li {
+      background-color:#fff;
+      border:none;
+      font-size:90%;
+      list-style:none;
+      padding:0;
+    }
+    li:hover {
+      outline:none;
+    }
   }
 }

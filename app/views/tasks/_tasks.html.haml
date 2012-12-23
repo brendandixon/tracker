@@ -1,3 +1,4 @@
 .nine.columns.centered#Tasks
-  .ul.task_list
+  .ul.task_list#TaskList
     = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
+= javascript_include_tag 'tasks'

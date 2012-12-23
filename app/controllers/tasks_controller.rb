@@ -118,6 +118,7 @@ class TasksController < ApplicationController
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
+        format.js { render 'task.js.erb' }
         format.json { head :no_content }
       else
         @in_edit_mode << @task.id
