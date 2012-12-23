@@ -9,10 +9,14 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  title      :string(255)
+#  rank       :float
 #
 
 class Task < ActiveRecord::Base
   include FieldExtensions
+
+  RANK_MINIMUM = Float::MIN
+  RANK_MAXIMUM = Float::MAX
 
   INCOMPLETE = [:unscheduled, :scheduled, :in_progress]
   COMPLETED = [:completed]
@@ -42,6 +46,7 @@ class Task < ActiveRecord::Base
   scope :completed, where(status: Task::COMPLETED)
   scope :incomplete, where(status: Task::INCOMPLETE)
 
+  scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
   scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
   scope :in_service_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
@@ -71,6 +76,15 @@ class Task < ActiveRecord::Base
       end
     end
 
+    def rank_between(task, before, after)
+      task = task.is_a?(Task) ? task : Task.find(task)
+      before = before.present? ? (before.is_a?(Task) ? before : Task.select(:rank).find(before)).rank : RANK_MAXIMUM
+      after = after.present? ? (after.is_a?(Task) ? after : Task.select(:rank).find(after)).rank : RANK_MINIMUM
+
+      task.update_attribute(:rank, after + ((before - after) / 2))
+      task
+    end
+
   end
   
   def advance!
@@ -90,7 +104,11 @@ class Task < ActiveRecord::Base
   def title=(s)
     write_attribute(:title, s) unless story.present?
   end
-  
+
+  def rank_between(before, after)
+    Task.rank_between(self, before, after)
+  end
+
   private
   
   def has_title_or_story

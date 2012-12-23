@@ -9,6 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  title      :string(255)
+#  rank       :float
 #
 
 require 'spec_helper'

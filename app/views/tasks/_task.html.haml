@@ -20,4 +20,5 @@
           = glyph_link_to edit_task_path(task), options.merge(glyph: 'edit', remote: true)
     .row
       .one.columns= task.project.name
+      .one.columns= task.rank
       .two.end.columns= task.story.service.abbreviation

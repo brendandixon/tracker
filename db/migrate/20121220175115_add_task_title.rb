@@ -4,6 +4,6 @@ class AddTaskTitle < ActiveRecord::Migration
   end
 
   def down
-    drop_column :tasks, :title
+    remove_column :tasks, :title
   end
 end

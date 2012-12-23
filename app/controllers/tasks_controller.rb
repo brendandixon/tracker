@@ -31,18 +31,7 @@ class TasksController < ApplicationController
     query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
     query = query.for_services(@filter[:services].map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
 
-    @filter[:sort][self.controller_name].each do |sort|
-      case sort
-      when '-story' then query = query.in_story_order('ASC')
-      when 'story' then query = query.in_story_order('DESC')
-      when '-project' then query = query.in_project_order('ASC')
-      when 'project' then query = query.in_project_order('DESC')
-      when '-service' then query = query.in_service_order('ASC')
-      when 'service' then query = query.in_service_order('DESC')
-      when '-status' then query = query.in_status_order('ASC')
-      when 'status' then query = query.in_status_order('DESC')
-      end
-    end
+    query = query.in_rank_order
     
     @tasks = query.includes(:story).includes(:project).uniq
 
@@ -168,6 +157,17 @@ class TasksController < ApplicationController
       format.json { render json: @tasks }
     end
     
+  end
+
+  # POST /tasks/1/rank?before=xx or /tasks/1/rank?after=xx
+  def rank
+    @task = Task.rank_between(params[:id], params[:before], params[:after])
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js { render 'task.js.erb' }
+      format.json { render json: @tasks }
+    end
   end
 
   private

@@ -1,3 +1,11 @@
+class TaskRankConstraint
+  def matches?(request)
+    before = request.query_parameters['before']
+    after = request.query_parameters['after']
+    (before.blank? || before =~ /^\d+$/) && (after.blank? || after =~ /^\d+$/)
+  end
+end
+
 Tracker::Application.routes.draw do
   root to: 'tasks#index'
   match ':controller/:action', action: /reset/
@@ -10,6 +18,7 @@ Tracker::Application.routes.draw do
     member do
       post 'advance'
       post 'complete'
+      post 'rank', constraints: TaskRankConstraint.new
     end
   end
   
