@@ -2,8 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  general:
-    filter: 'Filter'
+  filter:
+    clear: 'Clear Filter'
+    edit: 'Edit Filter'
+    new: 'New Filter'
   controllers:
     actions:
       advance: 'Advance'

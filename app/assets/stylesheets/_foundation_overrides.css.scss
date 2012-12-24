@@ -6,9 +6,9 @@
 
 form {
   margin:0;
-}
-form.custom div.custom.dropdown {
-  display:inline-block;
+  &.custom div.custom.dropdown {
+    display:inline-block;
+  }
 }
 
 li.name h1 i:before {
@@ -37,7 +37,7 @@ li.name h1 i:before {
 
 .name h1 {
   color:#fff;
-  font-size:26px;
+  font-size:$extra-large;
   opacity:0.85;
   padding:0;
   position:relative;
@@ -45,12 +45,12 @@ li.name h1 i:before {
 }
 
 .top-bar ul > li.command_block a {
- display:inline-block;
- line-height:14px;
- margin:7px 6px 0 0;
- padding:0;
- height:12px;
- width:14px;
+  display:inline-block;
+  line-height:14px;
+  margin:7px 6px 0 0;
+  padding:0;
+  height:12px;
+  width:14px;
 }
 
 .top-bar ul > li:not(.name).active {

@@ -1,0 +1,6 @@
+.row<
+  = render 'shared/top_bar'
+.row
+  .eight.columns.offset-by-two
+    %h3.subheader= "Edit #{controller.controller_name.singularize.titleize}"
+    = render partial: "#{controller.controller_name}/edit"

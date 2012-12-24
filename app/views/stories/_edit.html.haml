@@ -12,27 +12,25 @@
           %li= msg
 
   .row
-    .six.columns.end
-      = f.label :title
-      = f.text_field :title, size: 25
+    .seven.columns
+      = f.text_field :title
+    .five.columns.text-right= project_labels(@story)
   .row
     .two.columns
-      = f.label :service_id
       = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }
     .two.column
-      = f.label :contact_us_number, I18n.t(:contact_us_number, scope: [:activerecord, :attributes, :story])
       = f.text_field :contact_us_number, size: 5
-    .two.columns.end
-      = f.label :release_date
+    .two.columns
       = f.text_field :release_date, data: {datefield: true}
+    .four.columns.text-right
+      = f.label :create_tasks, {} do
+        = f.check_box :create_tasks
+        = I18n.t(:create_tasks, scope: [:activerecord, :labels, :story])
   .row
-    = f.label :create_tasks, {} do
-      = f.check_box :create_tasks
-      = I18n.t(:create_tasks, scope: [:activerecord, :labels, :story])
-  .row
-    .actions
+    .four.columns.offset-by-eight.text-right
       = f.submit 'Save'
-      \|
-      = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }
+      - unless @story.new_record?
+        \|
+        = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }
       \|
       = link_to 'Cancel', :back

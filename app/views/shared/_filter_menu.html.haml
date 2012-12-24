@@ -1,0 +1,4 @@
+%ul.dropdown
+  %li= link_to I18n.t(:new, scope: [:filter]), '#', data: {filter_toggle: true}
+  %li= link_to I18n.t(:edit, scope: [:filter]), '#', data: {filter_toggle: true}
+  %li= link_to I18n.t(:clear, scope: [:filter]), url_for(controller: controller.controller_name, action: :reset), class:'reset-filter', remote: true

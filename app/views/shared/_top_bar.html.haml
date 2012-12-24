@@ -19,14 +19,14 @@
           %ul
             - [:stories, :tasks, :projects].each do |area|
               %li.divider
-              %li{class: current_area == area ? 'active' : nil}
+              %li{class: current_area == area && controller.action_name == 'index' ? 'active' : nil}
                 = link_to area.to_s.titleize, url_for(controller: area, action: :index)
-          - if params[:action] == 'index'
             %ul
               %li.divider
                 %li.has-dropdown
                   = glyph_link_to '#', glyph:'white small circle_plus'
-                  = render 'add_menu'
+                  = render 'shared/add_menu'
+              - if params[:action] == 'index'
                 %li.has-dropdown
                   = glyph_link_to '#', glyph:'white small cogwheels'
-                  = render 'filter_menu'
+                  = render 'shared/filter_menu'

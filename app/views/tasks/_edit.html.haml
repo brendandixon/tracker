@@ -1,0 +1,32 @@
+= form_for @task do |f|
+  - if @task.errors.any?
+    .row
+      .twelve.columns#error_explanation
+        %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
+        %ul
+          - @task.errors.full_messages.each do |msg|
+            %li= msg
+
+  .row
+    .seven.columns
+      - if (@task.new_record? && params[:story])
+        = f.select :story_id, Story.in_title_order.all.collect {|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
+      - elsif @task.story.present?
+        .title.large= @task.title
+      - else
+        = f.text_field :title
+    .three.columns.offset_by_two{style: "position:relative; top:3px;"}
+      = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
+  .row
+    .two.columns
+      = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
+    - if @task.story.present?
+      .two.end.columns{style: 'line-height:22px'}= @task.story.service.abbreviation
+  .row
+    .four.columns.offset-by-eight.text-right
+      = f.submit 'Save'
+      - unless @task.new_record?
+        \|
+        = link_to 'Delete', @task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }
+      \|
+      = link_to 'Cancel', :back

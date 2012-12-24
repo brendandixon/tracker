@@ -19,7 +19,7 @@
           .row
             .seven.columns
               - if task.story.present?
-                %h1= task.title
+                .title= task.title
               - else
                 = f.text_field :title
             .three.columns.offset_by_two
@@ -28,7 +28,7 @@
             .two.columns
               = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
             - if task.story.present?
-              .two.end.columns= task.story.service.abbreviation
+              .two.end.columns{style: 'line-height:22px'}= task.story.service.abbreviation
           .row
             .two.columns.offset-by-ten
               = f.submit 'Save'
@@ -38,12 +38,12 @@
   %li.task_inline#Task{id: task.id, class: classes}
     .row
       .seven.columns
-        %h1= task.title
+        .title= task.title
       .three.columns.offset_by_two.last.text_right
         = task_status_tag(task)
         .command_block.on_hover<
           = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
-          = glyph_link_to edit_task_path(task), options.merge(glyph: 'edit', remote: true)
+          = glyph_link_to edit_task_path(task), glyph: 'edit', remote:true
     .row
       .one.columns= task.project.name
       - if task.story.present?

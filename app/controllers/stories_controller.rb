@@ -50,7 +50,7 @@ class StoriesController < ApplicationController
     @story = Story.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render template: 'shared/show' }
       format.json { render json: @story }
     end
   end
@@ -61,7 +61,7 @@ class StoriesController < ApplicationController
     @story = Story.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render template: 'shared/new' }
       format.json { render json: @story }
     end
   end
@@ -69,6 +69,11 @@ class StoriesController < ApplicationController
   # GET /stories/1/edit
   def edit
     @story = Story.find(params[:id])
+
+    respond_to do |format|
+      format.html { render template: 'shared/edit' }
+      format.json { render json: @story }
+    end
   end
 
   # POST /stories

@@ -11,12 +11,26 @@
  *= require foundation_base
  *= require glyphicons
  *= require_self
- *= require core
- *= require glyphicons_overrides
- *= require foundation_overrides
  */
 
+$cyan:#2ba6cb;
+$gray:#d9d9d9;
+
 $errorColor:#b00;
+
+$small:11px;
+$normal:14px;
+$large:20px;
+$extra-large:26px;
+
+$thin:200;
+$medium:400;
+$thick:700;
+$thickest:900;
+
+@import 'core';
+@import 'glyphicons_overrides';
+@import 'foundation_overrides';
 
 .button_to {
   display:inline-block;

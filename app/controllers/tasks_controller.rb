@@ -48,7 +48,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render template: 'shared/show' }
       format.js { render 'task.js.erb' }
       format.json { render json: @task }
     end
@@ -60,7 +60,7 @@ class TasksController < ApplicationController
     @task = Task.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render template: 'shared/new' }
       format.json { render json: @task }
     end
   end
@@ -71,7 +71,7 @@ class TasksController < ApplicationController
     @in_edit_mode << @task.id
 
     respond_to do |format|
-      format.html
+      format.html { render template: 'shared/edit' }
       format.js { render 'task.js.erb' }
       format.json { render json: @task }
     end

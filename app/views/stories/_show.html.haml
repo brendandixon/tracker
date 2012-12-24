@@ -1,0 +1,15 @@
+.row<
+  .seven.columns.title= @story.title
+  .five.columns.text-right= project_labels(@story)
+.row<
+  .two.columns= @story.service.abbreviation if @story.service.present?
+  .two.columns= @story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if @story.release_date.present?
+  .two.columns.end
+    %a{href: @story.contact_us_link}= @story.contact_us_number
+.row<
+  .four.columns.offset-by-eight.text-right
+    = link_to 'Edit', edit_story_path(@story)
+    \|
+    = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }
+    \|
+    = link_to 'Back', stories_path
