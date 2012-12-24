@@ -78,8 +78,16 @@ class Task < ActiveRecord::Base
 
     def rank_between(task, before, after)
       task = task.is_a?(Task) ? task : Task.find(task)
-      before = before.present? ? (before.is_a?(Task) ? before : Task.select(:rank).find(before)).rank : RANK_MAXIMUM
-      after = after.present? ? (after.is_a?(Task) ? after : Task.select(:rank).find(after)).rank : RANK_MINIMUM
+      before = (before.is_a?(Task) ? before : Task.select(:rank).find(before)).rank if before.present?
+      after = (after.is_a?(Task) ? after : Task.select(:rank).find(after)).rank if after.present?
+
+      return task unless before.present? || after.present?
+
+      if before.blank?
+        before = after > RANK_MINIMUM+1 ? after - 1 : RANK_MINIMUM
+      else
+        after = before < RANK_MAXIMUM-1 ? before + 1 : RANK_MAXIMUM
+      end
 
       task.update_attribute(:rank, after + ((before - after) / 2))
       task

@@ -3,12 +3,11 @@ $('#TaskList')
     cursor: 'move',
     items: '> li',
     opacity: 0.5,
-    revert: true
+    revert: true,
+    scrollSensitiviy:5,
+    scrollSpeed:100
   })
   .on('sortupdate', function(event, ui) {
-    $('#Tasks li:nth-child(even)').removeClass('odd').addClass('even');
-    $('#Tasks li:nth-child(odd)').removeClass('even').addClass('odd');
-    
     task = $(ui.item[0]);
 
     before = task.next();
@@ -28,10 +27,12 @@ $('#TaskList')
       url: '/tasks/' + task + '/rank?before=' + before + '&after=' + after,
       error: function(jqXHR, textStatus, error) {
         $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
-        $('#TaskList').sortable('refresh'); // Is this correct?
+        $('#TaskList').sortable('cancel');
       },
       success: function(data, textStatus, jqXHR) {
         $('#TaskList').sortable('refreshPositions');
+        $('#Tasks li:nth-child(even)').removeClass('odd').addClass('even');
+        $('#Tasks li:nth-child(odd)').removeClass('even').addClass('odd');
       }
     });
   })

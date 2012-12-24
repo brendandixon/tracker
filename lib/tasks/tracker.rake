@@ -244,4 +244,18 @@ namespace :tracker do
     SupportedService.delete_all
   end
 
+  namespace :task do
+
+    desc 'Reset task ranks'
+    task reset_ranks: :environment do
+      tasks = Task.in_rank_order
+      rank = 1
+      tasks.each do |task|
+        task.update_column(:rank, rank)
+        rank += 1
+      end
+    end
+
+  end
+
 end
