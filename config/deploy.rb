@@ -55,7 +55,7 @@ namespace :deploy do
   end
   
   task :restart, :roles => :app, :except => { :no_release => true } do
-    stop
+    stop rescue nil
     start
     # run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
