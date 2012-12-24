@@ -4,4 +4,7 @@
   %td= story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if story.release_date.present?
   %td
     %a{href: story.contact_us_link}= story.contact_us_number
-  %td= project_labels(story)
+  %td
+    = project_labels(story)
+    .command_block.on_hover<
+      = glyph_link_to edit_story_path(story), glyph: 'edit'
