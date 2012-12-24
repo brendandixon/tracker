@@ -30,8 +30,10 @@
             - if task.story.present?
               .three.end.columns{style: 'line-height:22px'}= task.story.service.abbreviation
           .row
-            .two.columns.offset-by-ten
+            .three.columns.offset-by-nine
               = f.submit 'Save'
+              \|
+              = link_to 'Delete', @task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }, remote: true
               \|
               = link_to 'Cancel', task_path(@task), remote: true
 - else

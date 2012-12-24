@@ -124,9 +124,12 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     @task.destroy
+    
+    flash[:notice] = 'Task was successfully deleted.'
 
     respond_to do |format|
       format.html { redirect_to tasks_path }
+      format.js { render 'delete.js.erb' }
       format.json { head :no_content }
     end
   end
