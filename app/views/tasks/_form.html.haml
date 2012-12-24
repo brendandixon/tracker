@@ -1,4 +1,4 @@
-= form_for @task, remote:true do |f|
+= form_for @task do |f|
   - if @task.errors.any?
     .row
       .twelve.columns#error_explanation
@@ -9,7 +9,10 @@
 
   .row
     .seven.columns
-      = f.select :story_id, Story.in_title_order.all.collect {|s| [ s.title, s.id ] }
+      - if params[:story]
+        = f.select :story_id, Story.in_title_order.all.collect {|s| [ s.title, s.id ] }
+      - else
+        = f.text_field :title
     .three.columns.offset_by_two
       = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
   .row
@@ -19,4 +22,4 @@
     .two.columns.offset-by-ten
       = f.submit 'Save'
       \|
-      = link_to 'Cancel', task_path(@task), remote: true
+      = link_to 'Cancel', tasks_path

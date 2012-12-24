@@ -23,7 +23,7 @@ class Task < ActiveRecord::Base
   STATUS = INCOMPLETE + COMPLETED
   STATES = [:all, :complete, :incomplete]
 
-  attr_accessible :story_id, :project_id, :status
+  attr_accessible :story_id, :project_id, :status, :title
     
   belongs_to :story
   belongs_to :project

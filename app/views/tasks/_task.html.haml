@@ -7,7 +7,33 @@
   %li.task_edit#Task{id: task.id, class: classes}
     .row
       .twelve.columns
-        = render 'form'
+        = form_for @task, remote:true do |f|
+          - if @task.errors.any?
+            .row
+              .twelve.columns#error_explanation
+                %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
+                %ul
+                  - @task.errors.full_messages.each do |msg|
+                    %li= msg
+
+          .row
+            .seven.columns
+              - if task.story.present?
+                %h1= task.title
+              - else
+                = f.text_field :title
+            .three.columns.offset_by_two
+              = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
+          .row
+            .two.columns
+              = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
+            - if task.story.present?
+              .two.end.columns= task.story.service.abbreviation
+          .row
+            .two.columns.offset-by-ten
+              = f.submit 'Save'
+              \|
+              = link_to 'Cancel', task_path(@task), remote: true
 - else
   %li.task_inline#Task{id: task.id, class: classes}
     .row
@@ -20,4 +46,5 @@
           = glyph_link_to edit_task_path(task), options.merge(glyph: 'edit', remote: true)
     .row
       .one.columns= task.project.name
-      .two.end.columns= task.story.service.abbreviation
+      - if task.story.present?
+        .two.end.columns= task.story.service.abbreviation

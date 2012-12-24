@@ -103,6 +103,13 @@ tr:hover .on_hover {
 }
 
 .task_edit {
+  h1 {
+    color: $cyan;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size:16px;
+    font-weight:$thin;
+    margin:2px 0;
+  }
   li:hover {
     background-color:inherit;
   }

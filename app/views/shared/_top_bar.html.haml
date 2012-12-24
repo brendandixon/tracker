@@ -21,8 +21,12 @@
               %li.divider
               %li{class: current_area == area ? 'active' : nil}
                 = link_to area.to_s.titleize, url_for(controller: area, action: :index)
-          %ul
-            %li.divider
-            %li.command_block
-              = glyph_link_to url_for(controller: controller.controller_name, action: :new), class: 'has-tip', glyph: 'white small circle_plus', title: I18n.t(:new, scope: [:controllers, current_area])
-              = glyph_link_to '#', class: 'has-tip filter-toggle', data: {filter_toggle: true}, glyph: 'white small cogwheels', title: I18n.t(:filter, scope: :general)
+          - if params[:action] == 'index'
+            %ul
+              %li.divider
+                %li.has-dropdown
+                  = glyph_link_to '#', glyph:'white small circle_plus'
+                  = render 'add_menu'
+                %li.has-dropdown
+                  = glyph_link_to '#', glyph:'white small cogwheels'
+                  = render 'filter_menu'

@@ -21,6 +21,7 @@ en:
       edit: 'Edit Story'
     tasks:
       new: 'Add Task'
+      new_story: 'Add Story Task'
       edit: 'Edit Task'
   activerecord:
     attributes:
