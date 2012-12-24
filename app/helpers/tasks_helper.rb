@@ -3,7 +3,7 @@ module TasksHelper
   def task_status_tag(task, project = nil)
     status = if task.blank?
               ' secondary'
-             elsif task.unscheduled?
+             elsif task.pending?
               ' alert'
              elsif task.completed?
               ' success'

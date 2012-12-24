@@ -18,7 +18,7 @@ class Task < ActiveRecord::Base
   RANK_MINIMUM = Float::MIN
   RANK_MAXIMUM = Float::MAX
 
-  INCOMPLETE = [:unscheduled, :scheduled, :in_progress]
+  INCOMPLETE = [:pending, :in_progress]
   COMPLETED = [:completed]
   STATUS = INCOMPLETE + COMPLETED
   STATES = [:all, :complete, :incomplete]
@@ -72,7 +72,7 @@ class Task < ActiveRecord::Base
     
     def ensure_story_tasks(f)
       f.service.projects.each do |project|
-        Task.create(story_id:f.id, project_id:project.id, status: :unscheduled) unless Task.for_stories(f).for_projects(project).first
+        Task.create(story_id:f.id, project_id:project.id, status: :pending) unless Task.for_stories(f).for_projects(project).first
       end
     end
 
