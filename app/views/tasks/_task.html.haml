@@ -28,7 +28,7 @@
             .two.columns
               = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
             - if task.story.present?
-              .two.end.columns{style: 'line-height:22px'}= task.story.service.abbreviation
+              .three.end.columns{style: 'line-height:22px'}= task.story.service.abbreviation
           .row
             .two.columns.offset-by-ten
               = f.submit 'Save'
@@ -47,4 +47,4 @@
     .row
       .one.columns= task.project.name
       - if task.story.present?
-        .two.end.columns= task.story.service.abbreviation
+        .three.end.columns= task.story.service.abbreviation
