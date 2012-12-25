@@ -1,6 +1,8 @@
 - content = @filter.content || {}
+- classes = []
+- classes << 'visible' unless @filter.errors.empty?
 
-.filter_container.nine.columns.centered#Filter{data: {filter: true}}
+.filter_container.nine.columns.centered#Filter{data: {filter: true}, class: classes}
   = form_for @filter, url: tasks_path, method: :get, remote: true do |f|
     - if @filter.errors.any?
       .row

@@ -22,9 +22,11 @@ class TasksController < ApplicationController
     end
     
     projects = @filter.content[:projects] || []
+    projects = projects.map{|p| p.present? ? p : nil}.compact
     projects = nil if projects.any?{|p| p =~ /all/i}
     
     services = @filter.content[:services] || []
+    services = services.map{|s| s.present? ? s : nil}.compact
     services = nil if services.any?{|s| s =~ /all/i}
 
     query = query.for_stories(stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact) if stories.present?
@@ -37,7 +39,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render 'shared/index'}
-      format.js # index.js.erb
+      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
       format.json { render json: @tasks }
     end
   end

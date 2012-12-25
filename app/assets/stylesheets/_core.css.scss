@@ -77,11 +77,16 @@ td {
 
 .filter_container {
   display:none;
-  border:1px solid #ccc;
-  border-top:none;
-  padding:8px;
-  select {
-    height:145px;
+  &.visible {
+    display:block;
+  }
+  form {
+    border:1px solid #ccc;
+    border-top:none;
+    padding:8px;
+    select {
+      height:145px;
+    }
   }
 }
 
