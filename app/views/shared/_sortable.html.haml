@@ -1,6 +1,6 @@
-- session[:filter] ||= {}
-- session[:filter][:sort] ||= {}
-- sort = session[:filter][:sort][controller.controller_name] || []
+- session[:sort] ||= {}
+- session[:sort][controller_name] ||= []
+- sort = session[:sort][controller.controller_name]
 - descending_field = "-#{field}"
 - sorted_descending = sort.include?(descending_field)
 

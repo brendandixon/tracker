@@ -22,7 +22,7 @@ class StoriesController < ApplicationController
     query = query.after_date(@filter[:after]) if @filter[:after].present?
     query = query.before_date(@filter[:before]) if @filter[:before].present?
     
-    @filter[:sort][self.controller_name].each do |sort|
+    @sort.each do |sort|
       case sort
       when '-cu' then query = query.in_contact_us_order('ASC')
       when 'cu' then query = query.in_contact_us_order('DESC')

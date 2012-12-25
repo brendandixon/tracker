@@ -48,5 +48,6 @@
           = glyph_link_to edit_task_path(task), glyph: 'edit', remote:true
     .row
       .one.columns= task.project.name
+      .two.columns= task.rank
       - if task.story.present?
         .three.end.columns= task.story.service.abbreviation

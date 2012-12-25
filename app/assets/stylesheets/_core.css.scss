@@ -78,6 +78,10 @@ td {
   display:none;
   border:1px solid #ccc;
   border-top:none;
+  padding:8px;
+  select {
+    height:145px;
+  }
 }
 
 .filter form {

@@ -11,9 +11,9 @@ class TasksController < ApplicationController
     query = Task
 
     unless stories.present?
-      status = if @filter[:status] == :complete
+      status = if @filter.content[:status] == :complete
                 Task::COMPLETED
-              elsif @filter[:status] == :incomplete
+              elsif @filter.content[:status] == :incomplete
                 Task::INCOMPLETE
               else
                 []
@@ -21,15 +21,15 @@ class TasksController < ApplicationController
       query = query.in_status(status) if status.present?
     end
     
-    projects = @filter[:projects] || []
+    projects = @filter.content[:projects] || []
     projects = nil if projects.any?{|p| p =~ /all/i}
     
-    services = @filter[:services] || []
+    services = @filter.content[:services] || []
     services = nil if services.any?{|s| s =~ /all/i}
 
     query = query.for_stories(stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact) if stories.present?
     query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
-    query = query.for_services(@filter[:services].map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
+    query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
 
     query = query.in_rank_order
     

@@ -1,0 +1,33 @@
+- content = @filter.content || {}
+
+.filter_container.nine.columns.centered#Filter{data: {filter: true}}
+  = form_for @filter, url: tasks_path, method: :get, remote: true do |f|
+    - if @filter.errors.any?
+      .row
+        .twelve.columns#error_explanation
+          %h2= "#{pluralize(@filter.errors.count, "error")} prohibited this filter from being saved:"
+          %ul
+            - @filter.errors.full_messages.each do |msg|
+              %li= msg
+    .row
+      = f.hidden_field :area
+      .twelve.columns
+        = f.label :name
+        = f.text_field :name
+    .row
+      .three.columns
+        = label_tag 'status', 'Status'
+        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
+      .two.columns
+        = label_tag 'projects', 'Projects'
+        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects]), multiple: true, include_blank: true
+      .two.columns.end
+        = label_tag 'services', 'Services'
+        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services]), multiple: true, include_blank: true
+    .row
+      .four.columns.offset-by-eight.text-right
+        = submit_tag 'Apply', name: :apply
+        \|
+        = submit_tag (@filter.new_record? ? 'Save' : 'Update')
+        \|
+        = link_to 'Close', '#', class: 'close-filter'

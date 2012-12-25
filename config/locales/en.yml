@@ -3,9 +3,9 @@
 
 en:
   filter:
-    clear: 'Clear Filter'
-    edit: 'Edit Filter'
-    new: 'New Filter'
+    clear_html: 'Clear Filter'
+    edit_html: 'Edit Filter&hellip;'
+    new_html: 'New Filter&hellip;'
   controllers:
     actions:
       advance: 'Advance'
@@ -19,12 +19,12 @@ en:
       new: 'Add Project'
       edit: 'Edit Project'
     stories:
-      new: 'Add Story'
-      edit: 'Edit Story'
+      new_html: 'Add Story&#8230;'
+      edit_html: 'Edit Story&#8230;'
     tasks:
-      new: 'Add Task'
-      new_story: 'Add Story Task'
-      edit: 'Edit Task'
+      new_html: 'Add Task&#8230;'
+      new_story_html: 'Add Story Task&#8230;'
+      edit_html: 'Edit Task&#8230;'
   activerecord:
     attributes:
       story:

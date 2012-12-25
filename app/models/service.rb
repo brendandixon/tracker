@@ -36,11 +36,12 @@ class Service < ActiveRecord::Base
     end
     
     def all_services
-      @all_services ||= ['All'] + Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }
+      @all_services ||= Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }
     end
     
     def refresh_active
       @active = nil
+      @all_services = nil
     end
   end
   

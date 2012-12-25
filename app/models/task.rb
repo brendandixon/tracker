@@ -84,9 +84,9 @@ class Task < ActiveRecord::Base
       return task unless before.present? || after.present?
 
       if before.blank?
-        before = after > RANK_MINIMUM+1 ? after - 1 : RANK_MINIMUM
+        before = after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM
       else
-        after = before < RANK_MAXIMUM-1 ? before + 1 : RANK_MAXIMUM
+        after = before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM
       end
 
       task.update_attribute(:rank, after + ((before - after) / 2))

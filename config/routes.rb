@@ -10,6 +10,7 @@ Tracker::Application.routes.draw do
   root to: 'tasks#index'
   match ':controller/:action', action: /reset/
 
+  resources :filters
   resources :projects
   resources :services
   resources :stories
