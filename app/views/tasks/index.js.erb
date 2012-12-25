@@ -1,4 +1,3 @@
 $('.tooltip').hide();
-<%= render template: 'tasks/filter' %>
-$('#Tasks')
-  .replaceWith('<%= escape_javascript(render(partial: "tasks"))%>');
+<%= render template: 'shared/filter' %>
+$('#Tasks').replaceWith('<%= escape_javascript(render(partial: "tasks"))%>');

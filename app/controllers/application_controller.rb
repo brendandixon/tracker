@@ -13,13 +13,13 @@ class ApplicationController < ActionController::Base
 
     attributes = session[:filter][self.controller_name]
 
-    @filter = (Filter.for_area(self.controller_name).find(attributes.delete(:id)) rescue nil) if attributes[:id].present?
+    @filter = (Filter.for_area(self.controller_name).find(attributes[:id]) rescue nil) if attributes[:id].present?
     @filter ||= Filter.new(area: self.controller_name)
-    @filter.attributes = attributes if attributes.is_a?(Hash) && !attributes.empty?
+    @filter.attributes = attributes.reject{|k,v| [:id].include?(k)} if attributes.is_a?(Hash) && !attributes.empty?
 
     normalize_filter
 
-    @filter.save if params[:commit] && @filter.present?
+    @filter.save if @filter.present? && params[:commit]
   end
 
   def initialize_sort
@@ -54,9 +54,13 @@ class ApplicationController < ActionController::Base
     content[:status] = content[:status].downcase.to_sym if content[:status].is_a?(String)
   end
 
+  def filters
+    Filter.for_area(controller_name)
+  end
+
   def reset
     session[:filter][self.controller_name] = {}
-    redirect_to controller: self.controller_name, action: :index
+    redirect_to controller: self.controller_name, action: :index, show: params[:show]
   end
 
 end

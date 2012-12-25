@@ -1,6 +1,6 @@
 - content = @filter.content || {}
 - classes = []
-- classes << 'visible' unless @filter.errors.empty?
+- classes << 'visible' if !@filter.errors.empty? || params[:show]
 
 .filter_container.nine.columns.centered#Filter{data: {filter: true}, class: classes}
   = form_for @filter, url: tasks_path, method: :get, remote: true do |f|
@@ -12,6 +12,7 @@
             - @filter.errors.full_messages.each do |msg|
               %li= msg
     .row
+      = f.hidden_field :id
       = f.hidden_field :area
       .twelve.columns
         = f.label :name
@@ -32,4 +33,7 @@
         \|
         = submit_tag (@filter.new_record? ? 'Save' : 'Update')
         \|
-        = link_to 'Close', '#', class: 'close-filter'
+        - unless @filter.new_record?
+          = link_to 'Delete', @filter, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this filter?" }, remote: true
+          \|
+        = link_to 'Close', '#', data: {filter_close: true}

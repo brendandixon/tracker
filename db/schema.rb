@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121225043017) do
+ActiveRecord::Schema.define(:version => 20121225220617) do
 
   create_table "filters", :force => true do |t|
     t.string   "name"
-    t.string   "content"
+    t.text     "content"
     t.string   "area"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

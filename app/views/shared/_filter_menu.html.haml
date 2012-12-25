@@ -1,4 +1,11 @@
-%ul.dropdown
-  %li= link_to t(:new_html, scope: [:filter]), '#', data: {filter_toggle: true}
-  %li= link_to t(:edit_html, scope: [:filter]), '#', data: {filter_toggle: true}
+- filters = controller.filters || []
+
+%ul.dropdown#FilterMenu
+  - if filters.present?
+    - filters.each do |filter|
+      %li= link_to filter.name, url_for(controller: controller.controller_name, action: :index, filter: filter.to_hash), remote: true
+    %li.divider
+  %li= link_to t(:new_html, scope: [:filter]), url_for(controller: controller.controller_name, action: :reset, show: true), remote: true
+  - if @filter.present? && !@filter.new_record?
+    %li= link_to t(:edit_html, scope: [:filter]), '#', data: {filter_toggle: true}
   %li= link_to t(:clear_html, scope: [:filter]), url_for(controller: controller.controller_name, action: :reset), remote: true
