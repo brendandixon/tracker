@@ -27,16 +27,27 @@
 
 .glyphlink {
   color:inherit;
-  cursor:pointer;
   display:inline-block;
   padding:0;
   position:relative;
   height:16px;
   width:16px;
-}
-.glyphlink:hover {
-  color:inherit;
-}
-.top-bar .glyphlink {
-  width:auto;
+  &:hover {
+    color:inherit;
+  }
+  &.disabled {
+    display:inline-block;
+    height:30px;
+    width:43px;
+  }
+  .top-bar & {
+    width:auto;
+  }
+  .top-bar &.disabled {
+    width:30px;
+    i {
+      position:relative;
+      left:5px;
+    }
+  }
 }

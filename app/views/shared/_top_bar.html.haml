@@ -1,6 +1,7 @@
 - current_area = controller.controller_name
 - current_name = current_area.titleize
 - current_area = current_area.to_sym
+- disable_filter = params[:action] != 'index' || !controller.template_exists?('filter', [current_area], true)
 
 .twelve.columns.centered<
   .fixed.contain-to-grid<
@@ -26,7 +27,6 @@
                 %li.has-dropdown
                   = glyph_link_to '#', glyph:'white small circle_plus'
                   = render 'shared/add_menu'
-              - if params[:action] == 'index'
                 %li.has-dropdown
-                  = glyph_link_to '#', glyph:'white small cogwheels'
-                  = render 'shared/filter_menu'
+                  = glyph_link_to '#', glyph:'white small cogwheels', disabled: disable_filter
+                  = render 'shared/filter_menu' unless disable_filter
