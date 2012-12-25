@@ -1,3 +1,3 @@
 $('.tooltip').hide();
-$('#Stories')
-  .replaceWith('<%= escape_javascript(render(partial: "stories"))%>');
+<%= render template: 'shared/filter' %>
+$('#Stories').replaceWith('<%= escape_javascript(render(partial: "stories"))%>');

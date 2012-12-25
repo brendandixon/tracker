@@ -6,21 +6,29 @@ class StoriesController < ApplicationController
   def index
     query = Story
 
-    status = if @filter[:status] == :complete
+    status = if @filter.content[:status] == :complete
               Task::COMPLETED
-            elsif @filter[:status] == :incomplete
+            elsif @filter.content[:status] == :incomplete
               Task::INCOMPLETE
             else
               []
             end
     query = query.in_status(status) if status.present?
+    
+    projects = @filter.content[:projects] || []
+    projects = projects.map{|p| p.present? ? p : nil}.compact
+    projects = nil if projects.any?{|p| p =~ /all/i}
+    
+    services = @filter.content[:services] || []
+    services = services.map{|s| s.present? ? s : nil}.compact
+    services = nil if services.any?{|s| s =~ /all/i}
 
-    query = query.for_projects(@filter[:projects].map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if @filter[:projects].present?
-    query = query.for_services(@filter[:services].map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if @filter[:services].present?
-    query = query.for_contact_us(@filter[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter[:contact_us].present?
+    query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
+    query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
+    query = query.for_contact_us(@filter.content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter.content[:contact_us].present?
 
-    query = query.after_date(@filter[:after]) if @filter[:after].present?
-    query = query.before_date(@filter[:before]) if @filter[:before].present?
+    query = query.after_date(@filter.content[:after]) if @filter[:after].present?
+    query = query.before_date(@filter.content[:before]) if @filter[:before].present?
     
     @sort.each do |sort|
       case sort
@@ -39,7 +47,7 @@ class StoriesController < ApplicationController
     
     respond_to do |format|
       format.html { render 'shared/index' }
-      format.js # index.js.erb
+      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
       format.json { render json: @stories }
     end
   end
