@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  include FilterHandler
 
   before_filter :ensure_initial_state
 

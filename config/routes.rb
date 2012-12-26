@@ -8,7 +8,8 @@ end
 
 Tracker::Application.routes.draw do
   root to: 'tasks#index'
-  match ':controller/:action', action: /reset/
+
+  match ':controller/:action', action: /reset_filter|delete_filter/
 
   resources :filters
   resources :projects

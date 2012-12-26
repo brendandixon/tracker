@@ -1,4 +1,7 @@
 class StoriesController < ApplicationController
+  include FilterHandler
+  include SortHandler
+
   DEFAULT_SORT = ['-date']
   
   # GET /stories
