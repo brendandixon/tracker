@@ -40,8 +40,8 @@ class Story < ActiveRecord::Base
   scope :for_services, lambda{|services| where(service_id: services)}
   scope :for_contact_us, lambda{|cu| where(contact_us_number: cu)}
   
-  scope :after_date, lambda{|date| where('release_date > ?', date)}
-  scope :before_date, lambda{|date| where('release_date < ?', date)}
+  scope :on_or_after_date, lambda{|date| where('release_date >= ?', date)}
+  scope :on_or_before_date, lambda{|date| where('release_date <= ?', date)}
   scope :on_date, lambda{|date| where('release_date = ?', date)}
   
   scope :in_contact_us_order, lambda{|dir = 'ASC'| order("contact_us_number #{dir}")}

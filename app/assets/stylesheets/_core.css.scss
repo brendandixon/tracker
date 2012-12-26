@@ -95,6 +95,13 @@ td {
   padding:18px 5px 0;
 }
 
+#FilterMenu li.active {
+  background-color:$cyan;
+  a {
+    background-color:$cyan;
+  }
+}
+
 .sortable span {
   color:#222;
   float:right;

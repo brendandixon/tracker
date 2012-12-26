@@ -30,8 +30,8 @@ class StoriesController < ApplicationController
     query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
     query = query.for_contact_us(@filter.content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter.content[:contact_us].present?
 
-    query = query.after_date(@filter.content[:after]) if @filter[:after].present?
-    query = query.before_date(@filter.content[:before]) if @filter[:before].present?
+    query = query.on_or_after_date(@filter.content[:after]) if @filter.content[:after].present?
+    query = query.on_or_before_date(@filter.content[:before]) if @filter.content[:before].present?
     
     @sort.each do |sort|
       case sort
