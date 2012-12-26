@@ -1,3 +1,4 @@
-$('.tooltip').hide();
+<%= render template: 'shared/reset_transients' %>
+<%= render template: 'shared/menu' %>
 <%= render template: 'shared/filter' %>
-$('#Stories').replaceWith('<%= escape_javascript(render(partial: "stories"))%>');
+$('#Main').replaceWith('<%= escape_javascript(render(partial: "stories"))%>');

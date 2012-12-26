@@ -48,13 +48,13 @@ td {
   background-color:#eee;
 }
 
-.actions {
-  padding:15px 0 0;
-}
-
 .disabled {
   cursor:auto;
   opacity: 0.4;
+}
+
+.actions {
+  padding:10px 6px 0 0 !important;
 }
 
 .command_block {
@@ -117,6 +117,12 @@ td {
   }
   span.secondary, a.secondary {
     color:#999;
+  }
+}
+
+.services {
+  label {
+    display:inline-block;
   }
 }
 

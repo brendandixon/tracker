@@ -9,17 +9,15 @@ end
 Tracker::Application.routes.draw do
   root to: 'tasks#index'
 
-  match 'tasks/reset_filter', via: :get, as: :reset_tasks_filter
-  match 'tasks/delete_filter', via: :delete, as: :delete_tasks_filter
-
-  match 'stories/reset_filter', via: :get, as: :reset_stories_filter
-  match 'stories/delete_filter', via: :delete, as: :delete_stories_filter
-
   resources :projects
   resources :services
-  resources :stories
+  
+  resources :stories do
+    delete 'index', on: :collection
+  end
 
   resources :tasks do
+    delete 'index', on: :collection
     member do
       post 'advance'
       post 'complete'

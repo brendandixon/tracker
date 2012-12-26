@@ -1,8 +1,9 @@
 - edit ||= false
-- classes = 'services three columns'
+- classes = []
 - classes << ' disabled' unless edit || @project.services.include?(service)
 - classes << ' end' if last < length
-%p{class: classes}
+
+.three.columns.services{class: classes}
   - if edit
     = check_box_tag 'project[services][]', service.id, @project.services.include?(service), id: "project_service_#{service.id}"
     = label_tag "project_service_#{service.id}", service.abbreviation

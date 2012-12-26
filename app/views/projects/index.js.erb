@@ -1,0 +1,3 @@
+<%= render template: 'shared/reset_transients' %>
+<%= render template: 'shared/menu' %>
+$('#Main').replaceWith('<%= escape_javascript(render(partial: "projects"))%>');

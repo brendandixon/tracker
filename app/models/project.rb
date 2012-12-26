@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
   
   scope :with_name, lambda {|name| where(name: name) }
   
-  scope :in_name_order, order('name ASC')
+  scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
 
   class<<self
     def active

@@ -1,8 +1,8 @@
-.twelve#Projects
+.six.columns.centered#Main
   %table.twelve
     %thead
       %tr
-        %th.four Name
+        %th.four= render partial: 'shared/sortable', locals: {name: 'Name', field: 'name'}
         %th.one.end
 
     %tbody

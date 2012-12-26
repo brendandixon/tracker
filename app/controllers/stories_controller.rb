@@ -46,7 +46,7 @@ class StoriesController < ApplicationController
       end
     end
 
-    @stories = query.includes(:service).includes(:projects).uniq.all
+    @stories = query.includes(:service).includes(:projects).uniq
     
     respond_to do |format|
       format.html { render 'shared/index' }

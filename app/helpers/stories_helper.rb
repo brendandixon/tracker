@@ -6,7 +6,7 @@ module StoriesHelper
             task = story.tasks.detect{|task| task.project == project ? task : nil}
             task_status_tag(task, project)
           end.join.html_safe
-    link_to projects, tasks_path(filter: {content:{status: :all, stories: story.id, projects: only_projects}}), class: 'projects'
+    link_to projects, tasks_path(filter: {content:{status: :all, stories: story.id, projects: only_projects}}), class: 'projects', remote: true
   end
   
 end

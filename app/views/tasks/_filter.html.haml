@@ -31,7 +31,7 @@
         = label_tag 'stories', 'Stories'
         = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     .row
-      .four.columns.offset-by-eight.text-right
+      .four.columns.offset-by-eight.text-right.actions
         = submit_tag 'Apply', name: :apply
         - if @filter.new_record?
           \|
@@ -40,6 +40,6 @@
           \|
           = submit_tag 'Update'
           \|
-          = link_to 'Delete', delete_tasks_filter_path, method: :delete, data: { confirm: t(:warning_html, scope: :filter) }, remote: true
+          = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: t(:warning_html, scope: :filter) }, remote: true
         \|
         = link_to 'Close', '#', data: {filter_close: true}

@@ -2,7 +2,9 @@ module FilterHandler
   extend ActiveSupport::Concern
 
   included do
-    before_filter :initialize_filter, only: [:index, :delete_filter, :reset_filter]
+    before_filter :initialize_filter, only: :index
+    before_filter :handle_delete, only: :index
+    before_filter :handle_reset, only: :index
   end
   
   def initialize_filter
@@ -57,15 +59,18 @@ module FilterHandler
     Filter.for_area(controller_name).in_name_order
   end
 
-  def delete_filter
-    @filter.destroy rescue nil
-    clear_session_filter
-    index
+  def handle_delete
+    if params[:destroy]
+      @filter.destroy rescue nil
+      clear_session_filter
+    end
   end
 
-  def reset_filter
-    clear_session_filter
-    index
+  def handle_reset
+    if params[:reset]
+      params.delete(:filter)
+      clear_session_filter
+    end
   end
 
   private

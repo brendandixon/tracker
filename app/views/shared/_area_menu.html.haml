@@ -1,0 +1,16 @@
+- current_area = controller.controller_name.to_sym
+- disable_filter = params[:action] != 'index' || !controller.template_exists?('filter', [controller.controller_name], true)
+
+%ul#AreaMenu
+  - [:stories, :tasks, :projects].each do |area|
+    %li.divider
+    %li{class: current_area == area && controller.action_name == 'index' ? 'active' : nil}
+      = link_to area.to_s.titleize, url_for(controller: area, action: :index)
+  %ul
+    %li.divider
+      %li.has-dropdown
+        = glyph_link_to '#', glyph:'white small circle_plus'
+        = render 'shared/add_menu'
+      %li.has-dropdown
+        = glyph_link_to '#', glyph:'white small cogwheels', disabled: disable_filter
+        = render 'shared/filter_menu' unless disable_filter

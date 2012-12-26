@@ -1,11 +1,27 @@
 class ProjectsController < ApplicationController
+  include SortHandler
+
+  DEFAULT_SORT = ['-name']
+
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.in_name_order.all
+    query = Project
+
+    logger.debug "SORT: #{@sort}"
+    
+    @sort.each do |sort|
+      case sort
+      when '-name' then query = query.in_name_order('ASC')
+      when 'name' then query = query.in_name_order('DESC')
+      end
+    end
+
+    @projects = query
 
     respond_to do |format|
       format.html { render 'shared/index'}
+      format.js # index.js.erb
       format.json { render json: @projects }
     end
   end

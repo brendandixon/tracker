@@ -1,12 +1,12 @@
-- filters = controller.filters || []
+- filters = (controller.respond_to?(:filters) && controller.filters) || []
 
 %ul.dropdown#FilterMenu
   - if filters.present?
     - filters.each do |filter|
       %li{class: @filter.id == filter.id ? 'active' : nil}
-        = link_to filter.name, url_for(controller: controller.controller_name, action: :index, filter: filter.to_hash), remote: true
+        = link_to filter.name, url_for(controller: controller.controller_name, action: :index, filter: filter.to_hash(:id)), remote: true
     %li.divider
-  %li= link_to t(:new_html, scope: [:filter]), url_for(controller: controller.controller_name, action: :reset_filter, show: true), remote: true
+  %li= link_to t(:new_html, scope: [:filter]), url_for(controller: controller.controller_name, action: :index, reset: true, show: true), remote: true
   - if @filter.present? && @filter.content.present?
     %li= link_to t(:edit_html, scope: [:filter]), '#', data: {filter_toggle: true}
-  %li= link_to t(:clear_html, scope: [:filter]), url_for(controller: controller.controller_name, action: :reset_filter), remote: true
+  %li= link_to t(:clear_html, scope: [:filter]), url_for(controller: controller.controller_name, action: :index, reset: true), remote: true

@@ -15,7 +15,7 @@
       .row
         = render partial: 'service', collection: services, locals: {last: services.length, length: 4, edit: true}
   .row
-    .actions
+    .four.columns.offset-by-eight.text-right.actions
       = f.submit 'Save'
       \|
       = link_to 'Delete', @project, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this project?" }
