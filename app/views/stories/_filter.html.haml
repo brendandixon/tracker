@@ -39,11 +39,14 @@
     .row
       .four.columns.offset-by-eight.text-right
         = submit_tag 'Apply', name: :apply
-        \|
-        = submit_tag (@filter.new_record? ? 'Save' : 'Update')
-        \|
-        - unless @filter.new_record?
-          = link_to 'Delete', @filter, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this filter?" }, remote: true
+        - if @filter.new_record?
           \|
+          = submit_tag 'Save'
+        - else
+          \|
+          = submit_tag 'Update'
+          \|
+          = link_to 'Delete', @filter, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this filter?" }, remote: true
+        \|
         = link_to 'Close', '#', data: {filter_close: true}
 = javascript_include_tag 'dates'

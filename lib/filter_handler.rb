@@ -37,8 +37,10 @@ module FilterHandler
     content[:services] = params[:services] || content[:services]
     content[:services] = content[:services].split(',') if content[:services].is_a?(String)
 
-    content[:status] = params[:status] || content[:status] || :incomplete
+    content[:status] = params[:status] || content[:status]
     content[:status] = content[:status].downcase.to_sym if content[:status].is_a?(String)
+
+    @filter.content = content.reject{|k, v| v.blank?}
   end
 
   def filters

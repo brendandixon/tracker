@@ -3,14 +3,14 @@
     %h3.subheader= t(:none_html, scope: [:controllers, :stories])
 - else
   .eleven.columns.centered#Stories
-      %table.twelve
-        %thead
-          %tr
-            %th.three= render partial: 'shared/sortable', locals: {name: 'Title', field: 'story'}
-            %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
-            %th.two= render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date'}
-            %th.one= render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu'}
-            %th.three Projects
+    %table.twelve
+      %thead
+        %tr
+          %th.three= render partial: 'shared/sortable', locals: {name: 'Title', field: 'story'}
+          %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
+          %th.two= render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date'}
+          %th.one= render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu'}
+          %th.three Projects
 
-        %tbody
-          = render @stories
+      %tbody
+        = render @stories
