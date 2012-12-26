@@ -19,9 +19,11 @@ en:
       new: 'Add Project'
       edit: 'Edit Project'
     stories:
+      none_html: 'No stories were found.'
       new_html: 'Add Story&#8230;'
       edit_html: 'Edit Story&#8230;'
     tasks:
+      none_html: 'No tasks were found.'
       new_html: 'Add Task&#8230;'
       new_story_html: 'Add Story Task&#8230;'
       edit_html: 'Edit Task&#8230;'

@@ -42,7 +42,7 @@ module FilterHandler
   end
 
   def filters
-    Filter.for_area(controller_name)
+    Filter.for_area(controller_name).in_name_order
   end
 
   def delete_filter

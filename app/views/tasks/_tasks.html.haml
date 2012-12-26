@@ -1,4 +1,8 @@
-.nine.columns.centered#Tasks
-  .ul.task_list#TaskList
-    = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
-= javascript_include_tag 'tasks'
+- if @tasks.empty?
+  .eleven.columns.centered#Tasks
+    %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
+- else
+  .nine.columns.centered#Tasks
+    .ul.task_list#TaskList
+      = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
+    = javascript_include_tag 'tasks'

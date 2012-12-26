@@ -23,6 +23,8 @@ class Filter < ActiveRecord::Base
 
   scope :for_area, lambda {|area| where(area: area) }
 
+  scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
+
   def to_hash
     self.attributes.reject{|k, v| [:created_at, :updated_at].include?(k.to_sym) }
   end

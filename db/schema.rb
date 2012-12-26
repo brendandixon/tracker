@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121225220617) do
+ActiveRecord::Schema.define(:version => 20121226050133) do
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20121225220617) do
   end
 
   add_index "filters", ["area"], :name => "index_filters_on_scope"
+  add_index "filters", ["name"], :name => "index_filters_on_name"
 
   create_table "projects", :force => true do |t|
     t.string   "name"
