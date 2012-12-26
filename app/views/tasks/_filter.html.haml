@@ -23,10 +23,13 @@
         = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
       .two.columns
         = label_tag 'projects', 'Projects'
-        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects]), multiple: true, include_blank: true
-      .two.columns.end
+        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || ''), multiple: true
+      .two.columns
         = label_tag 'services', 'Services'
-        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services]), multiple: true, include_blank: true
+        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services] || ''), multiple: true
+      .five.columns.end
+        = label_tag 'stories', 'Stories'
+        = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     .row
       .four.columns.offset-by-eight.text-right
         = submit_tag 'Apply', name: :apply
@@ -37,6 +40,6 @@
           \|
           = submit_tag 'Update'
           \|
-          = link_to 'Delete', @filter, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this filter?" }, remote: true
+          = link_to 'Delete', delete_tasks_filter_path, method: :delete, data: { confirm: t(:warning_html, scope: :filter) }, remote: true
         \|
         = link_to 'Close', '#', data: {filter_close: true}

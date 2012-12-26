@@ -6,29 +6,20 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    stories = params[:stories]
-    stories = stories.split(',') if stories.is_a?(String)
-
     query = Task
 
-    unless stories.present?
-      status = if @filter.content[:status] == :complete
-                Task::COMPLETED
-              elsif @filter.content[:status] == :incomplete
-                Task::INCOMPLETE
-              else
-                []
-              end
-      query = query.in_status(status) if status.present?
-    end
+    status = if @filter.content[:status] == :complete
+              Task::COMPLETED
+            elsif @filter.content[:status] == :incomplete
+              Task::INCOMPLETE
+            else
+              []
+            end
+    query = query.in_status(status) if status.present?
     
     projects = @filter.content[:projects] || []
-    projects = projects.map{|p| p.present? ? p : nil}.compact
-    projects = nil if projects.any?{|p| p =~ /all/i}
-    
     services = @filter.content[:services] || []
-    services = services.map{|s| s.present? ? s : nil}.compact
-    services = nil if services.any?{|s| s =~ /all/i}
+    stories = @filter.content[:stories] || []
 
     query = query.for_stories(stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact) if stories.present?
     query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?

@@ -49,6 +49,12 @@ class Story < ActiveRecord::Base
   scope :in_service_order, lambda{|dir = 'ASC'| joins(:service).order("services.abbreviation #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("title #{dir}")}
   
+  class<<self
+    def all_stories
+      [['Any Story', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
+    end
+  end
+
   def contact_us_link
     return nil unless self.contact_us_number.present?
     "https://contactus.amazon.com/contact-us/ContactUsIssue.cgi?issue=#{self.contact_us_number}&profile=aws-dr-tools"

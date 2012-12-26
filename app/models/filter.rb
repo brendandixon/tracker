@@ -15,7 +15,7 @@ class Filter < ActiveRecord::Base
 
   serialize :content
 
-  before_validation :ensure_content
+  after_initialize :ensure_content
 
   validates_presence_of :area
   validates_presence_of :name

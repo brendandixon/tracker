@@ -6,6 +6,7 @@ en:
     clear_html: 'Clear Filter'
     edit_html: 'Edit Filter&hellip;'
     new_html: 'New Filter&hellip;'
+    warning_html: '"WARNING: Are you sure you want to delete this filter?"'
   controllers:
     actions:
       advance: 'Advance'
