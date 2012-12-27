@@ -35,6 +35,11 @@ module FilterHandler
     content[:contact_us] = params[:contact_us] || content[:contact_us]
     content[:contact_us] = content[:contact_us].split(',') if content[:contact_us].is_a?(String)
 
+    content[:min_points] = params[:min_points] || content[:min_points]
+    content[:min_points] = nil unless content[:min_points] =~ /1|2|3|4|5/
+    content[:max_points] = params[:max_points] || content[:max_points]
+    content[:max_points] = nil unless content[:max_points] =~ /1|2|3|4|5/
+
     content[:projects] = params[:projects] || content[:projects] || []
     content[:projects] = content[:projects].split(',') if content[:projects].is_a?(String)
     content[:projects] = content[:projects].map{|p| p.present? ? p : nil}.compact

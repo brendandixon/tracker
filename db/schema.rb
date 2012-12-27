@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121226050133) do
+ActiveRecord::Schema.define(:version => 20121227043451) do
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -87,10 +87,12 @@ ActiveRecord::Schema.define(:version => 20121226050133) do
     t.integer  "story_id"
     t.integer  "project_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "title"
     t.float    "rank"
+    t.integer  "points",      :default => 0
+    t.text     "description"
   end
 
   add_index "tasks", ["project_id"], :name => "index_stories_on_project_id"

@@ -28,6 +28,11 @@ $medium:400;
 $thick:700;
 $thickest:900;
 
+$glyphHeight:16px;
+$glyphWidth:16px;
+
+$taskPoints:5;
+
 @import 'core';
 @import 'glyphicons_overrides';
 @import 'foundation_overrides';

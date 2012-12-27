@@ -1,7 +1,7 @@
 <%= render template: 'shared/reset_transients' %>
 $('#Task_<%= @task.id%>').replaceWith('<%= escape_javascript(render(partial: @task, locals: {in_edit_mode: @in_edit_mode}))%>');
-$('#Tasks li:nth-child(even)').removeClass('odd').addClass('even');
-$('#Tasks li:nth-child(odd)').removeClass('even').addClass('odd');
+$('#Main li:nth-child(even)').removeClass('odd').addClass('even');
+$('#Main li:nth-child(odd)').removeClass('even').addClass('odd');
 <% if @was_changed.include?(@task.id) %>
 $('#Task_<%= @task.id%>').effect('highlight',{duration: 750});
 <% end %>

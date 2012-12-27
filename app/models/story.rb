@@ -51,7 +51,7 @@ class Story < ActiveRecord::Base
   
   class<<self
     def all_stories
-      [['Any Story', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
+      [['-', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
     end
   end
 

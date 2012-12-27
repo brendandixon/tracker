@@ -17,6 +17,7 @@
                     %li= msg
 
           .row
+            = f.hidden_field :points
             .seven.columns
               - if task.story.present?
                 .title= task.title
@@ -25,10 +26,24 @@
             .three.columns.offset_by_two
               = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
           .row
-            .two.columns
+            .twelve.columns
+              = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])
+              = f.text_area :description
+          .row
+            .two.columns<
+              = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
               = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
-            - if task.story.present?
-              .three.end.columns{style: 'line-height:22px'}= task.story.service.abbreviation
+            .three.columns{style: 'line-height:16px'}<
+              = f.label :story_id, t(:service, scope: [:activerecord, :attributes, :task])
+              = task.story.service.abbreviation if task.story.present?
+            .three.columns.end
+              = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
+              %span.points<
+                .overlay{class: points_to_class(task.points)}<
+                  - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+                    %i.small.glyphicon{class: 'star', data: {points:points}}
+                - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+                  %i.small.glyphicon{class: 'dislikes', data: {points:points}}
           .row
             .three.columns.offset-by-nine
               = f.submit 'Save'
@@ -37,16 +52,24 @@
               \|
               = link_to 'Cancel', task_path(@task), remote: true
 - else
+  - data = task.description.present? ? {width: '350px'} : {}
+  - details = task.description.present? ? task.description : t(:no_details_html, scope: [:activerecord, :labels, :task])
   %li.task_inline#Task{id: task.id, class: classes}
     .row
       .seven.columns
-        .title= task.title
+        .title{class: 'has-tip', title: details, data: data}= task.title
       .three.columns.offset_by_two.last.text_right
         = task_status_tag(task)
         .command_block.on_hover<
           = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
           = glyph_link_to edit_task_path(task), glyph: 'edit', remote:true
     .row
-      .one.columns= task.project.name
-      - if task.story.present?
-        .three.end.columns= task.story.service.abbreviation
+      .two.columns<
+        = task.project.name
+      .three.columns<
+        = task.story.service.abbreviation if task.story.present?
+      .three.columns.end
+        .points<
+          - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
+            %span<
+              %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}

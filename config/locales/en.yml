@@ -36,6 +36,11 @@ en:
         release_date: 'Release Date'
         service_id: 'Service'
         title: 'Title'
+      task:
+        description: 'Details'
+        points: 'Points'
+        project: 'Project'
+        story: 'Story'
     errors:
       models:
         task:
@@ -44,6 +49,7 @@ en:
       story:
         create_tasks: 'Create tasks for the story?'
       task:
+        no_details_html: 'No details.'
         pending: 'Pending'
         in_progress: 'In Progress'
         completed: 'Completed'

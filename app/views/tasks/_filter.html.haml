@@ -31,6 +31,13 @@
         = label_tag 'stories', 'Stories'
         = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     .row
+      .two.columns
+        = label_tag 'points', 'Minimum Points'
+        = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
+      .two.columns.end
+        = label_tag 'points', 'Maximum Points'
+        = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
+    .row
       .four.columns.offset-by-eight.text-right.actions
         = submit_tag 'Apply', name: :apply
         - if @filter.new_record?

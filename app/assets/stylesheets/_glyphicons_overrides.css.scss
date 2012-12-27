@@ -1,28 +1,30 @@
 .glyphbutton {
   position:relative;
-}
-.glyphbutton i:before {
-  position:absolute;
-  top:0;
-  left:0;
-};
-.glyphbutton input {
-  cursor:pointer;
-  background:transparent;
-  border:none;
-  padding:0;
-  position:relative;
-  text-indent:-10000px;
-  z-index:1;
-}
-.glyphbutton input {
-  height:16px;
-  width:16px;
+  i:before {
+    position:absolute;
+    top:0;
+    left:0;
+  }
+  input {
+    cursor:pointer;
+    background:transparent;
+    border:none;
+    padding:0;
+    position:relative;
+    text-indent:-10000px;
+    z-index:1;
+    height:$glyphHeight;
+    width:$glyphWidth;
+  }
 }
 
-.glyphicon input {
-  height:16px;
-  width:16px;
+.glyphicon {
+  height:$glyphHeight;
+  width:$glyphWidth;
+  input {
+    height:$glyphHeight;
+    width:$glyphWidth;
+  }
 }
 
 .glyphlink {
@@ -30,8 +32,8 @@
   display:inline-block;
   padding:0;
   position:relative;
-  height:16px;
-  width:16px;
+  height:$glyphHeight;
+  width:$glyphWidth;
   &:hover {
     color:inherit;
   }

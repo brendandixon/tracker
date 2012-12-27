@@ -2,14 +2,16 @@
 #
 # Table name: tasks
 #
-#  id         :integer          not null, primary key
-#  story_id   :integer
-#  project_id :integer
-#  status     :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  title      :string(255)
-#  rank       :float
+#  id          :integer          not null, primary key
+#  story_id    :integer
+#  project_id  :integer
+#  status      :string(255)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  title       :string(255)
+#  rank        :float
+#  points      :integer
+#  description :text
 #
 
 class Task < ActiveRecord::Base
@@ -18,12 +20,15 @@ class Task < ActiveRecord::Base
   RANK_MINIMUM = Float::MIN
   RANK_MAXIMUM = Float::MAX
 
+  POINTS_MAXIMUM = 5
+  POINTS_MINIMUM = 0
+
   INCOMPLETE = [:pending, :in_progress]
   COMPLETED = [:completed]
   STATUS = INCOMPLETE + COMPLETED
-  STATES = [:all, :complete, :incomplete]
+  STATES = [:complete, :incomplete] + INCOMPLETE + COMPLETED
 
-  attr_accessible :story_id, :project_id, :status, :title
+  attr_accessible :description, :story_id, :points, :project_id, :status, :title
     
   belongs_to :story
   belongs_to :project
@@ -35,6 +40,7 @@ class Task < ActiveRecord::Base
   before_validation :normalize_title
 
   validate :has_title_or_story
+  validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
   validates_uniqueness_of :story_id, scope: :project_id, allow_blank: true
   validates_inclusion_of :status, in: STATUS
   
@@ -45,6 +51,9 @@ class Task < ActiveRecord::Base
   scope :in_status, lambda{|status| where(status: status)}
   scope :completed, where(status: Task::COMPLETED)
   scope :incomplete, where(status: Task::INCOMPLETE)
+
+  scope :at_least_points, lambda{|points| where("points >= ?", points)}
+  scope :no_more_points, lambda{|points| where("points <= ?", points)}
 
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
@@ -66,8 +75,12 @@ class Task < ActiveRecord::Base
   
   class<<self
 
+    def all_points
+      @all_points ||= [['-', '']] + (Task::POINTS_MINIMUM..Task::POINTS_MAXIMUM).map{|p| [p, p]}
+    end
+
     def all_states
-      STATES.map{|state| [state.to_s.titleize, state]}
+      @all_states ||= [['-', '']] + STATES.map{|state| [state.to_s.titleize, state]}
     end
     
     def ensure_story_tasks(f)

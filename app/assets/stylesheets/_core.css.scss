@@ -107,6 +107,40 @@ td {
   float:right;
 }
 
+.points {
+  display:inline-block;
+  position:relative;
+  .overlay {
+    cursor:pointer;
+    position:absolute;
+    left:0;
+    overflow:hidden;
+    white-space:nowrap;
+    z-index:auto;
+    &.zero-points {
+      width:0;
+    }
+    &.one-point {
+      width:$glyphWidth;
+    }
+    &.two-points {
+      width:2*$glyphWidth;
+    }
+    &.three-points {
+      width:3*$glyphWidth;
+    }
+    &.four-points {
+      width:4*$glyphWidth;
+    }
+    &.five-points {
+      width:5*$glyphWidth;
+    }
+  }
+  .task_edit & {
+    cursor:pointer;
+  }
+}
+
 .projects {
   display:inline-block;
   span, a {
@@ -134,22 +168,20 @@ td {
 }
 
 .task_edit {
+  .points {
+    position:relative;
+    top:4px;
+  }
   li:hover {
     background-color:inherit;
+  }
+  textarea {
+    height:100px;
   }
 }
 
 .task_inline {
   font-size:$small;
-  
-  .row {
-    .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten, .eleven {
-      margin:0 8px;
-    }
-    .columns.last {
-      padding-right:4px;
-    }
-  }
 }
 
 .task_list {
