@@ -94,7 +94,7 @@ module Tracker
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-    config.assets.precompile += ['dates.js', 'tasks.js']
+    config.assets.precompile += ['print.css', 'dates.js', 'tasks.js']
     
     config.generators do |g|
       g.template_engine :haml
