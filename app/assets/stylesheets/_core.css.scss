@@ -182,6 +182,9 @@ td {
 
 .task_inline {
   font-size:$small;
+  .description {
+    display:none;
+  }
 }
 
 .task_list {

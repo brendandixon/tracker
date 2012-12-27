@@ -15,7 +15,8 @@
     
   <title>Tracker</title>
   
-  <%= stylesheet_link_tag 'application' %>
+  <%= stylesheet_link_tag 'application', media: :screen %>
+  <%= stylesheet_link_tag 'print', media: :print %>
   <%= stylesheet_link_tag "http://code.jquery.com/ui/#{Tracker::Application.jquery_ui_version}/themes/base/jquery-ui.css" %>
 
   <%= csrf_meta_tags %>
