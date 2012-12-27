@@ -21,20 +21,20 @@
       .three.columns
         = label_tag 'status', 'Status'
         = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
-      .two.columns
+      .two.columns.multi-select
         = label_tag 'projects', 'Projects'
         = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || ''), multiple: true
-      .two.columns
+      .two.columns.multi-select
         = label_tag 'services', 'Services'
         = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services] || ''), multiple: true
-      .five.columns.end
+      .five.columns.end.multi-select
         = label_tag 'stories', 'Stories'
         = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     .row
-      .two.columns
+      .three.columns
         = label_tag 'points', 'Minimum Points'
         = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
-      .two.columns.end
+      .three.columns.end
         = label_tag 'points', 'Maximum Points'
         = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
     .row
