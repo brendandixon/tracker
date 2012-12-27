@@ -23,10 +23,10 @@
         = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
       .two.columns
         = label_tag 'projects', 'Projects'
-        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects]), multiple: true, include_blank: true
+        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects]), multiple: true
       .two.columns
         = label_tag 'services', 'Services'
-        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services]), multiple: true, include_blank: true
+        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services]), multiple: true
       .four.columns.end
         .row
           .five.columns.end
