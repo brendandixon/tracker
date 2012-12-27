@@ -13,8 +13,8 @@
 //= require foundation
 //= require jquery_ujs
 //= require jquery-tooltip/jquery.tooltip
-//= require dates
 //= require filter
+//= require tasks
 
 $(function() {
   $('#notice').delay(1250).fadeOut(800);

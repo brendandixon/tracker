@@ -17,7 +17,7 @@ en:
       in_progress: 'Begin development'
       completed: 'Complete'
     projects:
-      new: 'Add Project'
+      new_html: 'Add Project&#8230;'
       edit: 'Edit Project'
     stories:
       none_html: 'No stories were found.'

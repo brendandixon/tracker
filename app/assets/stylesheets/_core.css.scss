@@ -1,7 +1,3 @@
-td {
-  position:relative;
-}
-
 .cyan {
  color:$cyan;
 }
@@ -62,8 +58,8 @@ td {
   line-height:10px;
   td & {
     position:absolute;
-    top:10px;
-    right:0;
+    top:0;
+    right:5px;
   }
 }
 
@@ -103,7 +99,7 @@ td {
 }
 
 .sortable span {
-  color:#222;
+  color:$cyan;
   float:right;
 }
 
@@ -158,9 +154,12 @@ td {
   label {
     display:inline-block;
   }
+  span {
+    margin:2px 2px;
+  }
 }
 
-.status {
+.service, .status {
   display:inline-block;
   font-size:85%;
   padding:2px;
@@ -211,4 +210,26 @@ td {
   font-size:$large;
   font-weight:$thin;
   margin:2px 0;
+}
+
+table tbody tr {
+  &:hover {
+    outline:1px solid #999;
+  }
+  &.project_inline:hover, &.story_inline:hover {
+    background-color:#ffc;
+  }
+}
+table tbody tr td {
+  position:relative;
+}
+table thead tr th {
+  background-color:#444;
+  color:$white;
+  &.sorted {
+    background-color:$cyan;
+    span, a {
+      color:$white;
+    }
+  }
 }

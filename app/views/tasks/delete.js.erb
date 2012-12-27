@@ -1,5 +1,5 @@
-<%= render 'shared/reset_transients' %>
+<%= render template: 'shared/reset_transients' %>
 $('#Task_<%= @task.id%>').remove();
-$('#Tasks li:nth-child(even)').removeClass('odd').addClass('even');
-$('#Tasks li:nth-child(odd)').removeClass('even').addClass('odd');
-<%= render 'shared/notice' if flash.present? && flash[:notice].present? %>
+$('#Main li:nth-child(even)').removeClass('odd').addClass('even');
+$('#Main li:nth-child(odd)').removeClass('even').addClass('odd');
+<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

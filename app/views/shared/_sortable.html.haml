@@ -3,8 +3,13 @@
 - sort = session[:sort][controller.controller_name]
 - descending_field = "-#{field}"
 - sorted_descending = sort.include?(descending_field)
+- sorted = sorted_descending || sort.include?(field)
+- sort_field = sorted_descending ? field : descending_field
+- classes ||= ''
+- classes << ' sorted'
 
-.sortable
-  = link_to url_for(controller: controller.controller_name, action: :index, sort: sorted_descending ? field : descending_field), remote: true do
-    = name
-    = content_tag('span', sorted_descending ? '▼' : '▲', class: '') if sorted_descending || sort.include?(field)
+%th{class: classes}
+  .sortable
+    = link_to url_for(controller: controller.controller_name, action: :index, sort: sort_field), remote: true do
+      = name
+      = content_tag('span', sorted_descending ? '▼' : '▲') if sorted

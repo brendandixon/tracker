@@ -29,14 +29,14 @@ li.name h1 i:before {
   border:none;
 }
 .has-tip.label {
-	color:#fff;
+	color:$white;
 }
 .has-tip:hover {
   border:none;
 };
 
 .name h1 {
-  color:#fff;
+  color:$white;
   font-size:$extra-large;
   opacity:0.85;
   padding:0;
@@ -54,12 +54,12 @@ li.name h1 i:before {
 }
 
 .top-bar ul > li:not(.name).active {
-  background: #2ba6cb;
-  border-color: #2284a1;
+  background:$cyan;
+  border-color:#2284a1;
 }
 
 .top-bar ul > li:not(.name).active a {
-  color:#fff;
-  background: #2ba6cb;
-  border-color: #2284a1;
+  color:$white;
+  background:$cyan;
+  border-color:#2284a1;
 }

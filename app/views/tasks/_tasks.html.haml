@@ -5,4 +5,4 @@
   .nine.columns.centered#Main
     .ul.task_list#TaskList
       = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
-    = javascript_include_tag 'tasks'
+    = javascript_include_tag 'task_list'

@@ -13,8 +13,10 @@
  *= require_self
  */
 
+$red:#c00;
 $cyan:#2ba6cb;
 $gray:#d9d9d9;
+$white:#fff;
 
 $errorColor:#b00;
 
@@ -43,7 +45,7 @@ $taskPoints:5;
   padding:0;
 }
 #notice {
-  color:white;
+  color:$white;
 }
 
 .field_with_errors {
@@ -61,8 +63,8 @@ $taskPoints:5;
   margin:0 0 10px;
   padding:0;
   h2 {
-    background-color:#c00;
-    color:#fff;
+    background-color:$red;
+    color:$white;
     text-align: left;
     font-weight: bold;
     margin:0;
@@ -70,7 +72,7 @@ $taskPoints:5;
     font-size:85%;
   }
   ul {
-    background-color:#fff;
+    background-color:$white;
     margin:0;
     padding:4px;
     li:before {
@@ -81,7 +83,7 @@ $taskPoints:5;
       width:8px;
     }
     li {
-      background-color:#fff;
+      background-color:$white;
       border:none;
       font-size:90%;
       list-style:none;

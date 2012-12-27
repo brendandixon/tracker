@@ -1,32 +1,51 @@
-= form_for @task do |f|
-  - if @task.errors.any?
-    .row
-      .twelve.columns#error_explanation
-        %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
-        %ul
-          - @task.errors.full_messages.each do |msg|
-            %li= msg
+- remote = false if remote.nil?
+- task ||= @task
 
-  .row
-    .seven.columns
-      - if (@task.new_record? && params[:story])
-        = f.select :story_id, Story.in_title_order.all.collect {|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
-      - elsif @task.story.present?
-        .title.large= @task.title
-      - else
-        = f.text_field :title
-    .three.columns.offset_by_two{style: "position:relative; top:3px;"}
-      = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
-  .row
-    .two.columns
-      = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
-    - if @task.story.present?
-      .two.end.columns{style: 'line-height:22px'}= @task.story.service.abbreviation
-  .row
-    .four.columns.offset-by-eight.text-right
-      = f.submit 'Save'
-      - unless @task.new_record?
-        \|
-        = link_to 'Delete', @task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }
-      \|
-      = link_to 'Cancel', :back
+.row.task_edit
+  .twelve.columns
+    = form_for task, remote:remote do |f|
+      - if task.errors.any?
+        .row
+          .twelve.columns#error_explanation
+            %h2= "#{pluralize(task.errors.count, "error")} prohibited this task from being saved:"
+            %ul
+              - task.errors.full_messages.each do |msg|
+                %li= msg
+
+      .row
+        = f.hidden_field :points
+        .seven.columns
+          - if task.story.present?
+            .title= task.title
+          - else
+            = f.text_field :title
+        .three.columns.offset_by_two
+          = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
+      .row
+        .twelve.columns
+          = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])
+          = f.text_area :description
+      .row
+        .two.columns<
+          = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
+          = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
+        .three.columns{style: 'line-height:16px'}<
+          - if task.story.present?
+            = f.label :story_id, t(:service, scope: [:activerecord, :attributes, :task])
+            = task.story.service.abbreviation
+        .three.columns.end
+          = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
+          %span.points<
+            .overlay{class: points_to_class(task.points)}<
+              - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+                %i.small.glyphicon{class: 'star', data: {points:points}}
+            - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+              %i.small.glyphicon{class: 'dislikes', data: {points:points}}
+      .row
+        .four.columns.offset-by-eight.text-right
+          = f.submit 'Save'
+          - unless task.new_record?
+            \|
+            = link_to 'Delete', task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }, remote:remote
+          \|
+          = link_to 'Cancel', task.new_record? ? tasks_path : task_path(task), remote:remote

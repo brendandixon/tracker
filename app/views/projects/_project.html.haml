@@ -1,4 +1,11 @@
-%tr#Project{id: project.id}
-  %td= project.name
-  %td
-    = render partial: 'shared/links', locals:{object: project}
+- classes = cycle('odd', 'even')
+- in_edit_mode ||= []
+- project ||= @project
+
+- if in_edit_mode.include?(project.id)
+  %tr.project_edit#Project{id: project.id, class: classes}
+    = render partial: 'edit', locals:{project:project, remote:true, stand_alone:false}
+
+- else
+  %tr.project_inline#Project{id: project.id, class: classes}
+    = render partial: 'show', locals:{project:project, remote:true, stand_alone:false}

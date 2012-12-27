@@ -1,9 +1,9 @@
-.six.columns.centered#Main
+.nine.columns.centered#Main
   %table.twelve
     %thead
       %tr
-        %th.four= render partial: 'shared/sortable', locals: {name: 'Name', field: 'name'}
-        %th.one.end
+        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
+        %th.seven= 'Services'
 
     %tbody
       = render @projects

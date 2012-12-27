@@ -6,10 +6,10 @@
     %table.twelve
       %thead
         %tr
-          %th.three= render partial: 'shared/sortable', locals: {name: 'Title', field: 'story'}
-          %th.two= render partial: 'shared/sortable', locals: {name: 'Service', field: 'service'}
-          %th.two= render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date'}
-          %th.one= render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu'}
+          = render partial: 'shared/sortable', locals: {name: 'Title', field: 'story', classes: 'three'}
+          = render partial: 'shared/sortable', locals: {name: 'Service', field: 'service', classes: 'two'}
+          = render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date', classes: 'two'}
+          = render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu', classes: 'one'}
           %th.three Projects
 
       %tbody

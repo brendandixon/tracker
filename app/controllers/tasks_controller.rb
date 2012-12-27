@@ -25,8 +25,8 @@ class TasksController < ApplicationController
     query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
     query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
     
-    query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /1|2|3|4|5/
-    query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /1|2|3|4|5/
+    query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
+    query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
 
     query = query.in_rank_order
     
