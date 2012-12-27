@@ -14,7 +14,7 @@ class StoriesController < ApplicationController
             elsif @filter.content[:status] == :incomplete
               Task::INCOMPLETE
             else
-              []
+              @filter.content[:status]
             end
     query = query.in_status(status) if status.present?
     
