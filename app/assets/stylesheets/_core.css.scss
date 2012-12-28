@@ -39,9 +39,10 @@
 }
 
 .even {
+  background-color:$white;
 }
 .odd {
-  background-color:#eee;
+  background-color:$lightGray;
 }
 
 .disabled {
@@ -56,10 +57,16 @@
 .command_block {
   display:inline-block;
   line-height:10px;
-  td & {
+  tr & {
     position:absolute;
-    top:0;
-    right:5px;
+  }
+  tr.project_inline & {
+    top:4px;
+    right:8px;
+  }
+  tr.story_inline & {
+    top:10px;
+    right:2px;
   }
 }
 
@@ -177,6 +184,13 @@
   display:inline-block;
   font-size:85%;
   padding:2px;
+}
+.service {
+  width:122px;
+}
+.status {
+  position:relative;
+  top:1px;
   width:100px;
 }
 
@@ -208,7 +222,7 @@
   li {
     list-style-type:none;
     margin:0;
-    padding:4px 8px;
+    padding:6px 8px;
   }
   li:hover {
     outline:1px solid #999;
