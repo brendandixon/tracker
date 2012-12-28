@@ -9,7 +9,6 @@
 #
 
 class Project < ActiveRecord::Base
-
   attr_accessible :name, :services
 
   has_many :supported_services, dependent: :destroy
@@ -21,7 +20,9 @@ class Project < ActiveRecord::Base
   validates_presence_of :name
   
   scope :with_name, lambda {|name| where(name: name) }
-  
+
+  scope :for_services, lambda{|*services| joins(:supported_services).where("? = (select count(*) from supported_services as ss where ss.service_id in (?) and ss.project_id = projects.id)", services.length, services).uniq }
+
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
 
   class<<self

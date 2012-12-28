@@ -9,8 +9,11 @@ end
 Tracker::Application.routes.draw do
   root to: 'tasks#index'
 
-  resources :projects
   resources :services
+
+  resources :projects do
+    delete 'index', on: :collection
+  end
   
   resources :stories do
     delete 'index', on: :collection

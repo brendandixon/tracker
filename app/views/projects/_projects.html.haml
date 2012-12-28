@@ -1,9 +1,14 @@
-.nine.columns.centered#Main
-  %table.twelve
-    %thead
-      %tr
-        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
-        %th.seven= 'Services'
+- if @projects.empty?
+  .eleven.columns.centered#Main
+    %h3.subheader= t(:none_html, scope: [:controllers, :projects])
 
-    %tbody
-      = render @projects
+- else
+  .nine.columns.centered#Main
+    %table.twelve
+      %thead
+        %tr
+          = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
+          %th.seven= 'Services'
+
+      %tbody
+        = render @projects

@@ -2,7 +2,7 @@
 - classes = []
 - classes << 'visible' if !@filter.errors.empty? || params[:show]
 
-.filter_container.eleven.columns.centered#Filter{data: {filter: true}, class: classes}
+.filter_container.eleven.columns.centered#Filter{data: {filter: 'data-filter'}, class: classes}
   = form_for @filter, url: stories_path, method: :get, remote: true do |f|
     - if @filter.errors.any?
       .row
@@ -11,13 +11,14 @@
           %ul
             - @filter.errors.full_messages.each do |msg|
               %li= msg
-    .row
+    .row.section
       = f.hidden_field :id
       = f.hidden_field :area
       .twelve.columns
         = f.label :name
         = f.text_field :name
-    .row
+    
+    .row.section
       .three.columns
         = label_tag 'status', 'Status'
         = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
@@ -35,7 +36,8 @@
           .five.columns.end
             = label_tag 'after', 'Due on or Before'
             = text_field_tag 'filter[content][before]', content[:before], data: {datefield: true}
-    .row
+    
+    .row.section
       .four.columns.offset-by-eight.text-right.actions
         = submit_tag 'Apply', name: :apply
         - if @filter.new_record?
@@ -45,7 +47,8 @@
           \|
           = submit_tag 'Update'
           \|
-          = link_to 'Delete', stories_path(destroy: true), method: :delete, data: { confirm: t(:warning_html, scope: :filter) }, remote: true
+          = link_to 'Delete', stories_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true
         \|
         = link_to 'Close', '#', data: {filter_close: true}
+
 = javascript_include_tag 'dates'

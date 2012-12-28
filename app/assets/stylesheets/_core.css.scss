@@ -63,6 +63,12 @@
   }
 }
 
+.description {
+  margin:0 0 0 15px;
+  padding:4px;
+  min-height:100px;
+}
+
 .on_hover {
   visibility:hidden;
   li:hover &, tr:hover & {
@@ -75,6 +81,10 @@
   display:none;
   &.visible {
     display:block;
+  }
+  .row.section {
+    border:none;
+    margin-bottom:12px;
   }
   form {
     border:1px solid #ccc;
@@ -148,6 +158,10 @@
   span.secondary, a.secondary {
     color:#999;
   }
+}
+
+.row.section {
+  margin-bottom:8px;
 }
 
 .services {

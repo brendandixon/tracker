@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  include FilterHandler
   include SortHandler
 
   DEFAULT_SORT = ['-name']
@@ -9,6 +10,24 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     query = Project
+
+    services = @filter.content[:services] || []
+    services = services.map{|s| s.present? ? s : nil}.compact
+    services = [] if services.any?{|s| s =~ /all/i}
+    services = services.map do |service|
+      if service.is_a?(Integer)
+        service
+      elsif service =~ /^\d+$/
+        service.to_i
+      else
+        service = Service.with_abbreviation(service).first
+        service.present? ? service.id : nil
+      end
+    end.compact
+
+    query = query.for_services(*services) if services.present?
+
+    query.includes(:supported_services).includes(:services)
     
     @sort.each do |sort|
       case sort
@@ -21,7 +40,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { render 'shared/index'}
-      format.js # index.js.erb
+      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
       format.json { render json: @projects }
     end
   end

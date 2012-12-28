@@ -27,7 +27,7 @@
         = f.check_box :create_tasks
         = I18n.t(:create_tasks, scope: [:activerecord, :labels, :story])
   .row
-    .four.columns.offset-by-eight.text-right
+    .four.columns.offset-by-eight.text-right.actions
       = f.submit 'Save'
       - unless @story.new_record?
         \|

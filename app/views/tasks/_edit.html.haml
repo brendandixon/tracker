@@ -42,7 +42,7 @@
             - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
               %i.small.glyphicon{class: 'dislikes', data: {points:points}}
       .row
-        .four.columns.offset-by-eight.text-right
+        .four.columns.offset-by-eight.text-right.actions
           = f.submit 'Save'
           - unless task.new_record?
             \|
