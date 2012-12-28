@@ -9,7 +9,8 @@
     .three.columns= "Velocity: #{team.velocity}"
     .three.columns.end= "Sprint Days: #{team.sprint_days}"
   .row
-    .tweleve.columns
+    .twelve.columns
+      = team_project_labels(team.projects)
   .row<
     .four.columns.offset-by-eight.text-right.actions
       = link_to 'Edit', edit_team_path(team)
@@ -22,5 +23,7 @@
   %td= team.velocity
   %td= team.sprint_days
   %td
+    .projects
+      = team_project_labels(team.projects)
     .command_block.on_hover<
       = glyph_link_to edit_team_path(team), glyph: 'edit', remote:remote

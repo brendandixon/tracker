@@ -1,6 +1,6 @@
 .row<
   .seven.columns.title= @story.title
-  .five.columns.text-right= project_labels(@story)
+  .five.columns.text-right= story_project_labels(@story)
 .row<
   .two.columns= @story.service.abbreviation if @story.service.present?
   .two.columns= @story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if @story.release_date.present?

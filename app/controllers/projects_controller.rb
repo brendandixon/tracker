@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { render 'shared/index'}
-      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
       format.json { render json: @projects }
     end
   end

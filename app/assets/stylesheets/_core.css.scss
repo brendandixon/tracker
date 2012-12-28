@@ -68,6 +68,10 @@
     top:10px;
     right:2px;
   }
+  tr.team_inline & {
+    top:10px;
+    right:2px;
+  }
 }
 
 .description {
@@ -154,8 +158,12 @@
   }
 }
 
-.projects {
+.projects, .teams {
   display:inline-block;
+  label {
+    display:inline-block;
+    line-height:$small;
+  }
   span, a {
     display:inline-block;
     font-size:$small;
@@ -164,6 +172,10 @@
   }
   span.secondary, a.secondary {
     color:#999;
+  }
+  .row {
+    line-height:$small;
+    height:$small;
   }
 }
 
@@ -174,9 +186,14 @@
 .services {
   label {
     display:inline-block;
+    line-height:$small;
   }
   span {
     margin:2px 2px;
+  }
+  .row {
+    line-height:$small;
+    height:$small;
   }
   .status {
     width:122px;
@@ -185,7 +202,7 @@
 
 .service, .status {
   display:inline-block;
-  font-size:85%;
+  font-size:$small;
   padding:2px;
 }
 .service {

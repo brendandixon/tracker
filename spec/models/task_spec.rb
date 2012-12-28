@@ -10,7 +10,7 @@
 #  updated_at  :datetime         not null
 #  title       :string(255)
 #  rank        :float
-#  points      :integer
+#  points      :integer          default(0)
 #  description :text
 #
 

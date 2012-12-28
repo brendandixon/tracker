@@ -14,7 +14,7 @@
   .row
     .seven.columns
       = f.text_field :title
-    .five.columns.text-right= project_labels(@story)
+    .five.columns.text-right= story_project_labels(@story)
   .row
     .two.columns
       = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }

@@ -1,10 +1,11 @@
 - remote = false if remote.nil?
 - stand_alone = true if stand_alone.nil?
 - team ||= @team
+- logger.debug "TEAM: #{team.projects}"
 
 = content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 4} do
   .row.team_edit
-    .twelve.columns
+    .twelve{class: stand_alone ? '' : 'columns'}
       = form_for team, remote:remote do |f|
         - if team.errors.any?
           .row
@@ -18,13 +19,21 @@
           .seven.columns
             = f.label :name
             = f.text_field :name
-        .row
-          .three.columns
-            = f.label :velocity
-            = f.text_field :velocity
-          .three.columns.end
-            = f.label :sprint_days
-            = f.text_field :sprint_days
+            .row
+              .six.columns
+                = f.label :velocity
+                = f.text_field :velocity
+              .six.columns
+                = f.label :sprint_days
+                = f.text_field :sprint_days
+          .five.columns<
+            = f.label :projects
+            - Project.active.each_slice(3) do |projects|
+              .row<
+                - projects.each do |project|
+                  .four.columns.projects<
+                    = check_box_tag 'team[projects][]', project.id, @team.projects.include?(project), id: "team_project_#{project.id}"
+                    = label_tag "team_project_#{project.id}", project.name, class: 'small'
         .row
           .four.columns.offset-by-eight.text-right.actions
             = f.submit 'Save'

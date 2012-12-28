@@ -20,7 +20,10 @@ module FilterHandler
 
     normalize_filter
 
-    @filter.save if params[:commit]
+    if params[:commit]
+      notice = t(@filter.new_record? ? :created_html : :updated_html, scope: :filter)
+      flash[:notice] = notice if @filter.save
+    end
 
     session[:filter][self.controller_name] = @filter.to_hash
   end
@@ -43,12 +46,12 @@ module FilterHandler
     content[:projects] = params[:projects] || content[:projects] || []
     content[:projects] = content[:projects].split(',') if content[:projects].is_a?(String)
     content[:projects] = content[:projects].map{|p| p.present? ? p : nil}.compact
-    content[:projects] = nil if content[:projects].any?{|p| p =~ /all/i}
+    content[:projects] = [] if content[:projects].any?{|p| p =~ /all/i}
 
     content[:services] = params[:services] || content[:services] || []
     content[:services] = content[:services].split(',') if content[:services].is_a?(String)
     content[:services] = content[:services].map{|s| s.present? ? s : nil}.compact
-    content[:services] = nil if content[:services].any?{|s| s =~ /all/i}
+    content[:services] = [] if content[:services].any?{|s| s =~ /all/i}
 
     content[:status] = params[:status] || content[:status]
     content[:status] = content[:status].downcase.to_sym if content[:status].is_a?(String)
@@ -56,6 +59,11 @@ module FilterHandler
     content[:stories] = params[:stories] || content[:stories] || []
     content[:stories] = content[:stories].split(',') if content[:stories].is_a?(String)
     content[:stories] = content[:stories].map{|s| s =~ /^\d+$/ ? s : nil}.compact
+
+    content[:teams] = params[:teams] || content[:teams] || []
+    content[:teams] = content[:teams].split(',') if content[:teams].is_a?(String)
+    content[:teams] = content[:teams].map{|t| t.present? ? t : nil}.compact
+    content[:teams] = [] if content[:teams].any?{|t| t =~ /all/i}
 
     @filter.content = content.reject{|k, v| v.blank?}
   end

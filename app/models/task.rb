@@ -10,7 +10,7 @@
 #  updated_at  :datetime         not null
 #  title       :string(255)
 #  rank        :float
-#  points      :integer
+#  points      :integer          default(0)
 #  description :text
 #
 
@@ -34,6 +34,7 @@ class Task < ActiveRecord::Base
   belongs_to :project
   has_many :tagged_items, as: :taggable
   has_many :tags, through: :tagged_items
+  has_many :teams, through: :project
   
   symbolize :status
   
@@ -44,9 +45,10 @@ class Task < ActiveRecord::Base
   validates_uniqueness_of :story_id, scope: :project_id, allow_blank: true
   validates_inclusion_of :status, in: STATUS
   
-  scope :for_stories, lambda {|stories| where(story_id: stories)}
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
+  scope :for_stories, lambda {|stories| where(story_id: stories)}
+  scope :for_teams, lambda{|teams| joins(:project).where('projects.team_id IN (?)', teams)}
 
   scope :in_status, lambda{|status| where(status: status)}
   scope :completed, where(status: Task::COMPLETED)

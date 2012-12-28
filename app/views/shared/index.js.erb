@@ -1,0 +1,5 @@
+<%= render template: 'shared/reset_transients' %>
+<%= render template: 'shared/menu' %>
+<%= render template: 'shared/filter' %>
+$('#Main').replaceWith('<%= escape_javascript(render(partial: "#{controller.controller_name}"))%>');
+<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

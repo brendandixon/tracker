@@ -19,9 +19,9 @@
         = f.text_field :name
     
     .row.section
-      .three.columns
-        = label_tag 'status', 'Status'
-        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
+      .two.columns.multi-select
+        = label_tag 'teams', 'Teams'
+        = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || ''), multiple: true
       .two.columns.multi-select
         = label_tag 'projects', 'Projects'
         = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || ''), multiple: true
@@ -33,6 +33,9 @@
         = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     
     .row.section
+      .three.columns
+        = label_tag 'status', 'Status'
+        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
       .three.columns
         = label_tag 'points', 'Minimum Points'
         = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])

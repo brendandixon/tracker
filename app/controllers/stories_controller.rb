@@ -50,7 +50,7 @@ class StoriesController < ApplicationController
     
     respond_to do |format|
       format.html { render 'shared/index' }
-      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
       format.json { render json: @stories }
     end
   end

@@ -1,6 +1,6 @@
 module StoriesHelper
   
-  def project_labels(story, only_projects = [])
+  def story_project_labels(story, only_projects = [])
     projects = Project.active.map do |project|
             next unless only_projects.blank? || only_projects.include?(project.name)
             task = story.tasks.detect{|task| task.project == project ? task : nil}

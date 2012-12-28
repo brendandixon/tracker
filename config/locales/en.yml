@@ -4,8 +4,10 @@
 en:
   filter:
     clear_html: 'Clear Filter'
+    created_html: 'Filter was successfully created.'
     edit_html: 'Edit Filter&hellip;'
     new_html: 'New Filter&hellip;'
+    updated_html: 'Filter was successfully updated.'
     warning_html: '"WARNING: Are you sure you want to delete this filter?"'
   controllers:
     actions:

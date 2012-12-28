@@ -18,12 +18,21 @@ class TasksController < ApplicationController
     query = query.in_status(status) if status.present?
     
     projects = @filter.content[:projects] || []
+    projects = projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact
+    
     services = @filter.content[:services] || []
+    services = services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact
+    
     stories = @filter.content[:stories] || []
+    stories = stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
+    
+    teams = @filter.content[:teams] || []
+    teams = teams.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
 
-    query = query.for_stories(stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact) if stories.present?
-    query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
-    query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
+    query = query.for_projects(projects) if projects.present?
+    query = query.for_services(services) if services.present?
+    query = query.for_stories(stories) if stories.present?
+    query = query.for_teams(teams) if teams.present?
     
     query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
     query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
@@ -34,7 +43,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render 'shared/index'}
-      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
       format.json { render json: @tasks }
     end
   end

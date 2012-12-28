@@ -8,11 +8,11 @@ class TeamsController < ApplicationController
   def index
     query = Team
 
-    @teams = query.all
+    @teams = query.includes(:projects).all
 
     respond_to do |format|
       format.html { render 'shared/index'}
-      format.js { render @filter.errors.empty? ? 'index' : 'filter' }
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
       format.json { render json: @teams }
     end
   end
@@ -55,6 +55,7 @@ class TeamsController < ApplicationController
   # POST /teams
   # POST /teams.json
   def create
+    params[:team][:projects] = Project.find_all_by_id(params[:team][:projects]) if params[:team][:projects].present?
     @team = Team.new(params[:team])
 
     respond_to do |format|
@@ -74,6 +75,7 @@ class TeamsController < ApplicationController
   # PUT /teams/1
   # PUT /teams/1.json
   def update
+    params[:team][:projects] = Project.find_all_by_id(params[:team][:projects]) if params[:team][:projects].present?
     @team = Team.find(params[:id])
 
     respond_to do |format|

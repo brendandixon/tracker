@@ -6,6 +6,7 @@
 #  name       :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  team_id    :integer
 #
 
 class Project < ActiveRecord::Base
@@ -24,6 +25,7 @@ class Project < ActiveRecord::Base
   scope :with_name, lambda {|name| where(name: name) }
 
   scope :for_services, lambda{|*services| joins(:supported_services).where("? = (select count(*) from supported_services as ss where ss.service_id in (?) and ss.project_id = projects.id)", services.length, services).uniq }
+  scope :for_team, lambda{|team| where(team_id: (team.is_a?(Team) ? team.id : team))}
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
 

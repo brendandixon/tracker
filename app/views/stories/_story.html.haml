@@ -7,6 +7,6 @@
   %td
     %a{href: story.contact_us_link}= story.contact_us_number
   %td
-    = project_labels(story, @filter.content[:projects])
+    = story_project_labels(story, @filter.content[:projects])
     .command_block.on_hover<
       = glyph_link_to edit_story_path(story), glyph: 'edit'
