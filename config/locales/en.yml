@@ -17,18 +17,25 @@ en:
       in_progress: 'Begin development'
       completed: 'Complete'
     projects:
+      name_html: 'Projects'
       none_html: 'No projects were found.'
       new_html: 'Add Project&#8230;'
       edit_html: 'Edit Project&#8230;'
     stories:
+      name_html: 'Stories'
       none_html: 'No stories were found.'
       new_html: 'Add Story&#8230;'
       edit_html: 'Edit Story&#8230;'
     tasks:
+      name_html: 'Tasks'
       none_html: 'No tasks were found.'
       new_html: 'Add Task&#8230;'
       new_story_html: 'Add Story Task&#8230;'
       edit_html: 'Edit Task&#8230;'
+    teams:
+      name_html: 'Teams'
+      none_html: 'No teams were found.'
+      new_html: 'Add Team&#8230;'
   activerecord:
     attributes:
       story:
@@ -42,6 +49,11 @@ en:
         points: 'Points'
         project: 'Project'
         story: 'Story'
+      team:
+        name: 'Name'
+        velocity: 'Velocity'
+        sprint_days: 'Sprint Days'
+        project_id: 'Project'
     errors:
       models:
         task:

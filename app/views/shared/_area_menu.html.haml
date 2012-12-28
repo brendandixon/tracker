@@ -2,11 +2,12 @@
 - disable_filter = params[:action] != 'index' || !controller.template_exists?('filter', [controller.controller_name], true)
 
 %ul#AreaMenu
-  - [:stories, :tasks, :projects].each do |area|
-    %li.divider
-    %li{class: current_area == area && controller.action_name == 'index' ? 'active' : nil}
-      = link_to area.to_s.titleize, url_for(controller: area, action: :index)
-  %ul
+  %li.divider
+  - [[:tasks, 'list'], [:stories, 'notes_2'], [:projects, 'folder_open'], [:teams, 'group']].each do |area|
+    - classes = "has-tip #{current_area == area.first && controller.action_name == 'index' ? 'active' : nil}"
+    %li{class: classes, title: t(:name_html, scope:[:controllers, area.first])}
+      = glyph_link_to url_for(controller: area.first, action: :index), glyph: "white small #{area.last}"
+  %ul.right
     %li.divider
       %li.has-dropdown
         = glyph_link_to '#', glyph:'white small circle_plus'

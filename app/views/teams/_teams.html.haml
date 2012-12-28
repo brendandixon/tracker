@@ -1,0 +1,16 @@
+- if @teams.empty?
+  .eleven.columns.centered#Main
+    %h3.subheader= t(:none_html, scope: [:controllers, :teams])
+
+- else
+  .nine.columns.centered#Main
+    %table.twelve
+      %thead
+        %tr
+          = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
+          %th.two= 'Velocity'
+          %th.two= 'Sprint Days'
+          %th.six= 'Projects'
+
+      %tbody
+        = render @teams

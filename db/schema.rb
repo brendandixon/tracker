@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121227043451) do
+ActiveRecord::Schema.define(:version => 20121228040508) do
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20121227043451) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "team_id"
   end
 
   add_index "projects", ["name"], :name => "index_projects_on_name"
@@ -99,5 +100,15 @@ ActiveRecord::Schema.define(:version => 20121227043451) do
   add_index "tasks", ["rank"], :name => "index_tasks_on_rank"
   add_index "tasks", ["status"], :name => "index_stories_on_status"
   add_index "tasks", ["story_id"], :name => "index_stories_on_feature_id"
+
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.integer  "velocity"
+    t.integer  "sprint_days", :default => 7
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "teams", ["name"], :name => "index_teams_on_name"
 
 end

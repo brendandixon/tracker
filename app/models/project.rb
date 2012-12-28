@@ -11,6 +11,8 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :services
 
+  belongs_to :team
+
   has_many :supported_services, dependent: :destroy
   has_many :services, through: :supported_services
 

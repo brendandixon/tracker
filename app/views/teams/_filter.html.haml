@@ -1,0 +1,55 @@
+- content = @filter.content || {}
+- classes = []
+- classes << 'visible' if !@filter.errors.empty? || params[:show]
+
+.filter_container.nine.columns.centered#Filter{data: {filter: 'data-filter'}, class: classes}
+  = form_for @filter, url: tasks_path, method: :get, remote: true do |f|
+    - if @filter.errors.any?
+      .row
+        .twelve.columns#error_explanation
+          %h2= "#{pluralize(@filter.errors.count, "error")} prohibited this filter from being saved:"
+          %ul
+            - @filter.errors.full_messages.each do |msg|
+              %li= msg
+    .row.section
+      = f.hidden_field :id
+      = f.hidden_field :area
+      .twelve.columns
+        = f.label :name
+        = f.text_field :name
+    
+    .row.section
+      .three.columns
+        = label_tag 'status', 'Status'
+        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
+      .two.columns.multi-select
+        = label_tag 'projects', 'Projects'
+        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || ''), multiple: true
+      .two.columns.multi-select
+        = label_tag 'services', 'Services'
+        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services] || ''), multiple: true
+      .five.columns.end.multi-select
+        = label_tag 'stories', 'Stories'
+        = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
+    
+    .row.section
+      .three.columns
+        = label_tag 'points', 'Minimum Points'
+        = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
+      .three.columns.end
+        = label_tag 'points', 'Maximum Points'
+        = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
+    
+    .row
+      .four.columns.offset-by-eight.text-right.actions
+        = submit_tag 'Apply', name: :apply
+        - if @filter.new_record?
+          \|
+          = submit_tag 'Save'
+        - else
+          \|
+          = submit_tag 'Update'
+          \|
+          = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true
+        \|
+        = link_to 'Close', '#', data: {filter_close: true}

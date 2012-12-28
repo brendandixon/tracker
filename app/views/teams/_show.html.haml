@@ -1,0 +1,26 @@
+- remote = false if remote.nil?
+- stand_alone = true if stand_alone.nil?
+- team ||= @team
+
+- if stand_alone
+  .row
+    .twelve.columns= team.name
+  .row
+    .three.columns= "Velocity: #{team.velocity}"
+    .three.columns.end= "Sprint Days: #{team.sprint_days}"
+  .row
+    .tweleve.columns
+  .row<
+    .four.columns.offset-by-eight.text-right.actions
+      = link_to 'Edit', edit_team_path(team)
+      \|
+      = link_to 'Delete', team, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this team?" }, remote:remote
+      \|
+      = link_to 'Back', teams_path
+- else
+  %td= team.name
+  %td= team.velocity
+  %td= team.sprint_days
+  %td
+    .command_block.on_hover<
+      = glyph_link_to edit_team_path(team), glyph: 'edit', remote:remote

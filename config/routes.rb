@@ -27,6 +27,8 @@ Tracker::Application.routes.draw do
       post 'rank', constraints: TaskRankConstraint.new
     end
   end
+
+  resources :teams
   
   resources :test if Rails.is_test?
 
