@@ -1,5 +1,5 @@
 - task ||= @task
-- description = task.description.present? ? task.description : 'No details.'
+- description = task.description.present? ? task.description : t(:no_details_html, scope: [:activerecord, :labels, :task])
 
 .row.section<
   .seven.columns.title= task.title

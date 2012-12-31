@@ -27,4 +27,14 @@ module TasksHelper
     content_tag('span', (project.present? ? project.name : I18n.t(task.status, scope: [:activerecord, :labels, :task])), options)
   end
 
+  def title_options(task)
+    return {} unless task.description.present?
+    options = {
+      class: 'has-tip',
+      title: task.description
+    }
+    options[:data] = {width: '350px'} if task.description.length > (350 / 7)
+    options
+end
+
 end

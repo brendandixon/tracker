@@ -9,12 +9,10 @@
     = render partial: 'edit', locals: {task:task, remote:true}
 
 - else
-  - data = task.description.present? ? {width: '350px'} : {}
-  - details = task.description.present? ? task.description : t(:no_details_html, scope: [:activerecord, :labels, :task])
   %li.task_inline#Task{id: task.id, class: classes}
     .row
       .seven.columns
-        .title{class: 'has-tip', title: details, data: data}= task.title
+        .title{title_options(task)}= task.title
       .three.columns.offset_by_two.last.text_right
         = task_status_tag(task)
         .command_block.on_hover<
