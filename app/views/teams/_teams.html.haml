@@ -8,8 +8,8 @@
       %thead
         %tr
           = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'three'}
-          %th.two= 'Velocity'
-          %th.two= 'Sprint Days'
+          = render partial: 'shared/sortable', locals: {name: 'Velocity', field: 'velocity', classes: 'two'}
+          = render partial: 'shared/sortable', locals: {name: 'Sprint Days', field: 'days', classes: 'two'}
           %th.five= 'Projects'
 
       %tbody

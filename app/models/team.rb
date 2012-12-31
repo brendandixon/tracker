@@ -20,6 +20,8 @@ class Team < ActiveRecord::Base
   validates_numericality_of :sprint_days, greater_than: 0, only_integer: true, allow_blank: true
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
+  scope :in_sprint_days_order, lambda{|dir = 'ASC'| order("sprint_days #{dir}")}
+  scope :in_velocity_order, lambda{|dir = 'ASC'| order("velocity #{dir}")}
 
   class<<self
     def all_teams

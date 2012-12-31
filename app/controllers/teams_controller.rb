@@ -1,5 +1,8 @@
 class TeamsController < ApplicationController
   include FilterHandler
+  include SortHandler
+
+  DEFAULT_SORT = ['-name']
 
   before_filter :ensure_initial_state
 
@@ -8,7 +11,20 @@ class TeamsController < ApplicationController
   def index
     query = Team
 
-    @teams = query.includes(:projects).in_name_order.all
+    query = query.includes(:projects)
+
+    @sort.each do |sort|
+      case sort
+      when '-name' then query = query.in_name_order('ASC')
+      when 'name' then query = query.in_name_order('DESC')
+      when '-days' then query = query.in_sprint_days_order('ASC')
+      when 'days' then query = query.in_sprint_days_order('DESC')
+      when '-velocity' then query = query.in_velocity_order('ASC')
+      when 'velocity' then query = query.in_velocity_order('DESC')
+      end
+    end
+
+    @teams = query
 
     respond_to do |format|
       format.html { render 'shared/index'}
