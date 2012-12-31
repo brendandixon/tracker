@@ -3,6 +3,8 @@ class StoriesController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-date']
+
+  before_filter :ensure_initial_state
   
   # GET /stories
   # GET /stories.json
@@ -62,6 +64,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
+      format.js { render 'story' }
       format.json { render json: @story }
     end
   end
@@ -73,6 +76,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
+      format.js { render 'story' }
       format.json { render json: @story }
     end
   end
@@ -80,9 +84,11 @@ class StoriesController < ApplicationController
   # GET /stories/1/edit
   def edit
     @story = Story.find(params[:id])
+    @in_edit_mode << @story.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
+      format.js { render 'story' }
       format.json { render json: @story }
     end
   end
@@ -94,10 +100,15 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       if @story.save
-        format.html { redirect_to stories_path, notice: 'Story was successfully created.' }
+        flash[:notice] = 'Story was successfully created.'
+        @was_changed << @story.id
+
+        format.html { redirect_to stories_path }
+        format.js { render 'story' }
         format.json { render json: @story, status: :created, location: @story }
       else
         format.html { render action: "new" }
+        format.js { render 'story' }
         format.json { render json: @story.errors, status: :unprocessable_entity }
       end
     end
@@ -110,10 +121,15 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       if @story.update_attributes(params[:story])
-        format.html { redirect_to stories_path, notice: 'Story was successfully updated.' }
+        flash[:notice] = 'Story was successfully updated.'
+        @was_changed << @story.id
+        
+        format.html { redirect_to stories_path }
+        format.js { render 'story' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
+        format.js { render 'story' }
         format.json { render json: @story.errors, status: :unprocessable_entity }
       end
     end
@@ -125,9 +141,20 @@ class StoriesController < ApplicationController
     @story = Story.find(params[:id])
     @story.destroy
 
+    flash[:notice] = 'Story was successfully deleted.'
+
     respond_to do |format|
       format.html { redirect_to stories_path }
+      format.js { render 'delete' }
       format.json { head :no_content }
     end
   end
+
+  private
+
+  def ensure_initial_state
+    @in_edit_mode = []
+    @was_changed = []
+  end
+
 end

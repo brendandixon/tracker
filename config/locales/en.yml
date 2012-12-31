@@ -51,6 +51,7 @@ en:
         points: 'Points'
         project: 'Project'
         story: 'Story'
+        story_id: 'Story'
       team:
         name: 'Name'
         velocity: 'Velocity'

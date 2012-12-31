@@ -52,7 +52,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
-      format.js { render 'project.js.erb' }
+      format.js { render 'project' }
       format.json { render json: @project }
     end
   end
@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
+      format.js { render 'project' }
       format.json { render json: @project }
     end
   end
@@ -75,7 +76,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
-      format.js { render 'project.js.erb' }
+      format.js { render 'project' }
       format.json { render json: @project }
     end
   end
@@ -92,9 +93,11 @@ class ProjectsController < ApplicationController
         @was_changed << @project.id
         
         format.html { redirect_to projects_path }
+        format.js { render 'project' }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.html { render action: "new" }
+        format.js { render 'project' }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
@@ -112,13 +115,13 @@ class ProjectsController < ApplicationController
         @was_changed << @project.id
 
         format.html { redirect_to projects_path }
-        format.js { render 'project.js.erb' }
+        format.js { render 'project' }
         format.json { head :no_content }
       else
         @in_edit_mode << @project.id
 
         format.html { render action: "edit" }
-        format.js { render 'project.js.erb' }
+        format.js { render 'project' }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
@@ -134,7 +137,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to projects_path }
-      format.js { render 'delete.js.erb' }
+      format.js { render 'delete' }
       format.json { head :no_content }
     end
   end

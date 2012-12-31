@@ -1,11 +1,12 @@
 - classes = cycle('odd', 'even')
 - in_edit_mode ||= []
 - team ||= @team
+- id = team.new_record? ? 'new' : team.id
 
-- if in_edit_mode.include?(team.id)
-  %tr.team_edit#Team{id: team.id, class: classes}
+- if in_edit_mode.include?(id) || team.new_record?
+  %tr.team_edit#Team{id: id, class: classes}
     = render partial: 'edit', locals:{team:team, remote:true, stand_alone:false}
 
 - else
-  %tr.team_inline#Team{id: team.id, class: classes}
+  %tr.team_inline#Team{id: id, class: classes}
     = render partial: 'show', locals:{team:team, remote:true, stand_alone:false}

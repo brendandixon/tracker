@@ -8,7 +8,7 @@ class TeamsController < ApplicationController
   def index
     query = Team
 
-    @teams = query.includes(:projects).all
+    @teams = query.includes(:projects).in_name_order.all
 
     respond_to do |format|
       format.html { render 'shared/index'}
@@ -24,7 +24,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
-      format.js { render 'team.js.erb' }
+      format.js { render 'team' }
       format.json { render json: @team }
     end
   end
@@ -36,6 +36,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
+      format.js { render 'team' }
       format.json { render json: @team }
     end
   end
@@ -47,7 +48,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
-      format.js { render 'team.js.erb' }
+      format.js { render 'team' }
       format.json { render json: @team }
     end
   end
@@ -64,9 +65,11 @@ class TeamsController < ApplicationController
         @was_changed << @team.id
         
         format.html { redirect_to teams_path }
+        format.js { render 'team' }
         format.json { render json: @team, status: :created, location: @team }
       else
         format.html { render action: "new" }
+        format.js { render 'team' }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
@@ -84,13 +87,13 @@ class TeamsController < ApplicationController
         @was_changed << @team.id
 
         format.html { redirect_to teams_path }
-        format.js { render 'team.js.erb' }
+        format.js { render 'team' }
         format.json { head :no_content }
       else
         @in_edit_mode << @team.id
 
         format.html { render action: "edit" }
-        format.js { render 'team.js.erb' }
+        format.js { render 'team' }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
@@ -106,7 +109,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to teams_path }
-      format.js { render 'delete.js.erb' }
+      format.js { render 'delete' }
       format.json { head :no_content }
     end
   end

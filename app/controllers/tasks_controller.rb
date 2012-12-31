@@ -55,7 +55,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
-      format.js { render 'task.js.erb' }
+      format.js { render 'task' }
       format.json { render json: @task }
     end
   end
@@ -67,6 +67,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
+      format.js { render 'task' }
       format.json { render json: @task }
     end
   end
@@ -78,7 +79,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
-      format.js { render 'task.js.erb' }
+      format.js { render 'task' }
       format.json { render json: @task }
     end
   end
@@ -94,9 +95,11 @@ class TasksController < ApplicationController
         @was_changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
+        format.js { render 'task' }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }
+        format.js { render 'task' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -113,13 +116,13 @@ class TasksController < ApplicationController
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'task.js.erb' }
+        format.js { render 'task' }
         format.json { head :no_content }
       else
         @in_edit_mode << @task.id
 
         format.html { render action: "edit" }
-        format.js { render 'task.js.erb' }
+        format.js { render 'task' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -135,7 +138,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to tasks_path }
-      format.js { render 'delete.js.erb' }
+      format.js { render 'delete' }
       format.json { head :no_content }
     end
   end
@@ -148,7 +151,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'task.js.erb' }
+      format.js { render 'task' }
       format.json { render json: @tasks }
     end
     
@@ -162,7 +165,7 @@ class TasksController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'task.js.erb' }
+      format.js { render 'task' }
       format.json { render json: @tasks }
     end
     
@@ -174,7 +177,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'task.js.erb' }
+      format.js { render 'task' }
       format.json { render json: @tasks }
     end
   end

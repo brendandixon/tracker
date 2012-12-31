@@ -1,8 +1,17 @@
+<%
+content = escape_javascript(render(partial: @team, locals: {in_edit_mode: @in_edit_mode}))
+id = @team.new_record? ? 'new' : @team.id
+%>
 <%= render template: 'shared/reset_transients' %>
-$('#Team_<%= @team.id%>').replaceWith('<%= escape_javascript(render(partial: @team, locals: {in_edit_mode: @in_edit_mode}))%>');
+$('#Team_new').remove();
+if ($('#Team_<%= id %>').length <= 0) {
+  $('#TeamList > tbody > tr').first().before('<%= content %>');
+} else {
+  $('#Team_<%= id%>').replaceWith('<%= content %>');
+}
 $('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
 $('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
 <% if @was_changed.include?(@team.id) %>
-$('#Team_<%= @team.id%>').effect('highlight',{duration: 750});
+$('#Team_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
 <%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

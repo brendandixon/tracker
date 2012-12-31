@@ -1,5 +1,14 @@
+<%
+content = escape_javascript(render(partial: @project, locals: {in_edit_mode: @in_edit_mode}))
+id = @project.new_record? ? 'new' : @project.id
+%>
 <%= render template: 'shared/reset_transients' %>
-$('#Project_<%= @project.id%>').replaceWith('<%= escape_javascript(render(partial: @project, locals: {in_edit_mode: @in_edit_mode}))%>');
+$('#Project_new').remove();
+if ($('#Project_<%= id %>').length <= 0) {
+  $('#ProjectList > tbody > tr').first().before('<%= content %>');
+} else {
+  $('#Project_<%= @project.id%>').replaceWith('<%= content %>');
+}
 $('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
 $('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
 <% if @was_changed.include?(@project.id) %>

@@ -1,3 +1,4 @@
+- for_story = params[:story]
 - remote = false if remote.nil?
 - task ||= @task
 
@@ -15,11 +16,15 @@
       .row
         = f.hidden_field :points
         .seven.columns
-          = f.label :title
-          - if task.story.present?
-            .title= task.title
+          - if for_story || (task.story_id.present? && task.new_record?)
+            = f.label :story_id
+            = f.select :story_id, Story.all_stories
           - else
-            = f.text_field :title
+            = f.label :title
+            - if task.story.present?
+              .title= task.title
+            - else
+              = f.text_field :title
         .three.columns.offset_by_two
           = f.label :status
           = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
@@ -32,7 +37,7 @@
           = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
           = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
         .three.columns{style: 'line-height:16px'}<
-          - if task.story.present?
+          - if task.story.present? && !task.new_record?
             = f.label :story_id, t(:service, scope: [:activerecord, :attributes, :task])
             = task.story.service.abbreviation
         .three.columns.end

@@ -3,7 +3,7 @@
     %h3.subheader= t(:none_html, scope: [:controllers, :stories])
 - else
   .eleven.columns.centered#Main
-    %table.twelve
+    %table.twelve#StoryList
       %thead
         %tr
           = render partial: 'shared/sortable', locals: {name: 'Title', field: 'story', classes: 'three'}

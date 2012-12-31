@@ -3,6 +3,6 @@
     %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
 - else
   .nine.columns.centered#Main
-    .ul.task_list#TaskList
+    %ol.task_list#TaskList<
       = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
     = javascript_include_tag 'task_list'

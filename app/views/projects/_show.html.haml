@@ -15,7 +15,7 @@
 - if stand_alone
   .row<
     .four.columns.offset-by-eight.text-right.actions
-      = link_to 'Edit', edit_project_path(project)
+      = link_to 'Edit', edit_project_path(project), remote:remote
       \|
       = link_to 'Delete', project, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this project?" }, remote:remote
       \|

@@ -1,11 +1,12 @@
 - classes = cycle('odd', 'even')
 - in_edit_mode ||= []
 - project ||= @project
+- id = project.new_record? ? 'new' : project.id
 
-- if in_edit_mode.include?(project.id)
-  %tr.project_edit#Project{id: project.id, class: classes}
+- if in_edit_mode.include?(id) || project.new_record?
+  %tr.project_edit#Project{id: id, class: classes}
     = render partial: 'edit', locals:{project:project, remote:true, stand_alone:false}
 
 - else
-  %tr.project_inline#Project{id: project.id, class: classes}
+  %tr.project_inline#Project{id: id, class: classes}
     = render partial: 'show', locals:{project:project, remote:true, stand_alone:false}

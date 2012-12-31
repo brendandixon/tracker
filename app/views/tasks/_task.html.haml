@@ -4,8 +4,8 @@
 - options[:disabled] = 'disabled' if task.completed?
 - task ||= @task
 
-- if in_edit_mode.include?(task.id)
-  %li#Task{id: task.id, class: classes}
+- if in_edit_mode.include?(task.id) || task.new_record?
+  %li#Task{id: task.new_record? ? 'new' : task.id, class: classes}
     = render partial: 'edit', locals: {task:task, remote:true}
 
 - else

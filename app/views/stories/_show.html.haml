@@ -1,15 +1,31 @@
-.row<
-  .seven.columns.title= @story.title
-  .five.columns.text-right= story_project_labels(@story)
-.row<
-  .two.columns= @story.service.abbreviation if @story.service.present?
-  .two.columns= @story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if @story.release_date.present?
-  .two.columns.end
-    %a{href: @story.contact_us_link}= @story.contact_us_number
-.row<
-  .four.columns.offset-by-eight.text-right
-    = link_to 'Edit', edit_story_path(@story)
-    \|
-    = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }
-    \|
-    = link_to 'Back', stories_path
+- story ||= @story
+- remote = false if remote.nil?
+- stand_alone = true if stand_alone.nil?
+
+- if stand_alone
+  .row<
+    .seven.columns.title= @story.title
+    .five.columns.text-right= story_project_labels(@story)
+  .row<
+    .two.columns= @story.service.abbreviation if @story.service.present?
+    .two.columns= @story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if @story.release_date.present?
+    .two.columns.end
+      %a{href: @story.contact_us_link}= @story.contact_us_number
+  .row<
+    .four.columns.offset-by-eight.text-right
+      = link_to 'Edit', edit_story_path(@story), remote:remote
+      \|
+      = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }, remote:remote
+      \|
+      = link_to 'Back', stories_path
+
+- else
+  %td= story.title
+  %td= story.service.abbreviation if story.service.present?
+  %td= story.release_date.in_time_zone.to_date.to_s(:mm_dd_yy) if story.release_date.present?
+  %td
+    %a{href: story.contact_us_link}= story.contact_us_number
+  %td
+    = story_project_labels(story, (@filter.present? ? @filter.content : {})[:projects])
+    .command_block.on_hover<
+      = glyph_link_to edit_story_path(story), glyph: 'edit', remote:remote

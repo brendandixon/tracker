@@ -1,0 +1,17 @@
+<%
+content = escape_javascript(render(partial: @story, locals: {in_edit_mode: @in_edit_mode}))
+id = @story.new_record? ? 'new' : @story.id
+%>
+<%= render template: 'shared/reset_transients' %>
+$('#Story_new').remove();
+if ($('#Story_<%= id %>').length <= 0) {
+  $('#StoryList > tbody > tr').first().before('<%= content %>');
+} else {
+  $('#Story_<%= @story.id%>').replaceWith('<%= content %>');
+}
+$('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
+$('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
+<% if @was_changed.include?(@story.id) %>
+$('#Story_<%= @story.id%>').effect('highlight',{duration: 750});
+<% end %>
+<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

@@ -1,37 +1,44 @@
-- options= {'controller' => controller.controller_name}
-- options['action'] = @story.new_record? ? :create : :update
-- options['id'] = @story.id unless @story.new_record?
-- @story.release_date = @story.release_date.to_date if @story.release_date.present? && @story.release_date.acts_like?(:time)
+- remote = false if remote.nil?
+- stand_alone = true if stand_alone.nil?
+- story ||= @story
+- story.release_date = story.release_date.to_date if story.release_date.present? && story.release_date.acts_like?(:time)
 
-= form_for @story, url: url_for(options)  do |f|
-  - if @story.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@story.errors.count, "error")} prohibited this story from being saved:"
-      %ul
-        - @story.errors.full_messages.each do |msg|
-          %li= msg
+= content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 5} do
+  .row
+    .twelve.columns
+      = form_for story, remote:remote  do |f|
+        - if story.errors.any?
+          #error_explanation
+            %h2= "#{pluralize(story.errors.count, "error")} prohibited this story from being saved:"
+            %ul
+              - story.errors.full_messages.each do |msg|
+                %li= msg
 
-  .row
-    .seven.columns
-      = f.text_field :title
-    .five.columns.text-right= story_project_labels(@story)
-  .row
-    .two.columns
-      = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }
-    .two.column
-      = f.text_field :contact_us_number, size: 5
-    .two.columns
-      = f.text_field :release_date, data: {datefield: true}
-    .four.columns.text-right
-      = f.label :create_tasks, {} do
-        = f.check_box :create_tasks
-        = I18n.t(:create_tasks, scope: [:activerecord, :labels, :story])
-  .row
-    .four.columns.offset-by-eight.text-right.actions
-      = f.submit 'Save'
-      - unless @story.new_record?
-        \|
-        = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }
-      \|
-      = link_to 'Cancel', :back
-= javascript_include_tag 'dates'
+        .row
+          .eight.columns
+            = f.label :title
+            = f.text_field :title
+          .four.columns.text-right{style:'padding-left:50px'}= story_project_labels(story)
+        .row
+          .two.columns
+            = f.label :service_id
+            = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }
+          .two.column
+            = f.label :contact_us_number
+            = f.text_field :contact_us_number, size: 5
+          .two.columns
+            = f.label :release_date
+            = f.text_field :release_date, data: {datefield: true}
+          .four.columns.text-right
+            = f.label :create_tasks, {} do
+              = f.check_box :create_tasks
+              = I18n.t(:create_tasks, scope: [:activerecord, :labels, :story])
+        .row
+          .four.columns.offset-by-eight.text-right.actions
+            = f.submit 'Save'
+            - unless story.new_record?
+              \|
+              = link_to 'Delete', story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }, remote:remote
+            \|
+            = link_to 'Cancel', story.new_record? ? stories_path : story_path(story), remote:remote
+            = javascript_include_tag 'dates'
