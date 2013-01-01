@@ -60,6 +60,9 @@ class Task < ActiveRecord::Base
   scope :at_least_points, lambda{|points| where("points >= ?", points)}
   scope :no_more_points, lambda{|points| where("points <= ?", points)}
 
+  scope :after_rank, lambda{|rank| in_rank_order.where("rank > ?", rank).limit(1)}
+  scope :before_rank, lambda{|rank| in_rank_order('DESC').where("rank < ?", rank).limit(1)}
+
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
   scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
@@ -102,9 +105,11 @@ class Task < ActiveRecord::Base
       return task unless before.present? || after.present?
 
       if before.blank?
-        before = after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM
-      else
-        after = before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM
+        before = Task.after_rank(after).first
+        before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
+      elsif after.blank?
+        after = Task.before_rank(before).first
+        after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
       end
 
       task.update_attribute(:rank, after + ((before - after) / 2))
