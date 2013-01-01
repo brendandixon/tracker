@@ -10,13 +10,13 @@
   .nine.columns.centered#Main
     %ol.task_list#TaskList<
       - @tasks.each do |task|
-        = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode}
         - if @for_team.present?
           - velocity -= task.points
-          - if velocity <= 0
+          - if velocity <= 0 && task.pending?
             - iteration_start_date = @for_team.iteration_end_date(iteration_start_date)
             %li.iteration_marker
               %div= "#{iteration_start_date.to_formatted_s(:medium)} &mdash; Points #{@for_team.velocity - velocity}".html_safe
             - iteration_start_date = iteration_start_date + 1.day
             - velocity = @for_team.velocity
+        = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode}
     = javascript_include_tag 'task_list'

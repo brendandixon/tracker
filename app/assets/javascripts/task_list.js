@@ -1,7 +1,7 @@
 $('#TaskList')
   .sortable({
-    cancel: '.iteration_marker',
     cursor: 'move',
+    items: 'li:not(.iteration_marker)',
     opacity: 0.5,
     revert: true,
     scrollSensitiviy:5,

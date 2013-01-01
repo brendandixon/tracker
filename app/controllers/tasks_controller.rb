@@ -166,6 +166,8 @@ class TasksController < ApplicationController
               Task::COMPLETED
             elsif @filter.content[:status] == :incomplete
               Task::INCOMPLETE
+            elsif @filter.content[:status] == :iteration
+              Task::STATUS
             else
               @filter.content[:status]
             end
@@ -199,6 +201,7 @@ class TasksController < ApplicationController
     query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
 
     query = query.in_rank_order
+    query = query.in_status_order('DESC') if @for_team
     
     @tasks = query.includes(:story).includes(:project).uniq
   end

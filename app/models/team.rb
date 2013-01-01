@@ -51,11 +51,11 @@ class Team < ActiveRecord::Base
 
   def iteration_tasks(all_tasks = nil)
     points = 0
-    all_tasks ||= self.tasks.in_rank_order.started_on_or_after(iteration_start_date)
+    all_tasks ||= self.tasks.in_rank_order.in_status_order('DESC').started_on_or_after(iteration_start_date)
     all_tasks.inject([]) do |tasks, task|
+      break tasks if task.pending? && points >= self.velocity
       points += task.points
       tasks << task
-      break tasks if points >= self.velocity
       tasks
     end
   end
