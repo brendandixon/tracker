@@ -17,8 +17,8 @@ class TeamsController < ApplicationController
       case sort
       when '-name' then query = query.in_name_order('ASC')
       when 'name' then query = query.in_name_order('DESC')
-      when '-days' then query = query.in_sprint_days_order('ASC')
-      when 'days' then query = query.in_sprint_days_order('DESC')
+      when '-iteration' then query = query.in_iteration_order('ASC')
+      when 'iteration' then query = query.in_iteration_order('DESC')
       when '-velocity' then query = query.in_velocity_order('ASC')
       when 'velocity' then query = query.in_velocity_order('DESC')
       end

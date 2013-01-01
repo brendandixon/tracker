@@ -2,7 +2,7 @@ module FilterHandler
   extend ActiveSupport::Concern
 
   included do
-    before_filter :initialize_filter, only: :index
+    before_filter :initialize_filter
     before_filter :handle_delete, only: :index
     before_filter :handle_reset, only: :index
   end
@@ -66,6 +66,10 @@ module FilterHandler
     content[:teams] = [] if content[:teams].any?{|t| t =~ /all/i}
 
     @filter.content = content.reject{|k, v| v.blank?}
+  end
+
+  def is_index_action
+    [:index].include?(action_name.to_sym)
   end
 
   def filters

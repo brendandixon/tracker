@@ -22,6 +22,8 @@
       .two.columns<
         = task.project.name
       .three.columns<
+        = task.rank
+        &nbsp;
         = task.story.service.abbreviation if task.story.present?
       .three.columns.end
         .points<

@@ -7,7 +7,7 @@
     .twelve.columns= team.name
   .row
     .three.columns= "Velocity: #{team.velocity}"
-    .three.columns.end= "Sprint Days: #{team.sprint_days}"
+    .three.columns.end= "Sprint Days: #{team.iteration}"
   .row
     .twelve.columns
       = team_project_labels(team.projects)
@@ -21,7 +21,7 @@
 - else
   %td= team.name
   %td= team.velocity
-  %td= team.sprint_days
+  %td= team.iteration
   %td
     .projects
       = team_project_labels(team.projects)

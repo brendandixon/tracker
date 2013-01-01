@@ -10,7 +10,7 @@
 #
 
 class Project < ActiveRecord::Base
-  attr_accessible :name, :services
+  attr_accessible :end_date, :name, :services, :start_date
 
   belongs_to :team
 
@@ -19,8 +19,11 @@ class Project < ActiveRecord::Base
 
   has_many :tasks, dependent: :destroy
   has_many :stories, through: :tasks
+
+  before_validation :ensure_start_date
   
   validates_presence_of :name
+  validates_presence_of :start_date
   
   scope :with_name, lambda {|name| where(name: name) }
 
@@ -37,6 +40,12 @@ class Project < ActiveRecord::Base
     def all_projects
       @all_projects ||= [['-', '']] + Project.active.map{|project| [project.name, project.name]}.uniq
     end
+  end
+
+  private
+
+  def ensure_start_date
+    self.start_date ||= DateTime.parse('2012-12-01').utc
   end
 
 end

@@ -4,6 +4,6 @@ FactoryGirl.define do
   factory :team do
     name "MyString"
     velocity 1
-    sprint_days 1
+    sprint_weeks 1
   end
 end

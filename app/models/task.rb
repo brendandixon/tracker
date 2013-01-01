@@ -26,9 +26,9 @@ class Task < ActiveRecord::Base
   INCOMPLETE = [:pending, :in_progress]
   COMPLETED = [:completed]
   STATUS = INCOMPLETE + COMPLETED
-  STATES = [:complete, :incomplete] + INCOMPLETE + COMPLETED
+  STATES = [:iteration, :complete, :incomplete] + INCOMPLETE + COMPLETED
 
-  attr_accessible :description, :story_id, :points, :project_id, :status, :title
+  attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
   belongs_to :story
   belongs_to :project
@@ -38,6 +38,7 @@ class Task < ActiveRecord::Base
   
   symbolize :status
   
+  before_validation :ensure_dates
   before_validation :normalize_title
 
   validate :has_title_or_story
@@ -49,6 +50,8 @@ class Task < ActiveRecord::Base
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
   scope :for_stories, lambda {|stories| where(story_id: stories)}
   scope :for_teams, lambda{|teams| joins(:project).where('projects.team_id IN (?)', teams)}
+
+  scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :complete, date, :complete)}
 
   scope :in_status, lambda{|status| where(status: status)}
   scope :completed, where(status: Task::COMPLETED)
@@ -133,6 +136,20 @@ class Task < ActiveRecord::Base
   end
 
   private
+
+  def ensure_dates
+    now = DateTime.now.utc
+    if self.pending?
+      self.start_date = nil
+      self.completed_date = nil
+    elsif self.in_progress?
+      self.start_date = now if self.start_date.blank?
+      self.completed_date = nil
+    elsif self.completed?
+      self.start_date = now if self.start_date.blank?
+      self.start_date = now if self.start_date.blank?
+    end
+  end
   
   def has_title_or_story
     if self.title.blank? && self.story.blank?

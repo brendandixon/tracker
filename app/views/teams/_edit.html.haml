@@ -24,8 +24,8 @@
                 = f.label :velocity
                 = f.text_field :velocity
               .six.columns
-                = f.label :sprint_days
-                = f.text_field :sprint_days
+                = f.label :iteration
+                = f.text_field :iteration
           .five.columns<
             = f.label :projects
             - Project.active.each_slice(3) do |projects|

@@ -1,46 +1,14 @@
 class TasksController < ApplicationController
   include FilterHandler
 
+  INDEX_ACTIONS = [:create, :destroy, :index, :rank, :update]
+
   before_filter :ensure_initial_state
+  before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /tasks
   # GET /tasks.json
   def index
-    query = Task
-
-    status = if @filter.content[:status] == :complete
-              Task::COMPLETED
-            elsif @filter.content[:status] == :incomplete
-              Task::INCOMPLETE
-            else
-              @filter.content[:status]
-            end
-    query = query.in_status(status) if status.present?
-    
-    projects = @filter.content[:projects] || []
-    projects = projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact
-    
-    services = @filter.content[:services] || []
-    services = services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact
-    
-    stories = @filter.content[:stories] || []
-    stories = stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
-    
-    teams = @filter.content[:teams] || []
-    teams = teams.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
-
-    query = query.for_projects(projects) if projects.present?
-    query = query.for_services(services) if services.present?
-    query = query.for_stories(stories) if stories.present?
-    query = query.for_teams(teams) if teams.present?
-    
-    query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
-    query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
-
-    query = query.in_rank_order
-    
-    @tasks = query.includes(:story).includes(:project).uniq
-
     respond_to do |format|
       format.html { render 'shared/index'}
       format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
@@ -95,7 +63,8 @@ class TasksController < ApplicationController
         @was_changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'task' }
+        # format.js { render 'task' }
+        format.js { render 'shared/index' }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }
@@ -116,7 +85,8 @@ class TasksController < ApplicationController
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'task' }
+        # format.js { render 'task' }
+        format.js { render 'shared/index' }
         format.json { head :no_content }
       else
         @in_edit_mode << @task.id
@@ -138,7 +108,8 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to tasks_path }
-      format.js { render 'delete' }
+      # format.js { render 'delete' }
+      format.js { render 'shared/index' }
       format.json { head :no_content }
     end
   end
@@ -177,15 +148,65 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'task' }
+      format.js { render 'shared/index' }
       format.json { render json: @tasks }
     end
   end
 
+  def is_index_action
+    INDEX_ACTIONS.include?(action_name.to_sym)
+  end
+
   private
+
+  def build_index_query
+    query = Task
+
+    status = if @filter.content[:status] == :complete
+              Task::COMPLETED
+            elsif @filter.content[:status] == :incomplete
+              Task::INCOMPLETE
+            else
+              @filter.content[:status]
+            end
+    query = query.in_status(status) if status.present?
+    
+    projects = @filter.content[:projects] || []
+    projects = projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact
+    
+    services = @filter.content[:services] || []
+    services = services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact
+    
+    stories = @filter.content[:stories] || []
+    stories = stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
+    
+    teams = @filter.content[:teams] || []
+    teams = teams.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
+
+    query = query.for_projects(projects) if projects.present?
+    query = query.for_services(services) if services.present?
+    query = query.for_stories(stories) if stories.present?
+
+    if teams.present?
+      query = query.for_teams(teams)
+      if teams.length == 1
+        @for_team = Team.find(teams.first) rescue nil
+        query = query.started_on_or_after(@for_team.iteration_start_date) if @for_team.present?
+      end
+    end
+    
+    query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
+    query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
+
+    query = query.in_rank_order
+    
+    @tasks = query.includes(:story).includes(:project).uniq
+  end
 
   def ensure_initial_state
     @in_edit_mode = []
     @was_changed = []
+    @for_team = nil
   end
+
 end

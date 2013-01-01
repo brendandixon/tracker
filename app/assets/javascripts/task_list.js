@@ -1,7 +1,7 @@
 $('#TaskList')
   .sortable({
+    cancel: '.iteration_marker',
     cursor: 'move',
-    items: '> li',
     opacity: 0.5,
     revert: true,
     scrollSensitiviy:5,
@@ -36,3 +36,4 @@ $('#TaskList')
       }
     });
   });
+$('#TaskList li').disableSelection();

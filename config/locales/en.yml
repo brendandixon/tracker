@@ -55,7 +55,7 @@ en:
       team:
         name: 'Name'
         velocity: 'Velocity'
-        sprint_days: 'Sprint Days'
+        sprint_weeks: 'Sprint Weeks'
         project_id: 'Project'
     errors:
       models:

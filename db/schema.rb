@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121228040508) do
+ActiveRecord::Schema.define(:version => 20121231213312) do
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(:version => 20121228040508) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "team_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "projects", ["name"], :name => "index_projects_on_name"
@@ -88,12 +90,14 @@ ActiveRecord::Schema.define(:version => 20121228040508) do
     t.integer  "story_id"
     t.integer  "project_id"
     t.string   "status"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.string   "title"
     t.float    "rank"
-    t.integer  "points",      :default => 0
+    t.integer  "points",         :default => 0
     t.text     "description"
+    t.datetime "start_date"
+    t.datetime "completed_date"
   end
 
   add_index "tasks", ["project_id"], :name => "index_stories_on_project_id"
@@ -104,9 +108,9 @@ ActiveRecord::Schema.define(:version => 20121228040508) do
   create_table "teams", :force => true do |t|
     t.string   "name"
     t.integer  "velocity"
-    t.integer  "sprint_days", :default => 7
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.integer  "iteration",  :default => 1
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "teams", ["name"], :name => "index_teams_on_name"

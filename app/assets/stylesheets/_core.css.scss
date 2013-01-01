@@ -238,6 +238,7 @@ ol.task_list {
   border:1px solid #ccc;
   border-top:none;
   line-height:1em;
+  margin-left:0;
   margin-bottom:3em;
   padding:0;
   li {
@@ -250,6 +251,19 @@ ol.task_list {
   }
   li.task_inline:hover {
     background-color:#ffc;
+  }
+  li.iteration_marker {
+    background-color:$dark;
+    color:$white;
+    padding:4px 8px;
+  }
+  li.iteration_marker:hover {
+    outline:none;
+  }
+  li.iteration_marker div {
+    margin:0 auto;
+    text-align:center;
+    width:40%;
   }
 }
 
