@@ -125,18 +125,6 @@ class ProjectsController < ApplicationController
     query = Project
 
     services = @filter.content[:services] || []
-    services = services.map{|s| s.present? ? s : nil}.compact
-    services = [] if services.any?{|s| s =~ /all/i}
-    services = services.map do |service|
-      if service.is_a?(Integer)
-        service
-      elsif service =~ /^\d+$/
-        service.to_i
-      else
-        service = Service.with_abbreviation(service).first
-        service.present? ? service.id : nil
-      end
-    end.compact
 
     query = query.for_services(*services) if services.present?
 

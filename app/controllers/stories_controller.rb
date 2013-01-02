@@ -130,15 +130,10 @@ class StoriesController < ApplicationController
     query = query.in_status(status) if status.present?
     
     projects = @filter.content[:projects] || []
-    projects = projects.map{|p| p.present? ? p : nil}.compact
-    projects = nil if projects.any?{|p| p =~ /all/i}
-    
     services = @filter.content[:services] || []
-    services = services.map{|s| s.present? ? s : nil}.compact
-    services = nil if services.any?{|s| s =~ /all/i}
 
-    query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
-    query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
+    query = query.for_projects(projects) if projects.present?
+    query = query.for_services(services) if services.present?
     query = query.for_contact_us(@filter.content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter.content[:contact_us].present?
 
     query = query.on_or_after_date(@filter.content[:after]) if @filter.content[:after].present?

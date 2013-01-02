@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   include FilterHandler
 
-  INDEX_ACTIONS = [:create, :destroy, :index, :rank, :update]
+  INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :rank, :update]
 
   before_filter :ensure_initial_state
   before_filter :build_index_query, only: INDEX_ACTIONS
@@ -32,6 +32,12 @@ class TasksController < ApplicationController
   # GET /tasks/new.json
   def new
     @task = Task.new
+    if @filter.content[:projects].present?
+      @task.project_id = @filter.content[:projects].first
+    elsif @filter.content[:teams].present?
+      team = Team.find(@filter.content[:teams].first) rescue nil
+      @task.project_id = team.projects.first.id if team.present? && team.projects.present?
+    end
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
@@ -122,7 +128,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'task' }
+      format.js { render 'shared/index' }
       format.json { render json: @tasks }
     end
     
@@ -136,7 +142,7 @@ class TasksController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'task' }
+      format.js { render 'shared/index' }
       format.json { render json: @tasks }
     end
     
@@ -174,16 +180,9 @@ class TasksController < ApplicationController
     query = query.in_status(status) if status.present?
     
     projects = @filter.content[:projects] || []
-    projects = projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact
-    
     services = @filter.content[:services] || []
-    services = services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact
-    
     stories = @filter.content[:stories] || []
-    stories = stories.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
-    
     teams = @filter.content[:teams] || []
-    teams = teams.map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
 
     query = query.for_projects(projects) if projects.present?
     query = query.for_services(services) if services.present?

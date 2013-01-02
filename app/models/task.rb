@@ -37,7 +37,8 @@ class Task < ActiveRecord::Base
   has_many :teams, through: :project
   
   symbolize :status
-  
+
+  before_save :ensure_rank  
   before_validation :ensure_dates
   before_validation :normalize_title
 
@@ -60,8 +61,8 @@ class Task < ActiveRecord::Base
   scope :at_least_points, lambda{|points| where("points >= ?", points)}
   scope :no_more_points, lambda{|points| where("points <= ?", points)}
 
-  scope :after_rank, lambda{|rank| in_rank_order.where("rank > ?", rank).limit(1)}
-  scope :before_rank, lambda{|rank| in_rank_order('DESC').where("rank < ?", rank).limit(1)}
+  scope :after_rank, lambda{|rank| in_rank_order.where("rank > ?", rank)}
+  scope :before_rank, lambda{|rank| in_rank_order('DESC').where("rank < ?", rank)}
 
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
@@ -90,6 +91,24 @@ class Task < ActiveRecord::Base
     def all_states
       @all_states ||= [['-', '']] + STATES.map{|state| [state.to_s.titleize, state]}
     end
+
+    def compute_rank_between(task, before, after)
+      task = task.is_a?(Task) ? task : Task.find(task)
+      before = (before.is_a?(Task) ? before : Task.select(:rank).find(before)).rank if before.present?
+      after = (after.is_a?(Task) ? after : Task.select(:rank).find(after)).rank if after.present?
+
+      return task unless before.present? || after.present?
+
+      if before.blank?
+        before = Task.after_rank(after).limit(1).first
+        before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
+      elsif after.blank?
+        after = Task.before_rank(before).limit(1).first
+        after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
+      end
+
+      after + ((before - after) / 2)
+    end
     
     def ensure_story_tasks(f)
       f.service.projects.each do |project|
@@ -98,21 +117,8 @@ class Task < ActiveRecord::Base
     end
 
     def rank_between(task, before, after)
-      task = task.is_a?(Task) ? task : Task.find(task)
-      before = (before.is_a?(Task) ? before : Task.select(:rank).find(before)).rank if before.present?
-      after = (after.is_a?(Task) ? after : Task.select(:rank).find(after)).rank if after.present?
-
-      return task unless before.present? || after.present?
-
-      if before.blank?
-        before = Task.after_rank(after).first
-        before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
-      elsif after.blank?
-        after = Task.before_rank(before).first
-        after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
-      end
-
-      task.update_attribute(:rank, after + ((before - after) / 2))
+      task = task.is_a?(Task) ? task : (Task.find(task) rescue nil)
+      task.update_attribute(:rank, compute_rank_between(task, before, after)) if task.present?
       task
     end
 
@@ -136,6 +142,10 @@ class Task < ActiveRecord::Base
     write_attribute(:title, s) unless story.present?
   end
 
+  def compute_rank_between(before, after)
+    Task.compute_rank_between(self, before, after)
+  end
+
   def rank_between(before, after)
     Task.rank_between(self, before, after)
   end
@@ -153,6 +163,40 @@ class Task < ActiveRecord::Base
     elsif self.completed?
       self.start_date = now if self.start_date.blank?
       self.start_date = now if self.start_date.blank?
+    end
+  end
+
+  def ensure_rank
+    tasks = Task.for_projects(self.project_id)
+
+    if self.new_record?
+      task = tasks.in_rank_order.last
+      self.rank = task.blank? ? 1 : task.rank + 1
+    else
+      task_before = nil
+      task_after = nil
+      
+      if self.completed? || self.in_progress?
+        tasks.before_rank(self.rank).each do |task|
+          unless task.completed? || task.in_progress?
+            task_before = task
+            next
+          end
+          task_after = task
+          break
+        end
+      elsif self.pending?
+        tasks.after_rank(self.rank).each do |task|
+          unless task.pending?
+            task_after = task
+            next
+          end
+          task_before = task
+          break
+        end
+      end
+
+      self.rank = self.compute_rank_between(task_before, task_after) if task_before.present? || task_after.present?
     end
   end
   
