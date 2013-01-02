@@ -2,21 +2,21 @@
   .eleven.columns.centered#Main
     %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
 - else
-  - if @for_team.present?
-    - iteration_start_date = @for_team.iteration_start_date
-    - velocity = @for_team.velocity
+  - if @iteration_team.present?
+    - iteration_start_date = @iteration_team.iteration_start_date
+    - velocity = @iteration_team.velocity
   - else
     - velocity = Team::VELOCITY_MAX
   .nine.columns.centered#Main
     %ol.task_list#TaskList<
       - @tasks.each do |task|
-        - if @for_team.present?
-          - velocity -= task.points
+        - if @iteration_team.present?
           - if velocity <= 0 && task.pending?
-            - iteration_start_date = @for_team.iteration_end_date(iteration_start_date)
+            - iteration_start_date = @iteration_team.iteration_end_date(iteration_start_date)
             %li.iteration_marker
-              %div= "#{iteration_start_date.to_formatted_s(:medium)} &mdash; Points #{@for_team.velocity - velocity}".html_safe
+              %div= "#{iteration_start_date.to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe
             - iteration_start_date = iteration_start_date + 1.day
-            - velocity = @for_team.velocity
+            - velocity = @iteration_team.velocity
+        - velocity -= task.points
         = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode}
     = javascript_include_tag 'task_list'

@@ -192,8 +192,8 @@ class TasksController < ApplicationController
     if teams.present?
       query = query.for_teams(teams)
       if teams.length == 1
-        @for_team = Team.find(teams.first) rescue nil
-        query = query.started_on_or_after(@for_team.iteration_start_date) if @for_team.present?
+        @iteration_team = Team.find(teams.first) rescue nil
+        query = query.started_on_or_after(@iteration_team.iteration_start_date) if @iteration_team.present?
       end
     end
     
@@ -201,7 +201,7 @@ class TasksController < ApplicationController
     query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
 
     query = query.in_rank_order
-    query = query.in_status_order('DESC') if @for_team
+    query = query.in_status_order('DESC') if @iteration_team
     
     @tasks = query.includes(:story).includes(:project).uniq
   end
@@ -209,7 +209,7 @@ class TasksController < ApplicationController
   def ensure_initial_state
     @in_edit_mode = []
     @was_changed = []
-    @for_team = nil
+    @iteration_team = nil
   end
 
 end
