@@ -4,7 +4,7 @@ module SortHandler
   DEFAULT_SORT = []
 
   included do  
-    before_filter :initialize_sort, only: [:index, :delete_filter, :reset_filter]
+    before_filter :initialize_sort
   end
 
   def initialize_sort

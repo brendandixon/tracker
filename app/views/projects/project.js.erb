@@ -5,7 +5,11 @@ id = @project.new_record? ? 'new' : @project.id
 <%= render template: 'shared/reset_transients' %>
 $('#Project_new').remove();
 if ($('#Project_<%= id %>').length <= 0) {
-  $('#ProjectList > tbody > tr').first().before('<%= content %>');
+  if ($('#ProjectList > tbody > tr').length <= 0) {
+    $('#ProjectList > tbody').html('<%= content %>');
+  } else {
+    $('#ProjectList > tbody > tr').first().before('<%= content %>');
+  }
 } else {
   $('#Project_<%= @project.id%>').replaceWith('<%= content %>');
 }

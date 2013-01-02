@@ -45,10 +45,10 @@
         = submit_tag 'Apply', name: :apply
         - if @filter.new_record?
           \|
-          = submit_tag 'Save'
+          = submit_tag 'Save', name: :commit_filter
         - else
           \|
-          = submit_tag 'Update'
+          = submit_tag 'Update', name: :commit_filter
           \|
           = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true
         \|

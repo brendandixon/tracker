@@ -1,14 +1,14 @@
-- if @projects.empty?
-  .eleven.columns.centered#Main
-    %h3.subheader= t(:none_html, scope: [:controllers, :projects])
+.nine.columns.centered#Main
+  %table.twelve#ProjectList
+    %thead
+      %tr
+        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
+        %th.seven= 'Services'
 
-- else
-  .nine.columns.centered#Main
-    %table.twelve#ProjectList
-      %thead
-        %tr
-          = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
-          %th.seven= 'Services'
-
-      %tbody
+    %tbody
+      - if @projects.empty?
+        %tr.project_inline#Project_new
+          %td{colspan: 2}
+            %h3.subheader= t(:none_html, scope: [:controllers, :projects])
+      - else
         = render @projects

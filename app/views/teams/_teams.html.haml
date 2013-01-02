@@ -1,16 +1,16 @@
-- if @teams.empty?
-  .eleven.columns.centered#Main
-    %h3.subheader= t(:none_html, scope: [:controllers, :teams])
+.nine.columns.centered#Main
+  %table.twelve#TeamList
+    %thead
+      %tr
+        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'three'}
+        = render partial: 'shared/sortable', locals: {name: 'Velocity', field: 'velocity', classes: 'two'}
+        = render partial: 'shared/sortable', locals: {name: 'Iteration', field: 'iteration', classes: 'two'}
+        %th.five= 'Projects'
 
-- else
-  .nine.columns.centered#Main
-    %table.twelve#TeamList
-      %thead
-        %tr
-          = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'three'}
-          = render partial: 'shared/sortable', locals: {name: 'Velocity', field: 'velocity', classes: 'two'}
-          = render partial: 'shared/sortable', locals: {name: 'Iteration', field: 'iteration', classes: 'two'}
-          %th.five= 'Projects'
-
-      %tbody
+    %tbody
+      - if @teams.empty?
+        %tr.team_inline#Team_new
+          %td{colspan: 4}
+            %h3.subheader= t(:none_html, scope: [:controllers, :teams])
+      - else
         = render @teams

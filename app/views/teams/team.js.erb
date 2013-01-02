@@ -5,7 +5,11 @@ id = @team.new_record? ? 'new' : @team.id
 <%= render template: 'shared/reset_transients' %>
 $('#Team_new').remove();
 if ($('#Team_<%= id %>').length <= 0) {
-  $('#TeamList > tbody > tr').first().before('<%= content %>');
+  if ($('#TeamList > tbody > tr').length <= 0) {
+    $('#TeamList > tbody').html('<%= content %>');
+  } else {
+    $('#TeamList > tbody > tr').first().before('<%= content %>');
+  }
 } else {
   $('#Team_<%= id%>').replaceWith('<%= content %>');
 }

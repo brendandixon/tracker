@@ -1,5 +1,7 @@
 module FilterHandler
   extend ActiveSupport::Concern
+  
+  INDEX_ACTIONS = [:index]
 
   included do
     before_filter :initialize_filter
@@ -20,7 +22,7 @@ module FilterHandler
 
     normalize_filter
 
-    if params[:commit]
+    if params[:commit_filter]
       notice = t(@filter.new_record? ? :created_html : :updated_html, scope: :filter)
       flash[:notice] = notice if @filter.save
     end
@@ -69,7 +71,7 @@ module FilterHandler
   end
 
   def is_index_action
-    [:index].include?(action_name.to_sym)
+    INDEX_ACTIONS.include?(action_name.to_sym)
   end
 
   def filters

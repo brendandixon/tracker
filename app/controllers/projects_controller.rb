@@ -3,41 +3,14 @@ class ProjectsController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-name']
+  INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   before_filter :ensure_initial_state
+  before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /projects
   # GET /projects.json
   def index
-    query = Project
-
-    services = @filter.content[:services] || []
-    services = services.map{|s| s.present? ? s : nil}.compact
-    services = [] if services.any?{|s| s =~ /all/i}
-    services = services.map do |service|
-      if service.is_a?(Integer)
-        service
-      elsif service =~ /^\d+$/
-        service.to_i
-      else
-        service = Service.with_abbreviation(service).first
-        service.present? ? service.id : nil
-      end
-    end.compact
-
-    query = query.for_services(*services) if services.present?
-
-    query.includes(:supported_services).includes(:services)
-    
-    @sort.each do |sort|
-      case sort
-      when '-name' then query = query.in_name_order('ASC')
-      when 'name' then query = query.in_name_order('DESC')
-      end
-    end
-
-    @projects = query
-
     respond_to do |format|
       format.html { render 'shared/index'}
       format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
@@ -93,7 +66,7 @@ class ProjectsController < ApplicationController
         @was_changed << @project.id
         
         format.html { redirect_to projects_path }
-        format.js { render 'project' }
+        format.js { render 'shared/index' }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.html { render action: "new" }
@@ -115,7 +88,7 @@ class ProjectsController < ApplicationController
         @was_changed << @project.id
 
         format.html { redirect_to projects_path }
-        format.js { render 'project' }
+        format.js { render 'shared/index' }
         format.json { head :no_content }
       else
         @in_edit_mode << @project.id
@@ -137,12 +110,47 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to projects_path }
-      format.js { render 'delete' }
+      format.js { render 'shared/index' }
       format.json { head :no_content }
     end
   end
 
+  def is_index_action
+    INDEX_ACTIONS.include?(action_name.to_sym)
+  end
+
   private
+
+  def build_index_query
+    query = Project
+
+    services = @filter.content[:services] || []
+    services = services.map{|s| s.present? ? s : nil}.compact
+    services = [] if services.any?{|s| s =~ /all/i}
+    services = services.map do |service|
+      if service.is_a?(Integer)
+        service
+      elsif service =~ /^\d+$/
+        service.to_i
+      else
+        service = Service.with_abbreviation(service).first
+        service.present? ? service.id : nil
+      end
+    end.compact
+
+    query = query.for_services(*services) if services.present?
+
+    query.includes(:supported_services).includes(:services)
+    
+    @sort.each do |sort|
+      case sort
+      when '-name' then query = query.in_name_order('ASC')
+      when 'name' then query = query.in_name_order('DESC')
+      end
+    end
+
+    @projects = query
+  end
 
   def ensure_initial_state
     @in_edit_mode = []

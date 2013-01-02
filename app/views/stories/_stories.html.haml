@@ -1,16 +1,17 @@
-- if @stories.empty?
-  .eleven.columns.centered#Main
-    %h3.subheader= t(:none_html, scope: [:controllers, :stories])
-- else
-  .eleven.columns.centered#Main
-    %table.twelve#StoryList
-      %thead
-        %tr
-          = render partial: 'shared/sortable', locals: {name: 'Title', field: 'story', classes: 'three'}
-          = render partial: 'shared/sortable', locals: {name: 'Service', field: 'service', classes: 'two'}
-          = render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date', classes: 'two'}
-          = render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu', classes: 'one'}
-          %th.three Projects
+.eleven.columns.centered#Main
+  %table.twelve#StoryList
+    %thead
+      %tr
+        = render partial: 'shared/sortable', locals: {name: 'Title', field: 'story', classes: 'three'}
+        = render partial: 'shared/sortable', locals: {name: 'Service', field: 'service', classes: 'two'}
+        = render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date', classes: 'two'}
+        = render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu', classes: 'one'}
+        %th.three Projects
 
-      %tbody
+    %tbody
+      - if @stories.empty?
+        %tr.story_inline#Story_new
+          %td{colspan: 5}
+            %h3.subheader= t(:none_html, scope: [:controllers, :stories])
+      - else
         = render @stories

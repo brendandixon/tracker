@@ -3,53 +3,14 @@ class StoriesController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-date']
+  INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   before_filter :ensure_initial_state
+  before_filter :build_index_query, only: INDEX_ACTIONS
   
   # GET /stories
   # GET /stories.json
   def index
-    query = Story
-
-    status = if @filter.content[:status] == :complete
-              Task::COMPLETED
-            elsif @filter.content[:status] == :incomplete
-              Task::INCOMPLETE
-            else
-              @filter.content[:status]
-            end
-    query = query.in_status(status) if status.present?
-    
-    projects = @filter.content[:projects] || []
-    projects = projects.map{|p| p.present? ? p : nil}.compact
-    projects = nil if projects.any?{|p| p =~ /all/i}
-    
-    services = @filter.content[:services] || []
-    services = services.map{|s| s.present? ? s : nil}.compact
-    services = nil if services.any?{|s| s =~ /all/i}
-
-    query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
-    query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
-    query = query.for_contact_us(@filter.content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter.content[:contact_us].present?
-
-    query = query.on_or_after_date(@filter.content[:after]) if @filter.content[:after].present?
-    query = query.on_or_before_date(@filter.content[:before]) if @filter.content[:before].present?
-    
-    @sort.each do |sort|
-      case sort
-      when '-cu' then query = query.in_contact_us_order('ASC')
-      when 'cu' then query = query.in_contact_us_order('DESC')
-      when '-date' then query = query.in_date_order('ASC')
-      when 'date' then query = query.in_date_order('DESC')
-      when '-story' then query = query.in_title_order('ASC')
-      when 'story' then query = query.in_title_order('DESC')
-      when '-service' then query = query.in_service_order('ASC')
-      when 'service' then query = query.in_service_order('DESC')
-      end
-    end
-
-    @stories = query.includes(:service).includes(:projects).uniq
-    
     respond_to do |format|
       format.html { render 'shared/index' }
       format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
@@ -104,7 +65,7 @@ class StoriesController < ApplicationController
         @was_changed << @story.id
 
         format.html { redirect_to stories_path }
-        format.js { render 'story' }
+        format.js { render 'shared/index' }
         format.json { render json: @story, status: :created, location: @story }
       else
         format.html { render action: "new" }
@@ -125,7 +86,7 @@ class StoriesController < ApplicationController
         @was_changed << @story.id
         
         format.html { redirect_to stories_path }
-        format.js { render 'story' }
+        format.js { render 'shared/index' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -145,12 +106,59 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to stories_path }
-      format.js { render 'delete' }
+      format.js { render 'shared/index' }
       format.json { head :no_content }
     end
   end
 
+  def is_index_action
+    INDEX_ACTIONS.include?(action_name.to_sym)
+  end
+
   private
+
+  def build_index_query
+    query = Story
+
+    status = if @filter.content[:status] == :complete
+              Task::COMPLETED
+            elsif @filter.content[:status] == :incomplete
+              Task::INCOMPLETE
+            else
+              @filter.content[:status]
+            end
+    query = query.in_status(status) if status.present?
+    
+    projects = @filter.content[:projects] || []
+    projects = projects.map{|p| p.present? ? p : nil}.compact
+    projects = nil if projects.any?{|p| p =~ /all/i}
+    
+    services = @filter.content[:services] || []
+    services = services.map{|s| s.present? ? s : nil}.compact
+    services = nil if services.any?{|s| s =~ /all/i}
+
+    query = query.for_projects(projects.map{|project| project =~ /^\d+$/ ? project : Project.with_name(project).all.map{|o| o.id}}.flatten.compact) if projects.present?
+    query = query.for_services(services.map{|service| service =~ /^\d+$/ ? service : Service.with_abbreviation(service).first.id}.compact) if services.present?
+    query = query.for_contact_us(@filter.content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter.content[:contact_us].present?
+
+    query = query.on_or_after_date(@filter.content[:after]) if @filter.content[:after].present?
+    query = query.on_or_before_date(@filter.content[:before]) if @filter.content[:before].present?
+    
+    @sort.each do |sort|
+      case sort
+      when '-cu' then query = query.in_contact_us_order('ASC')
+      when 'cu' then query = query.in_contact_us_order('DESC')
+      when '-date' then query = query.in_date_order('ASC')
+      when 'date' then query = query.in_date_order('DESC')
+      when '-story' then query = query.in_title_order('ASC')
+      when 'story' then query = query.in_title_order('DESC')
+      when '-service' then query = query.in_service_order('ASC')
+      when 'service' then query = query.in_service_order('DESC')
+      end
+    end
+
+    @stories = query.includes(:service).includes(:projects).uniq
+  end
 
   def ensure_initial_state
     @in_edit_mode = []

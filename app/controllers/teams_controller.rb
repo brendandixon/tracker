@@ -3,29 +3,14 @@ class TeamsController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-name']
+  INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   before_filter :ensure_initial_state
+  before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /teams
   # GET /teams.json
   def index
-    query = Team
-
-    query = query.includes(:projects)
-
-    @sort.each do |sort|
-      case sort
-      when '-name' then query = query.in_name_order('ASC')
-      when 'name' then query = query.in_name_order('DESC')
-      when '-iteration' then query = query.in_iteration_order('ASC')
-      when 'iteration' then query = query.in_iteration_order('DESC')
-      when '-velocity' then query = query.in_velocity_order('ASC')
-      when 'velocity' then query = query.in_velocity_order('DESC')
-      end
-    end
-
-    @teams = query
-
     respond_to do |format|
       format.html { render 'shared/index'}
       format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
@@ -81,7 +66,7 @@ class TeamsController < ApplicationController
         @was_changed << @team.id
         
         format.html { redirect_to teams_path }
-        format.js { render 'team' }
+        format.js { render 'shared/index' }
         format.json { render json: @team, status: :created, location: @team }
       else
         format.html { render action: "new" }
@@ -103,7 +88,7 @@ class TeamsController < ApplicationController
         @was_changed << @team.id
 
         format.html { redirect_to teams_path }
-        format.js { render 'team' }
+        format.js { render 'shared/index' }
         format.json { head :no_content }
       else
         @in_edit_mode << @team.id
@@ -125,12 +110,35 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to teams_path }
-      format.js { render 'delete' }
+      format.js { render 'shared/index' }
       format.json { head :no_content }
     end
   end
 
+  def is_index_action
+    INDEX_ACTIONS.include?(action_name.to_sym)
+  end
+
   private
+
+  def build_index_query
+    query = Team
+
+    query = query.includes(:projects)
+
+    @sort.each do |sort|
+      case sort
+      when '-name' then query = query.in_name_order('ASC')
+      when 'name' then query = query.in_name_order('DESC')
+      when '-iteration' then query = query.in_iteration_order('ASC')
+      when 'iteration' then query = query.in_iteration_order('DESC')
+      when '-velocity' then query = query.in_velocity_order('ASC')
+      when 'velocity' then query = query.in_velocity_order('DESC')
+      end
+    end
+
+    @teams = query
+  end
 
   def ensure_initial_state
     @in_edit_mode = []
