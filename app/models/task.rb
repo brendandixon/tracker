@@ -148,6 +148,31 @@ class Task < ActiveRecord::Base
     Task.compute_rank_between(self, before, after)
   end
 
+  def ensure_rank(projects = nil)
+    projects = self.project.team.present? ? self.project.team.projects : self.project_id if projects.blank?
+    tasks = Task.for_projects(projects)
+
+    if self.new_record?
+      task = tasks.in_rank_order.last
+      self.rank = task.blank? ? 1 : task.rank + 1
+    else
+      task_before = nil
+      task_after = nil
+      
+      if self.completed?
+        task_before = tasks.in_rank_order.where("status IN (?)", [:in_progress, :pending]).limit(1).first
+        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1).first if task_before.blank?
+      elsif self.in_progress?
+        task_before = tasks.in_rank_order.where(status: :pending).limit(1).first
+        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1).first if task_before.blank?
+      elsif self.pending?
+        task_after = tasks.before_rank(self.rank).where("status IN (?)", [:in_progress, :completed]).limit(1).first
+      end
+
+      self.rank = self.compute_rank_between(task_before, task_after) if task_before.present? || task_after.present?
+    end
+  end
+
   def rank_between(before, after)
     Task.rank_between(self, before, after)
   end
@@ -165,35 +190,6 @@ class Task < ActiveRecord::Base
     elsif self.completed?
       self.start_date = now if self.start_date.blank?
       self.start_date = now if self.start_date.blank?
-    end
-  end
-
-  def ensure_rank
-    projects = self.project.team.present? ? self.project.team.projects : self.project_id
-    tasks = Task.for_projects(projects)
-
-    if self.new_record?
-      task = tasks.in_rank_order.last
-      self.rank = task.blank? ? 1 : task.rank + 1
-    else
-      task_before = nil
-      task_after = nil
-      
-      if self.completed?
-        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1)
-        task_before = tasks.where("rank < ?", self.rank).in_rank_order.where(status: :in_progress).limit(1) if task_after.blank?
-        task_before = tasks.where("rank < ?", self.rank).in_rank_order.where(status: :pending).limit(1) if task_before.blank?
-      elsif self.in_progress?
-        task_after = tasks.before_rank(self.rank).where(status: :in_progress).limit(1)
-        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1) if task_after.blank?
-        task_before = tasks.where("rank < ?", self.rank).in_rank_order.where(status: :pending).limit(1) if task_after.blank?
-      elsif self.pending?
-        task_before = tasks.after_rank(self.rank).where(status: :pending).limit(1)
-        task_after = tasks.before_rank(self.rank).where(status: :in_progress).limit(1) if task_before.blank?
-        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1) if task_after.blank?
-      end
-
-      self.rank = self.compute_rank_between(task_before, task_after) if task_before.present? || task_after.present?
     end
   end
   

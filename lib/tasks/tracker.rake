@@ -267,8 +267,8 @@ namespace :tracker do
 
     desc 'Ensure project task order'
     task ensure_order: :environment do
-      Task.where(status: :completed).all.each {|t| t.save}
-      Task.where(status: :in_progress).all.each {|t| t.save}
+      Task.where(status: :completed).all.each {|t| t.ensure_rank; t.save}
+      Task.where(status: :in_progress).all.each {|t| t.ensure_rank; t.save}
       # Task.where(status: :pending).all.each {|t| t.save}
     end
 
