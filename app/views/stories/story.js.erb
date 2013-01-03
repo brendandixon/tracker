@@ -11,7 +11,7 @@ if ($('#Story_<%= id %>').length <= 0) {
     $('#StoryList > tbody > tr').first().before('<%= content %>');
   }
 } else {
-  $('#Story_<%= @story.id%>').replaceWith('<%= content %>');
+  $('#Story_<%= id%>').replaceWith('<%= content %>');
 }
 $('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
 $('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');

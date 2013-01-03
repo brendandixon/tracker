@@ -5,9 +5,16 @@ id = @task.new_record? ? 'new' : @task.id
 <%= render template: 'shared/reset_transients' %>
 $('#Task_new').remove();
 if ($('#Task_<%= id %>').length <= 0) {
-  $('#TaskList > li').first().before('<%= content %>');
+  if ($('#TaskList > li').length <= 0) {
+    if ($('#TaskList').length <= 0) {
+      $('#Main').replaceWith("<div class='nine columns centered' id='Main'><ol class='task_list' id='TaskList'></ol></div>");
+    }
+    $('#TaskList').html('<%= content %>');
+  } else {
+    $('#TaskList > li').first().before('<%= content %>');
+  }
 } else {
-  $('#Task_<%= id %>').replaceWith('<%= content %>');
+  $('#Task_<%= id%>').replaceWith('<%= content %>');
 }
 $('#Main li:nth-child(even)').removeClass('odd').addClass('even');
 $('#Main li:nth-child(odd)').removeClass('even').addClass('odd');

@@ -11,7 +11,7 @@ if ($('#Project_<%= id %>').length <= 0) {
     $('#ProjectList > tbody > tr').first().before('<%= content %>');
   }
 } else {
-  $('#Project_<%= @project.id%>').replaceWith('<%= content %>');
+  $('#Project_<%= id%>').replaceWith('<%= content %>');
 }
 $('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
 $('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
