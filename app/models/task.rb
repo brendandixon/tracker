@@ -180,32 +180,17 @@ class Task < ActiveRecord::Base
       task_after = nil
       
       if self.completed?
-        tasks.before_rank(self.rank).each do |task|
-          unless task.completed?
-            task_before = task
-            next
-          end
-          task_after = task
-          break
-        end
+        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1)
+        task_before = tasks.where("rank < ?", self.rank).in_rank_order.where(status: :in_progress).limit(1) if task_after.blank?
+        task_before = tasks.where("rank < ?", self.rank).in_rank_order.where(status: :pending).limit(1) if task_before.blank?
       elsif self.in_progress?
-        tasks.before_rank(self.rank).each do |task|
-          unless task.in_progress?
-            task_before = task
-            next
-          end
-          task_after = task
-          break
-        end
+        task_after = tasks.before_rank(self.rank).where(status: :in_progress).limit(1)
+        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1) if task_after.blank?
+        task_before = tasks.where("rank < ?", self.rank).in_rank_order.where(status: :pending).limit(1) if task_after.blank?
       elsif self.pending?
-        tasks.after_rank(self.rank).each do |task|
-          unless task.pending?
-            task_after = task
-            next
-          end
-          task_before = task
-          break
-        end
+        task_before = tasks.after_rank(self.rank).where(status: :pending).limit(1)
+        task_after = tasks.before_rank(self.rank).where(status: :in_progress).limit(1) if task_before.blank?
+        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1) if task_after.blank?
       end
 
       self.rank = self.compute_rank_between(task_before, task_after) if task_before.present? || task_after.present?
