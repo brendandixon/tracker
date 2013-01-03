@@ -1,7 +1,7 @@
 $(function() {
   $('body').on('click', 'a[data-filter-toggle]', function(event) {
     $('*[data-filter]').slideToggle('fast', 'swing');
-  })
+  });
   $('body').on('ajax:success', '*[data-filter] form', function(event, data, status, xhr) {
       $('*[data-filter]').slideUp('fast', 'swing');
   });

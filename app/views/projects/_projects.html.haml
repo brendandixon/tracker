@@ -1,14 +1,16 @@
-.nine.columns.centered#Main
+.twelve.columns.centered#Main
   %table.twelve#ProjectList
     %thead
       %tr
         = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
+        = render partial: 'shared/sortable', locals: {name: 'Start Date', field: 'startdate', classes: 'two'}
+        = render partial: 'shared/sortable', locals: {name: 'End Date', field: 'enddate', classes: 'two'}
         %th.seven= 'Services'
 
     %tbody
       - if @projects.empty?
         %tr.project_inline#Project_new
-          %td{colspan: 2}
+          %td{colspan: 4}
             %h3.subheader= t(:none_html, scope: [:controllers, :projects])
       - else
         = render @projects

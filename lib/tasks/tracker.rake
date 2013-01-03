@@ -193,7 +193,7 @@ namespace :tracker do
   ]
 
   desc 'Install Tracker'
-  task :install => :environment do
+  task install: :environment do
     PROJECTS.each do |project|
       Project.where(name:project).first_or_create
     end
@@ -225,7 +225,7 @@ namespace :tracker do
   ]
   
   desc 'Add sample data'
-  task :install_sample => :environment do
+  task install_sample: :environment do
     Feature.delete_all
     Story.delete_all
     
@@ -236,12 +236,21 @@ namespace :tracker do
   end
   
   desc 'Destroy all'
-  task :destroy => :environment do
+  task destroy: :environment do
     Feature.delete_all
     Project.delete_all
     Service.delete_all
     Story.delete_all
     SupportedService.delete_all
+  end
+  
+  namespace :project do
+
+    desc 'Ensure all projects have start dates'
+    task ensure_start_dates: :environment do
+      Project.where(start_date: nil).update_all(start_date: DateTime.parse('2012-12-01'))
+    end
+
   end
 
   namespace :task do

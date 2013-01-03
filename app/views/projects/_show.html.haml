@@ -2,17 +2,12 @@
 - remote = false if remote.nil?
 - stand_alone = true if stand_alone.nil?
 
-= content_tag stand_alone ? 'div' : 'td' do
+- if stand_alone
   .row
-    .twelve.columns= project.name
-= content_tag stand_alone ? 'div' : 'td' do
+    .seven.columns= project.name
   .row
     .twelve.columns
       .services= service_labels(project.services)
-      - unless stand_alone
-        .command_block.on_hover<
-          = glyph_link_to edit_project_path(project), glyph: 'edit', remote:remote
-- if stand_alone
   .row<
     .four.columns.offset-by-eight.text-right.actions
       = link_to 'Edit', edit_project_path(project), remote:remote
@@ -20,3 +15,12 @@
       = link_to 'Delete', project, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this project?" }, remote:remote
       \|
       = link_to 'Back', projects_path
+
+- else
+  %td= project.name
+  %td= project.start_date.to_formatted_s(:medium) if project.start_date.present?
+  %td= project.end_date.to_formatted_s(:medium) if project.end_date.present?
+  %td
+    .services= service_labels(project.services)
+    .command_block.on_hover<
+      = glyph_link_to edit_project_path(project), glyph: 'edit', remote:remote
