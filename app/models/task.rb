@@ -179,9 +179,18 @@ class Task < ActiveRecord::Base
       task_before = nil
       task_after = nil
       
-      if self.completed? || self.in_progress?
+      if self.completed?
         tasks.before_rank(self.rank).each do |task|
-          unless task.completed? || task.in_progress?
+          unless task.completed?
+            task_before = task
+            next
+          end
+          task_after = task
+          break
+        end
+      elsif self.in_progress?
+        tasks.before_rank(self.rank).each do |task|
+          unless task.in_progress?
             task_before = task
             next
           end
