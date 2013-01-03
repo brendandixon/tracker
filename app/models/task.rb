@@ -166,7 +166,7 @@ class Task < ActiveRecord::Base
         task_before = tasks.in_rank_order.where(status: :pending).limit(1).first
         task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1).first if task_before.blank?
       elsif self.pending?
-        task_after = tasks.before_rank(self.rank).where("status IN (?)", [:in_progress, :completed]).limit(1).first
+        task_after = tasks.in_rank_order('DESC').where("status IN (?)", [:in_progress, :completed]).limit(1).first
       end
 
       self.rank = self.compute_rank_between(task_before, task_after) if task_before.present? || task_after.present?
