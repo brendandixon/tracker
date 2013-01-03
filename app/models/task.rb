@@ -109,7 +109,7 @@ class Task < ActiveRecord::Base
         after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
       end
 
-      after + ((before - after) / 2)
+      after.to_f + ((before.to_f - after.to_f) / 2.0)
     end
     
     def ensure_story_tasks(f)
