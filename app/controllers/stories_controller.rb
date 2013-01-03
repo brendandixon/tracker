@@ -127,7 +127,7 @@ class StoriesController < ApplicationController
             else
               @filter.content[:status]
             end
-    query = query.in_status(status) if status.present?
+    query = query.in_state(status) if status.present?
     
     projects = @filter.content[:projects] || []
     services = @filter.content[:services] || []

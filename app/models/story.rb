@@ -32,7 +32,7 @@ class Story < ActiveRecord::Base
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
   # validates_date_of :release_date, allow_nil: true
 
-  scope :in_status, lambda{|status| joins(:tasks).where(tasks: {status: status})}
+  scope :in_state, lambda{|status| joins(:tasks).where(tasks: {status: status})}
   scope :completed, joins(:tasks).where(tasks: {status: Task::COMPLETED})
   scope :incomplete, joins(:tasks).where(tasks: {status: Task::INCOMPLETE})
   

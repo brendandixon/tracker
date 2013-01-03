@@ -27,7 +27,7 @@
               = f.text_field :title
         .three.columns.offset_by_two
           = f.label :status
-          = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}}
+          = f.select :status, Task::LEGAL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}}
       .row
         .twelve.columns
           = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])

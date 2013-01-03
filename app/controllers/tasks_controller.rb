@@ -150,7 +150,7 @@ class TasksController < ApplicationController
 
   # POST /tasks/1/rank?before=xx or /tasks/1/rank?after=xx
   def rank
-    @task = Task.rank_between(params[:id], params[:before], params[:after])
+    @task = Task.set_rank_between(params[:id], params[:after], params[:before])
 
     respond_to do |format|
       format.html { redirect_to :back }
@@ -173,11 +173,11 @@ class TasksController < ApplicationController
             elsif @filter.content[:status] == :incomplete
               Task::INCOMPLETE
             elsif @filter.content[:status] == :iteration
-              Task::STATUS
+              Task::LEGAL_STATES
             else
               @filter.content[:status]
             end
-    query = query.in_status(status) if status.present?
+    query = query.in_state(status) if status.present?
     
     projects = @filter.content[:projects] || []
     services = @filter.content[:services] || []

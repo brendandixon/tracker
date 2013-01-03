@@ -25,10 +25,11 @@ class Task < ActiveRecord::Base
   POINTS_MAXIMUM = 5
   POINTS_MINIMUM = 0
 
-  INCOMPLETE = [:pending, :in_progress]
   COMPLETED = [:completed]
-  STATUS = INCOMPLETE + COMPLETED
-  STATES = [:iteration, :complete, :incomplete] + INCOMPLETE + COMPLETED
+  INCOMPLETE = [:pending, :in_progress]
+  STARTED = [:completed, :in_progress]
+  LEGAL_STATES = INCOMPLETE + COMPLETED
+  ALL_STATES = [:iteration, :complete, :incomplete] + INCOMPLETE + COMPLETED
 
   attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
@@ -47,7 +48,7 @@ class Task < ActiveRecord::Base
   validate :has_title_or_story
   validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
   validates_uniqueness_of :story_id, scope: :project_id, allow_blank: true
-  validates_inclusion_of :status, in: STATUS
+  validates_inclusion_of :status, in: LEGAL_STATES
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
@@ -56,15 +57,19 @@ class Task < ActiveRecord::Base
 
   scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :complete, date, :complete)}
 
-  scope :in_status, lambda{|status| where(status: status)}
+  scope :in_state, lambda{|status| where(status: status)}
   scope :completed, where(status: Task::COMPLETED)
   scope :incomplete, where(status: Task::INCOMPLETE)
+  scope :started, where(status: Task::STARTED)
+  scope :in_progress, where(status: :in_progress)
+  scope :pending, where(status: :pending)
 
   scope :at_least_points, lambda{|points| where("points >= ?", points)}
   scope :no_more_points, lambda{|points| where("points <= ?", points)}
 
-  scope :after_rank, lambda{|rank| in_rank_order.where("rank > ?", rank)}
-  scope :before_rank, lambda{|rank| in_rank_order('DESC').where("rank < ?", rank)}
+  scope :after_rank, lambda{|rank| where("rank > ?", rank)}
+  scope :before_rank, lambda{|rank| where("rank < ?", rank)}
+  scope :only_rank, select(:rank)
 
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
@@ -72,7 +77,7 @@ class Task < ActiveRecord::Base
   scope :in_service_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
   
-  STATUS.each do |s|
+  LEGAL_STATES.each do |s|
     class_eval <<-EOM
       def #{s}?
         self.status == :#{s}
@@ -91,25 +96,27 @@ class Task < ActiveRecord::Base
     end
 
     def all_states
-      @all_states ||= [['-', '']] + STATES.map{|state| [state.to_s.titleize, state]}
+      @all_states ||= [['-', '']] + ALL_STATES.map{|state| [state.to_s.titleize, state]}
     end
 
-    def compute_rank_between(task, before, after)
-      task = task.is_a?(Task) ? task : Task.find(task)
-      before = (before.is_a?(Task) ? before : Task.select(:rank).find(before)).rank if before.present?
-      after = (after.is_a?(Task) ? after : Task.select(:rank).find(after)).rank if after.present?
+    def compute_rank_between(after, before)
+      after = (Task.only_rank.find(after) rescue nil) unless after.blank? || after.is_a?(Task)
+      after = after.rank unless after.blank?
 
-      return task unless before.present? || after.present?
+      before = (Task.only_rank.find(before) rescue nil) unless before.blank? || before.is_a?(Task)
+      before = before.rank unless before.blank?
 
-      if before.blank?
-        before = Task.after_rank(after).limit(1).first
-        before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
-      elsif after.blank?
-        after = Task.before_rank(before).limit(1).first
+      return task unless after.present? || before.present?
+
+      if after.blank?
+        after = Task.in_rank_order('DESC').before_rank(before).only_rank.limit(1).first
         after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
+      elsif before.blank?
+        before = Task.in_rank_order.after_rank(after).only_rank.limit(1).first
+        before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
       end
 
-      after.to_f + ((before.to_f - after.to_f) / 2.0)
+      after + ((before - after) / 2.0)
     end
     
     def ensure_story_tasks(f)
@@ -118,9 +125,9 @@ class Task < ActiveRecord::Base
       end
     end
 
-    def rank_between(task, before, after)
+    def set_rank_between(task, after, before)
       task = task.is_a?(Task) ? task : (Task.find(task) rescue nil)
-      task.update_attribute(:rank, compute_rank_between(task, before, after)) if task.present?
+      task.update_attribute(:rank, compute_rank_between(after, before)) if task.present?
       task
     end
 
@@ -133,7 +140,7 @@ class Task < ActiveRecord::Base
   end
   
   def next_status
-    STATUS[STATUS.find_index(self.status)+1] || STATUS.last
+    LEGAL_STATES[LEGAL_STATES.find_index(self.status)+1] || LEGAL_STATES.last
   end
   
   def title
@@ -144,37 +151,33 @@ class Task < ActiveRecord::Base
     write_attribute(:title, s) unless story.present?
   end
 
-  def compute_rank_between(before, after)
-    Task.compute_rank_between(self, before, after)
-  end
-
-  def ensure_rank(projects = nil)
-    projects = self.project.team.present? ? self.project.team.projects : self.project_id if projects.blank?
-    tasks = Task.for_projects(projects)
-
-    if self.new_record?
-      task = tasks.in_rank_order.last
-      self.rank = task.blank? ? 1 : task.rank + 1
-    else
-      task_before = nil
-      task_after = nil
+  def ensure_rank
+    task_after = nil
+    task_before = nil
       
+    if self.new_record?
+      projects = self.project.team.present? ? self.project.team.projects : self.project_id
+      task_after = Task.for_projects(projects).in_rank_order('DESC').pending.only_rank.limit(1).first if projects.present?
+      task_after = Task.in_rank_order('DESC').pending.only_rank.limit(1).first if task_after.blank?
+      self.rank = 1 if task_after.blank?
+    else
       if self.completed?
-        task_before = tasks.in_rank_order.where("status IN (?)", [:in_progress, :pending]).limit(1).first
-        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1).first if task_before.blank?
+        task_before = Task.in_rank_order.incomplete.only_rank.limit(1).first
+        task_before = nil if task_before.present? && self.rank < task_before.rank
       elsif self.in_progress?
-        task_before = tasks.in_rank_order.where(status: :pending).limit(1).first
-        task_after = tasks.before_rank(self.rank).where(status: :completed).limit(1).first if task_before.blank?
+        task_before = Task.in_rank_order.pending.only_rank.limit(1).first
+        task_before = nil if task_before.present? && self.rank < task_before.rank
       elsif self.pending?
-        task_after = tasks.in_rank_order('DESC').where("status IN (?)", [:in_progress, :completed]).limit(1).first
+        task_after = Task.in_rank_order('DESC').started.only_rank.limit(1).first
+        task_after = nil if task_after.present? && self.rank > task_after.rank
       end
-
-      self.rank = self.compute_rank_between(task_before, task_after) if task_before.present? || task_after.present?
     end
+
+    self.rank = Task.compute_rank_between(task_after, task_before) if task_after.present? || task_before.present?
   end
 
-  def rank_between(before, after)
-    Task.rank_between(self, before, after)
+  def set_rank_between(after, before)
+    Task.set_rank_between(self, after, before)
   end
 
   private
