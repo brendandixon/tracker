@@ -173,7 +173,7 @@ class TasksController < ApplicationController
             elsif @filter.content[:status] == :incomplete
               Task::INCOMPLETE
             elsif @filter.content[:status] == :iteration
-              Task::LEGAL_STATES
+              nil
             else
               @filter.content[:status]
             end

@@ -55,7 +55,7 @@ class Task < ActiveRecord::Base
   scope :for_stories, lambda {|stories| where(story_id: stories)}
   scope :for_teams, lambda{|teams| joins(:project).where('projects.team_id IN (?)', teams)}
 
-  scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :complete, date, :complete)}
+  scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :completed, date, :completed)}
 
   scope :in_state, lambda{|status| where(status: status)}
   scope :completed, where(status: Task::COMPLETED)
