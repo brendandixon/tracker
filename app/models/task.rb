@@ -169,7 +169,8 @@ class Task < ActiveRecord::Base
   end
 
   def ensure_rank
-    tasks = Task.for_projects(self.project_id)
+    projects = self.project.team.present? ? self.project.team.projects : self.project_id
+    tasks = Task.for_projects(projects)
 
     if self.new_record?
       task = tasks.in_rank_order.last

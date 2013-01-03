@@ -1,7 +1,6 @@
 - remote = false if remote.nil?
 - stand_alone = true if stand_alone.nil?
 - team ||= @team
-- logger.debug "TEAM: #{team.projects}"
 
 = content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 4} do
   .row.team_edit

@@ -27,7 +27,7 @@
               = f.text_field :title
         .three.columns.offset_by_two
           = f.label :status
-          = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}
+          = f.select :status, Task::STATUS.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}}
       .row
         .twelve.columns
           = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])
@@ -40,7 +40,7 @@
           - if task.story.present? && !task.new_record?
             = f.label :story_id, t(:service, scope: [:activerecord, :attributes, :task])
             = task.story.service.abbreviation
-        .three.columns.end
+        .three.columns
           = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
           %span.points<
             .overlay{class: points_to_class(task.points)}<
@@ -48,6 +48,12 @@
                 %i.small.glyphicon{class: 'star', data: {points:points}}
             - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
               %i.small.glyphicon{class: 'dislikes', data: {points:points}}
+        .three.columns.end.start_date{style: "display:#{task.in_progress? ? 'inline-block' : 'none'}"}
+          = f.label :start_date
+          = f.text_field :start_date, data: {datefield: true}
+        .three.columns.end.completed_date{style: "display:#{task.completed? ? 'inline-block' : 'none'}"}
+          = f.label :completed_date
+          = f.text_field :completed_date, data: {datefield: true}
       .row
         .four.columns.offset-by-eight.text-right.actions
           = f.submit 'Save'
@@ -56,3 +62,4 @@
             = link_to 'Delete', task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }, remote:remote
           \|
           = link_to 'Cancel', task.new_record? ? tasks_path : task_path(task), remote:remote
+          = javascript_include_tag 'dates'

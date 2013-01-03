@@ -255,6 +255,21 @@ namespace :tracker do
 
   namespace :task do
 
+    desc 'Ensure task dates'
+    task ensure_dates: :environment do
+      Task.where("status in (?)", [:completed, :in_progress]).where(start_date: nil).each do |task|
+        task.update_attribute(:start_date, task.project.team.iteration_start_date) if task.start_date.blank?
+      end
+      Task.where(status: :completed).where(completed_date: nil).each do |task|
+        task.update_attribute(:completed_date, task.project.team.iteration_start_date) if task.completed_date.blank?
+      end
+    end
+
+    desc 'Ensure project task order'
+    task ensure_order: :environment do
+      Task.all.each {|t| t.save}
+    end
+
     desc 'Reset task ranks'
     task reset_ranks: :environment do
       tasks = Task.in_rank_order

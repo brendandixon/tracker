@@ -12,6 +12,7 @@
       - @tasks.each do |task|
         - if @iteration_team.present?
           - if velocity <= 0 && task.pending?
+            - rendered_iteration = true
             - iteration_start_date = @iteration_team.iteration_end_date(iteration_start_date)
             %li.iteration_marker
               %div= "#{iteration_start_date.to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe
@@ -19,4 +20,7 @@
             - velocity = @iteration_team.velocity
         - velocity -= task.points
         = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode}
+      - if @iteration_team.present?
+        %li.iteration_marker
+          %div= "#{@iteration_team.iteration_end_date(iteration_start_date).to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe
     = javascript_include_tag 'task_list'

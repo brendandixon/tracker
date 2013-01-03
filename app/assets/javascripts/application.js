@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-tooltip/jquery.tooltip
 //= require filter
+//= require status
 //= require tasks
 
 $(function() {
