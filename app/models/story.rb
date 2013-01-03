@@ -46,7 +46,7 @@ class Story < ActiveRecord::Base
   
   scope :in_contact_us_order, lambda{|dir = 'ASC'| order("contact_us_number #{dir}")}
   scope :in_date_order, lambda{|dir = 'ASC'| order("release_date #{dir}")}
-  scope :in_service_order, lambda{|dir = 'ASC'| joins(:service).order("services.abbreviation #{dir}")}
+  scope :in_abbreviation_order, lambda{|dir = 'ASC'| joins(:service).order("services.abbreviation #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("title #{dir}")}
   
   class<<self

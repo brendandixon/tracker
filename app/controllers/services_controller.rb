@@ -1,23 +1,19 @@
 class ServicesController < ApplicationController
+  include FilterHandler
+  include SortHandler
+
+  DEFAULT_SORT = ['-abbreviation']
+  INDEX_ACTIONS = [:create, :destroy, :index, :update]
+
+  before_filter :ensure_initial_state
+  before_filter :build_index_query, only: INDEX_ACTIONS
+
   # GET /services
   # GET /services.json
   def index
-    query = Service
-    
-    @filter[:sort][self.controller_name].each do |sort|
-      case sort
-      when '-name' then query = query.in_name_order('ASC')
-      when 'name' then query = query.in_name_order('DESC')
-      when '-service' then query = query.in_service_order('ASC')
-      when 'service' then query = query.in_service_order('DESC')
-      end
-    end
-
-    @services = query.all
-
     respond_to do |format|
-      format.html # index.html.erb
-      format.js # index.js.erb
+      format.html { render 'shared/index'}
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
       format.json { render json: @services }
     end
   end
@@ -28,7 +24,8 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render template: 'shared/show' }
+      format.js { render 'service' }
       format.json { render json: @service }
     end
   end
@@ -39,7 +36,8 @@ class ServicesController < ApplicationController
     @service = Service.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render template: 'shared/new' }
+      format.js { render 'service' }
       format.json { render json: @service }
     end
   end
@@ -47,6 +45,13 @@ class ServicesController < ApplicationController
   # GET /services/1/edit
   def edit
     @service = Service.find(params[:id])
+    @in_edit_mode << @service.id
+
+    respond_to do |format|
+      format.html { render template: 'shared/edit' }
+      format.js { render 'service' }
+      format.json { render json: @service }
+    end
   end
 
   # POST /services
@@ -56,10 +61,15 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.save
-        format.html { redirect_to @service, notice: 'Service was successfully created.' }
+        flash[:notice] = 'Service was successfully created.'
+        @was_changed << @service.id
+        
+        format.html { redirect_to services_path }
+        format.js { render 'shared/index' }
         format.json { render json: @service, status: :created, location: @service }
       else
         format.html { render action: "new" }
+        format.js { render 'service' }
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
@@ -72,10 +82,17 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.update_attributes(params[:service])
-        format.html { redirect_to @service, notice: 'Service was successfully updated.' }
+        flash[:notice] = 'Service was successfully updated.'
+        @was_changed << @service.id
+
+        format.html { redirect_to services_path }
+        format.js { render 'shared/index' }
         format.json { head :no_content }
       else
+        @in_edit_mode << @service.id
+
         format.html { render action: "edit" }
+        format.js { render 'service' }
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
@@ -87,9 +104,40 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
     @service.destroy
 
+    flash[:notice] = 'Service was successfully deleted.'
+
     respond_to do |format|
-      format.html { redirect_to services_url }
+      format.html { redirect_to services_path }
+      format.js { render 'shared/index' }
       format.json { head :no_content }
     end
   end
+
+
+  def is_index_action
+    INDEX_ACTIONS.include?(action_name.to_sym)
+  end
+
+  private
+
+  def build_index_query
+    query = Service
+    
+    @sort.each do |sort|
+      case sort
+      when '-name' then query = query.in_name_order('ASC')
+      when 'name' then query = query.in_name_order('DESC')
+      when '-abbreviation' then query = query.in_abbreviation_order('ASC')
+      when 'abbreviation' then query = query.in_abbreviation_order('DESC')
+      end
+    end
+
+    @services = query
+  end
+
+  def ensure_initial_state
+    @in_edit_mode = []
+    @was_changed = []
+  end
+
 end

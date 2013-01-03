@@ -3,6 +3,8 @@
 %ul.dropdown
   - if area == :projects
     %li= link_to t(:new_html, scope: [:controllers, :projects]), new_project_path, remote: true
+  - elsif area == :services
+    %li= link_to t(:new_html, scope: [:controllers, :services]), new_service_path, remote: true
   - elsif area == :stories
     %li= link_to t(:new_html, scope: [:controllers, :stories]), new_story_path, remote: true
   - elsif area == :tasks

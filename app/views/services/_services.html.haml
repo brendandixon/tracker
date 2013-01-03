@@ -1,14 +1,14 @@
-%table.eleven#Services
-  %thead
-    %tr
-      %th= render partial: 'shared/sortable', locals: {name: 'Service', field: 'name'}
-      %th= render partial: 'shared/sortable', locals: {name: 'Abbreviation', field: 'service'}
-      %th
-
-  %tbody
-    - @services.each do |service|
+.eight.columns.centered#Main
+  %table.twelve#ServiceList
+    %thead
       %tr
-        %td= service.name
-        %td= service.abbreviation
-        %td
-          = render partial: 'shared/links', locals: { links: [:edit, :destroy], object: service}
+        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'seven'}
+        =render partial: 'shared/sortable', locals: {name: 'Abbreviation', field: 'abbreviation', classes: 'five'}
+
+    %tbody
+      - if @services.empty?
+        %tr.service_inline#Service_new
+          %td{colspan: 2}
+            %h3.subheader= t(:none_html, scope: [:controllers, :services])
+      - else
+        = render @services

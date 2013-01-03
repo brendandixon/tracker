@@ -13,6 +13,8 @@
 
 class Project < ActiveRecord::Base
   attr_accessible :end_date, :name, :services, :start_date
+  
+  after_save :refresh_active
 
   belongs_to :team
 
@@ -44,12 +46,21 @@ class Project < ActiveRecord::Base
     def all_projects
       @all_projects ||= [['-', '']] + Project.active.map{|project| [project.name, project.name]}.uniq
     end
+    
+    def refresh_active
+      @active = nil
+      @all_projects = nil
+    end
   end
 
   private
 
   def ensure_start_date
     self.start_date ||= DateTime.parse('2012-12-01').utc
+  end
+  
+  def refresh_active
+    self.class.refresh_active
   end
 
 end

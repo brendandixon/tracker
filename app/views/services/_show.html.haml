@@ -1,0 +1,22 @@
+- service ||= @service
+- remote = false if remote.nil?
+- stand_alone = true if stand_alone.nil?
+
+- if stand_alone
+  .row
+    .seven.columns= service.name
+    .five.columns.end= service.abbreviation
+  .row<
+    .four.columns.offset-by-eight.text-right.actions
+      = link_to 'Edit', edit_service_path(service), remote:remote
+      \|
+      = link_to 'Delete', service, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this service?" }, remote:remote
+      \|
+      = link_to 'Back', services_path
+
+- else
+  %td= service.name
+  %td
+    = service.abbreviation
+    .command_block.on_hover<
+      = glyph_link_to edit_service_path(service), glyph: 'edit', remote:remote

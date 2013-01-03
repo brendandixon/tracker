@@ -15,7 +15,7 @@ if ($('#Project_<%= id %>').length <= 0) {
 }
 $('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
 $('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
-<% if @was_changed.include?(@project.id) %>
-$('#Project_<%= @project.id%>').effect('highlight',{duration: 750});
+<% if @was_changed.include?(id) %>
+$('#Project_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
 <%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

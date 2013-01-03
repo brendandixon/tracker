@@ -1,0 +1,21 @@
+<%
+content = escape_javascript(render(partial: @service, locals: {in_edit_mode: @in_edit_mode}))
+id = @service.new_record? ? 'new' : @service.id
+%>
+<%= render template: 'shared/reset_transients' %>
+$('#Service_new').remove();
+if ($('#Service_<%= id %>').length <= 0) {
+  if ($('#ServiceList > tbody > tr').length <= 0) {
+    $('#ServiceList > tbody').html('<%= content %>');
+  } else {
+    $('#ServiceList > tbody > tr').first().before('<%= content %>');
+  }
+} else {
+  $('#Service_<%= id%>').replaceWith('<%= content %>');
+}
+$('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
+$('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
+<% if @was_changed.include?(id) %>
+$('#Service_<%= id%>').effect('highlight',{duration: 750});
+<% end %>
+<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

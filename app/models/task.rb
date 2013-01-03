@@ -74,7 +74,7 @@ class Task < ActiveRecord::Base
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
   scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
-  scope :in_service_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
+  scope :in_abbreviation_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
   
   LEGAL_STATES.each do |s|

@@ -147,8 +147,8 @@ class StoriesController < ApplicationController
       when 'date' then query = query.in_date_order('DESC')
       when '-story' then query = query.in_title_order('ASC')
       when 'story' then query = query.in_title_order('DESC')
-      when '-service' then query = query.in_service_order('ASC')
-      when 'service' then query = query.in_service_order('DESC')
+      when '-abbreviation' then query = query.in_abbreviation_order('ASC')
+      when 'abbreviation' then query = query.in_abbreviation_order('DESC')
       end
     end
 
