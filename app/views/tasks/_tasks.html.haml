@@ -2,6 +2,7 @@
   .eleven.columns.centered#Main
     %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
 - else
+  - iteration = 0
   - if @iteration_team.present?
     - iteration_start_date = @iteration_team.iteration_start_date
     - velocity = @iteration_team.velocity
@@ -18,8 +19,9 @@
               %div= "#{iteration_start_date.to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe
             - iteration_start_date = iteration_start_date + 1.day
             - velocity = @iteration_team.velocity
+            - iteration = iteration + 1
         - velocity -= task.points
-        = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode}
+        = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
       - if @iteration_team.present?
         %li.iteration_marker
           %div= "#{@iteration_team.iteration_end_date(iteration_start_date).to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe

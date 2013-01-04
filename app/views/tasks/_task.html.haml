@@ -1,15 +1,16 @@
-- classes = cycle('odd', 'even')
 - in_edit_mode ||= []
+- iteration ||= 0
+- classes = cycle('odd', 'even') + " iteration_#{iteration}"
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 - task ||= @task
 
 - if in_edit_mode.include?(task.id) || task.new_record?
-  %li#Task{id: task.new_record? ? 'new' : task.id, class: classes}
+  %li#Task{id: task.new_record? ? 'new' : task.id, class: classes, data: {iteration: iteration}}
     = render partial: 'edit', locals: {task:task, remote:true}
 
 - else
-  %li.task_inline#Task{id: task.id, class: classes}
+  %li.task_inline#Task{id: task.id, class: classes, data: {iteration: iteration}}
     .row
       .seven.columns
         .title{title_options(task)}= task.title

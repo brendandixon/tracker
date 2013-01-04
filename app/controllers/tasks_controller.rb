@@ -212,7 +212,7 @@ class TasksController < ApplicationController
 
     if teams.present?
       query = query.for_teams(teams)
-      if teams.length == 1
+      if teams.length == 1 && @filter.content[:status] == :iteration
         @iteration_team = Team.find(teams.first) rescue nil
         query = query.started_on_or_after(@iteration_team.iteration_start_date) if @iteration_team.present?
       end
