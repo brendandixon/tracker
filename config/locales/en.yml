@@ -36,7 +36,6 @@ en:
       name_html: 'Tasks'
       none_html: 'No tasks were found.'
       new_html: 'Add Task&#8230;'
-      new_story_html: 'Add Story Task&#8230;'
       edit_html: 'Edit Task&#8230;'
     teams:
       name_html: 'Teams'

@@ -16,7 +16,26 @@ $(function() {
       points = 0;
       pointsClass = 'zero-points';
     }
-    e.closest('.task_edit').find('input#task_points').val(points);
+    task = e.closest('.task_edit');
+    if (task.length > 0) {
+      task.find('input#task_points').val(points);
+    } else {
+      task = e.closest('.task_inline');
+      if (typeof task !== 'undefined') {
+        task = task.attr('id').split('_')[1];
+        $.ajax({
+          type: 'POST',
+          beforeSend: function(xhr){
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+          },
+          dataType: 'script',
+          url: '/tasks/' + task + '/point?points=' + points,
+          error: function(jqXHR, textStatus, error) {
+            $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
+          }
+        });
+      }
+    }
     e.removeClass('zero-points one-point two-points three-points four-points five-points').addClass(pointsClass);
   });
 });

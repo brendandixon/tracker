@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   include FilterHandler
 
-  INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :rank, :update]
+  INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :rank, :update]
 
   before_filter :ensure_initial_state
   before_filter :build_index_query, only: INDEX_ACTIONS
@@ -32,12 +32,15 @@ class TasksController < ApplicationController
   # GET /tasks/new.json
   def new
     @task = Task.new
+    
     if @filter.content[:projects].present?
       @task.project_id = @filter.content[:projects].first
     elsif @filter.content[:teams].present?
       team = Team.find(@filter.content[:teams].first) rescue nil
       @task.project_id = team.projects.first.id if team.present? && team.projects.present?
     end
+    
+    @task.story_id = @filter.content[:stories].first if @filter.content[:stories].present?
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
@@ -69,7 +72,6 @@ class TasksController < ApplicationController
         @was_changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        # format.js { render 'task' }
         format.js { render 'shared/index' }
         format.json { render json: @task, status: :created, location: @task }
       else
@@ -91,7 +93,6 @@ class TasksController < ApplicationController
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        # format.js { render 'task' }
         format.js { render 'shared/index' }
         format.json { head :no_content }
       else
@@ -114,7 +115,6 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to tasks_path }
-      # format.js { render 'delete' }
       format.js { render 'shared/index' }
       format.json { head :no_content }
     end
@@ -146,6 +146,28 @@ class TasksController < ApplicationController
       format.json { render json: @tasks }
     end
     
+  end
+
+  # POST /tasks/1/point?points=xx
+  def point
+    @task = Task.find(params[:id])
+
+    respond_to do |format|
+      if @task.update_attribute(:points, params[:points].to_i)
+        flash[:notice] = 'Task was successfully updated.'
+        @was_changed << @task.id
+
+        format.html { redirect_to tasks_path(story_id: @task.story_id) }
+        format.js { render 'shared/index' }
+        format.json { head :no_content }
+      else
+        @in_edit_mode << @task.id
+
+        format.html { render action: "edit" }
+        format.js { render 'task' }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /tasks/1/rank?before=xx or /tasks/1/rank?after=xx

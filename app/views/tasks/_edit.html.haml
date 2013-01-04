@@ -1,4 +1,3 @@
-- for_story = params[:story]
 - remote = false if remote.nil?
 - task ||= @task
 
@@ -16,18 +15,15 @@
       .row
         = f.hidden_field :points
         .seven.columns
-          - if for_story || (task.story_id.present? && task.new_record?)
-            = f.label :story_id
-            = f.select :story_id, Story.all_stories
-          - else
-            = f.label :title
-            - if task.story.present?
-              .title= task.title
-            - else
-              = f.text_field :title
+          = f.label :title
+          = f.text_field :title
         .three.columns.offset_by_two
           = f.label :status
           = f.select :status, Task::LEGAL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}}
+      .row
+        .seven.columns
+          = f.label :story_id
+          = f.select :story_id, Story.all_stories
       .row
         .twelve.columns
           = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])

@@ -9,6 +9,5 @@
     %li= link_to t(:new_html, scope: [:controllers, :stories]), new_story_path, remote: true
   - elsif area == :tasks
     %li= link_to t(:new_html, scope: [:controllers, :tasks]), new_task_path, remote: true
-    %li= link_to t(:new_story_html, scope: [:controllers, :tasks]), new_task_path(story:true), remote: true
   - elsif area == :teams
     %li= link_to t(:new_html, scope: [:controllers, :teams]), new_team_path, remote: true

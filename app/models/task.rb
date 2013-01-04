@@ -43,11 +43,9 @@ class Task < ActiveRecord::Base
 
   before_save :ensure_rank  
   before_validation :ensure_dates
-  before_validation :normalize_title
 
   validate :has_title_or_story
   validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
-  validates_uniqueness_of :story_id, scope: :project_id, allow_blank: true
   validates_inclusion_of :status, in: LEGAL_STATES
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
@@ -119,9 +117,10 @@ class Task < ActiveRecord::Base
       after + ((before - after) / 2.0)
     end
     
-    def ensure_story_tasks(f)
-      f.service.projects.each do |project|
-        Task.create(story_id:f.id, project_id:project.id, status: :pending) unless Task.for_stories(f).for_projects(project).first
+    def ensure_story_tasks(story)
+      story.service.projects.each do |project|
+        next if Task.for_stories(f).for_projects(project).exists?
+        Task.create(story_id:f.id, project_id:project.id, status: :pending)
       end
     end
 
@@ -144,11 +143,7 @@ class Task < ActiveRecord::Base
   end
   
   def title
-    self.story.present? ? self.story.title : read_attribute(:title)
-  end
-  
-  def title=(s)
-    write_attribute(:title, s) unless story.present?
+    read_attribute(:title) || (self.story.present? && self.story.title)
   end
 
   def ensure_rank
@@ -201,10 +196,6 @@ class Task < ActiveRecord::Base
       self.errors.add(:story, :title_or_story_required)
       self.errors.add(:title, :title_or_story_required)
     end
-  end
-  
-  def normalize_title
-    write_attribute(:title, nil) if story.present? && read_attribute(:title)
   end
   
 end

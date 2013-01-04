@@ -1,3 +1,10 @@
+class TaskPointConstraint
+  def matches?(request)
+    points = request.query_parameters['points']
+    (points.blank? || points =~ /^\d+$/)
+  end
+end
+
 class TaskRankConstraint
   def matches?(request)
     before = request.query_parameters['before']
@@ -24,6 +31,7 @@ Tracker::Application.routes.draw do
     member do
       post 'advance'
       post 'complete'
+      post 'point', constraints: TaskPointConstraint.new
       post 'rank', constraints: TaskRankConstraint.new
     end
   end

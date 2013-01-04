@@ -25,9 +25,11 @@
         = task.story.service.abbreviation if task.story.present?
       .three.columns.end
         .points<
-          - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
-            %span<
-              %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
+          .overlay{class: points_to_class(task.points)}<
+            - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+              %i.small.glyphicon{class: 'star', data: {points:points}}
+          - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+            %i.small.glyphicon{class: 'dislikes', data: {points:points}}
     .row
       .twelve.columns
         .description= task.description

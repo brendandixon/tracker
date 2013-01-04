@@ -5,7 +5,7 @@
 - content[:services] = content[:services].map{|service| service =~ /^\d+$/ ? service.to_i : nil}.compact
 - slice_size = 4
 
-.filter_container.nine.columns.centered#Filter{data: {filter: 'data-filter'}, class: classes}
+.filter_container.twelve.columns.centered#Filter{data: {filter: 'data-filter'}, class: classes}
   = form_for @filter, url: projects_path, method: :get, remote: true do |f|
     - if @filter.errors.any?
       .row
@@ -24,7 +24,7 @@
     
     .row.section
       - Service.active.each_slice(slice_size) do |services|
-        .row
+        .row.services
           - services.each_with_index do |service, i|
             - classes = 'end' if services.length < slice_size && i == services.length-1
             .three.columns.services{class: classes}<

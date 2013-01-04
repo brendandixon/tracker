@@ -157,7 +157,7 @@
       width:5*$glyphWidth;
     }
   }
-  .task_edit & {
+  .task_edit &, .task_inline & {
     cursor:pointer;
   }
 }
@@ -188,6 +188,7 @@
 }
 
 .services {
+  padding-left:6px;
   label {
     display:inline-block;
     line-height:$small;
@@ -277,6 +278,10 @@ ol.task_list {
   font-size:$large;
   font-weight:$thin;
   margin:2px 0;
+}
+
+select {
+  margin-bottom:12px;
 }
 
 table tbody tr {
