@@ -31,6 +31,10 @@
               %i.small.glyphicon{class: 'star', data: {points:points}}
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
             %i.small.glyphicon{class: 'dislikes', data: {points:points}}
+        .printed-points<
+          - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
+            %span<
+              %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
     .row
       .twelve.columns
         .description= task.description

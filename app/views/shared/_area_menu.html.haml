@@ -9,9 +9,8 @@
       = glyph_link_to url_for(controller: area.first, action: :index), glyph: "white small #{area.last}"
   %ul.right
     %li.divider
-      %li.has-dropdown
-        = glyph_link_to '#', glyph:'white small circle_plus'
-        = render 'shared/add_menu'
+      %li{class: 'has-tip', title: t(:new_html, scope: [:controllers, current_area])}
+        = glyph_link_to url_for(controller: current_area, action: :new), glyph:'white small circle_plus', remote: true
       %li.has-dropdown
         = glyph_link_to '#', glyph:'white small cogwheels', disabled: disable_filter
         = render 'shared/filter_menu' unless disable_filter

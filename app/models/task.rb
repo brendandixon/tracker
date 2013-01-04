@@ -43,6 +43,7 @@ class Task < ActiveRecord::Base
 
   before_save :ensure_rank  
   before_validation :ensure_dates
+  before_validation :ensure_title
 
   validate :has_title_or_story
   validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
@@ -189,6 +190,10 @@ class Task < ActiveRecord::Base
       self.start_date = now if self.start_date.blank?
       self.start_date = now if self.start_date.blank?
     end
+  end
+
+  def ensure_title
+    write_attribute(:title, nil) if read_attribute(:title).blank?
   end
   
   def has_title_or_story
