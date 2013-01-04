@@ -66,7 +66,7 @@ class ProjectsController < ApplicationController
         @was_changed << @project.id
         
         format.html { redirect_to projects_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.html { render action: "new" }
@@ -88,7 +88,7 @@ class ProjectsController < ApplicationController
         @was_changed << @project.id
 
         format.html { redirect_to projects_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
         @in_edit_mode << @project.id
@@ -110,7 +110,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to projects_path }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { head :no_content }
     end
   end

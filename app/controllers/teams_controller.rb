@@ -66,7 +66,7 @@ class TeamsController < ApplicationController
         @was_changed << @team.id
         
         format.html { redirect_to teams_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { render json: @team, status: :created, location: @team }
       else
         format.html { render action: "new" }
@@ -88,7 +88,7 @@ class TeamsController < ApplicationController
         @was_changed << @team.id
 
         format.html { redirect_to teams_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
         @in_edit_mode << @team.id
@@ -110,7 +110,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to teams_path }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { head :no_content }
     end
   end

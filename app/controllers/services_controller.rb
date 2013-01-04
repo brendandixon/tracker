@@ -65,7 +65,7 @@ class ServicesController < ApplicationController
         @was_changed << @service.id
         
         format.html { redirect_to services_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { render json: @service, status: :created, location: @service }
       else
         format.html { render action: "new" }
@@ -86,7 +86,7 @@ class ServicesController < ApplicationController
         @was_changed << @service.id
 
         format.html { redirect_to services_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
         @in_edit_mode << @service.id
@@ -108,7 +108,7 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to services_path }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { head :no_content }
     end
   end

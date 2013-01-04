@@ -72,7 +72,7 @@ class TasksController < ApplicationController
         @was_changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }
@@ -93,7 +93,7 @@ class TasksController < ApplicationController
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
         @in_edit_mode << @task.id
@@ -109,13 +109,12 @@ class TasksController < ApplicationController
   # DELETE /tasks/1.json
   def destroy
     @task = Task.find(params[:id])
+    flash[:notice] = 'Task was successfully deleted.'
     @task.destroy
     
-    flash[:notice] = 'Task was successfully deleted.'
-
     respond_to do |format|
       format.html { redirect_to tasks_path }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { head :no_content }
     end
   end
@@ -154,7 +153,6 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.update_attribute(:points, params[:points].to_i)
-        flash[:notice] = 'Task was successfully updated.'
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }

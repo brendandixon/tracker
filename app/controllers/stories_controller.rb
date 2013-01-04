@@ -65,7 +65,7 @@ class StoriesController < ApplicationController
         @was_changed << @story.id
 
         format.html { redirect_to stories_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { render json: @story, status: :created, location: @story }
       else
         format.html { render action: "new" }
@@ -86,7 +86,7 @@ class StoriesController < ApplicationController
         @was_changed << @story.id
         
         format.html { redirect_to stories_path }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -106,7 +106,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to stories_path }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { head :no_content }
     end
   end
