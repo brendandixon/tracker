@@ -15,14 +15,20 @@
           - if velocity <= 0 && task.pending?
             - rendered_iteration = true
             - iteration_start_date = @iteration_team.iteration_end_date(iteration_start_date)
-            %li.iteration_marker
-              %div= "#{iteration_start_date.to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe
+            %li.iteration_marker{data: {iteration: iteration}}
+              .row
+                .three.columns=iteration_start_date.to_formatted_s(:medium)
+                .two.offset-by-two.columns.end= "#{@iteration_team.velocity - velocity} Points"
+              .iteration_toggle
             - iteration_start_date = iteration_start_date + 1.day
             - velocity = @iteration_team.velocity
             - iteration = iteration + 1
         - velocity -= task.points
         = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
       - if @iteration_team.present?
-        %li.iteration_marker
-          %div= "#{@iteration_team.iteration_end_date(iteration_start_date).to_formatted_s(:medium)} &mdash; Points #{@iteration_team.velocity - velocity}".html_safe
+        %li.iteration_marker{data: {iteration: iteration}}
+          .row
+            .five.columns=iteration_start_date.to_formatted_s(:medium)
+            .five.columns.end= "#{@iteration_team.velocity - velocity} Points"
+          .iteration_toggle
     = javascript_include_tag 'task_list'

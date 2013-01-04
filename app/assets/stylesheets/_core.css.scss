@@ -253,25 +253,30 @@ ol.task_list {
     list-style-type:none;
     margin:0;
     padding:6px 8px;
-  }
-  li:hover {
-    outline:1px solid #999;
+    &:hover {
+      outline:1px solid #999;
+    }
   }
   li.task_inline:hover {
     background-color:#ffc;
   }
   li.iteration_marker {
-    background-color:$dark;
-    color:$white;
+    background-color:#b9b9b9;
+    border-bottom:1px solid $dark;
+    color:$dark;
     padding:4px 8px;
-  }
-  li.iteration_marker:hover {
-    outline:none;
-  }
-  li.iteration_marker div {
-    margin:0 auto;
-    text-align:center;
-    width:40%;
+    position:relative;
+    &:hover {
+      outline:none;
+    }
+    .iteration_toggle {
+      position:absolute;
+      top:0;
+      left:0;
+      bottom:0;
+      right:0;
+      z-index:1;
+    }
   }
 }
 

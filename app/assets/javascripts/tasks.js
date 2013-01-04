@@ -38,4 +38,13 @@ $(function() {
     }
     e.removeClass('zero-points one-point two-points three-points four-points five-points').addClass(pointsClass);
   });
+  $('body').on('click', '.iteration_toggle', function(event) {
+    e = $(event.target);
+    e = e.parents('li.iteration_marker');
+    if (e.length > 0) {
+      e = e.eq(0);
+      iteration = e.attr('data-iteration');
+      $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').toggle();
+    }
+  });
 });
