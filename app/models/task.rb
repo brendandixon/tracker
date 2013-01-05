@@ -41,12 +41,14 @@ class Task < ActiveRecord::Base
   
   symbolize :status
 
+  after_initialize :ensure_initial
   before_save :ensure_rank  
   before_validation :ensure_dates
   before_validation :ensure_title
 
   validate :has_title_or_story
   validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
+  validates_presence_of :project
   validates_inclusion_of :status, in: LEGAL_STATES
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
@@ -144,7 +146,7 @@ class Task < ActiveRecord::Base
   end
   
   def title
-    read_attribute(:title) || (self.story.present? && self.story.title)
+    read_attribute(:title) || (self.story.present? && self.story.title) || nil
   end
 
   def ensure_rank
@@ -190,6 +192,11 @@ class Task < ActiveRecord::Base
       self.start_date = now if self.start_date.blank?
       self.completed_date = now if self.completed_date.blank?
     end
+  end
+
+  def ensure_initial
+    self.points ||= 0
+    self.status ||= :pending
   end
 
   def ensure_title
