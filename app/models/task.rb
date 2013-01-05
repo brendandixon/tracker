@@ -152,30 +152,31 @@ class Task < ActiveRecord::Base
   def ensure_rank
     task_after = nil
     task_before = nil
-      
-    if self.new_record?
-      projects = self.project.team.present? ? self.project.team.projects : self.project_id
-      task_after = Task.for_projects(projects).in_rank_order('DESC').pending.only_rank.limit(1).first if projects.present?
-      task_after = Task.in_rank_order('DESC').pending.only_rank.limit(1).first if task_after.blank?
-      self.rank = 1 if task_after.blank?
-    else
-      if self.completed?
-        task_before = Task.in_rank_order.incomplete.only_rank.limit(1).first
-        task_before = nil if task_before.present? && self.rank < task_before.rank
-      elsif self.in_progress?
-        task_before = Task.in_rank_order.pending.only_rank.limit(1).first
-        task_before = nil if task_before.present? && self.rank < task_before.rank
-      elsif self.pending?
-        task_after = Task.in_rank_order('DESC').started.only_rank.limit(1).first
-        task_after = nil if task_after.present? && self.rank > task_after.rank
-      end
+
+    if self.completed?
+      task_before = Task.in_rank_order.incomplete.only_rank.limit(1).first
+      task_before = nil if task_before.present? && self.rank.present? && self.rank < task_before.rank
+    elsif self.in_progress?
+      task_before = Task.in_rank_order.pending.only_rank.limit(1).first
+      task_before = nil if task_before.present? && self.rank.present? && self.rank < task_before.rank
+    elsif self.pending?
+      task_after = Task.in_rank_order('DESC').started.only_rank.limit(1).first
+      task_after = nil if task_after.present? && self.rank.present? && self.rank > task_after.rank
     end
 
-    self.rank = Task.compute_rank_between(task_after, task_before) if task_after.present? || task_before.present?
+    if task_after.present? || task_before.present?
+      self.rank = Task.compute_rank_between(task_after, task_before)
+    elsif self.rank.blank?
+      self.rank = Task.count > 0 ? Task.in_rank_order(self.started? ? 'DESC' : 'ASC').only_rank.limit(1).first.rank : 1
+    end
   end
 
   def set_rank_between(after, before)
     Task.set_rank_between(self, after, before)
+  end
+
+  def started?
+    STARTED.include?(self.status)
   end
 
   private
