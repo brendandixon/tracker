@@ -195,8 +195,10 @@ class Task < ActiveRecord::Base
   end
 
   def ensure_initial
-    self.points ||= 0
-    self.status ||= :pending
+    if self.new_record?
+      self.points ||= 0
+      self.status ||= :pending
+    end
   end
 
   def ensure_title
