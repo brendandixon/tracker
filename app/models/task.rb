@@ -188,7 +188,7 @@ class Task < ActiveRecord::Base
       self.completed_date = nil
     elsif self.completed?
       self.start_date = now if self.start_date.blank?
-      self.start_date = now if self.start_date.blank?
+      self.completed_date = now if self.completed_date.blank?
     end
   end
 

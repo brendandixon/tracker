@@ -188,6 +188,8 @@ class TasksController < ApplicationController
   def build_index_query
     query = Task
 
+    @iteration_mode = @filter.content[:status] == :iteration && @filter.content[:teams].length == 1
+
     status = if @filter.content[:status] == :complete
               Task::COMPLETED
             elsif @filter.content[:status] == :incomplete
@@ -210,7 +212,7 @@ class TasksController < ApplicationController
 
     if teams.present?
       query = query.for_teams(teams)
-      if teams.length == 1 && @filter.content[:status] == :iteration
+      if @iteration_mode
         @iteration_team = Team.find(teams.first) rescue nil
         query = query.started_on_or_after(@iteration_team.iteration_start_date) if @iteration_team.present?
       end
@@ -227,8 +229,8 @@ class TasksController < ApplicationController
 
   def ensure_initial_state
     @in_edit_mode = []
+    @iteration_mode = false
     @was_changed = []
-    @iteration_team = nil
   end
 
 end

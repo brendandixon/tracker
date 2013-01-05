@@ -51,14 +51,33 @@ class Team < ActiveRecord::Base
     start_date.beginning_of_week + self.iteration.weeks - 1.day
   end
 
-  def iteration_tasks(all_tasks = nil)
-    points = 0
-    all_tasks ||= self.tasks.in_rank_order.in_status_order('DESC').started_on_or_after(iteration_start_date)
-    all_tasks.inject([]) do |tasks, task|
-      break tasks if task.pending? && points >= self.velocity
-      points += task.points
+  def iteration_tasks(start_date = iteration_start_date)
+    all_tasks = self.tasks.in_rank_order.in_status_order('DESC').started_on_or_after(iteration_start_date)
+    tasks = []
+    iteration_enum(all_tasks).each do |task, iteration = nil, points = nil, end_date = nil|
+      next if start_date > end_date
+      break if task.blank?
       tasks << task
-      tasks
+    end
+    tasks
+  end
+
+  def iteration_enum(tasks = [])
+    current_iteration = 0
+    end_date = iteration_end_date
+    velocity_remaining = self.velocity
+    Enumerator.new do |yielder|
+      tasks.each do |task|
+        if velocity_remaining <= 0 && task.pending?
+          yielder.yield nil, current_iteration, self.velocity - velocity_remaining, end_date
+          current_iteration += 1
+          end_date = iteration_end_date(end_date + 1.day)
+          velocity_remaining = self.velocity
+        end
+        yielder.yield task, current_iteration, self.velocity - velocity_remaining, end_date
+        velocity_remaining -= task.points
+      end
+      yielder.yield nil, current_iteration, self.velocity - velocity_remaining, end_date
     end
   end
 

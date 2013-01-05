@@ -2,33 +2,15 @@
   .eleven.columns.centered#Main
     %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
 - else
-  - iteration = 0
-  - if @iteration_team.present?
-    - iteration_start_date = @iteration_team.iteration_start_date
-    - velocity = @iteration_team.velocity
-  - else
-    - velocity = Team::VELOCITY_MAX
   .nine.columns.centered#Main
     %ol.task_list#TaskList<
-      - @tasks.each do |task|
-        - if @iteration_team.present?
-          - if velocity <= 0 && task.pending?
-            - rendered_iteration = true
-            - iteration_start_date = @iteration_team.iteration_end_date(iteration_start_date)
-            %li.iteration_marker{data: {iteration: iteration}}
-              .row
-                .three.columns=iteration_start_date.to_formatted_s(:medium)
-                .two.offset-by-two.columns.end= "#{@iteration_team.velocity - velocity} Points"
-              .iteration_toggle
-            - iteration_start_date = iteration_start_date + 1.day
-            - velocity = @iteration_team.velocity
-            - iteration = iteration + 1
-        - velocity -= task.points
-        = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
-      - if @iteration_team.present?
-        %li.iteration_marker{data: {iteration: iteration}}
-          .row
-            .five.columns=iteration_start_date.to_formatted_s(:medium)
-            .five.columns.end= "#{@iteration_team.velocity - velocity} Points"
-          .iteration_toggle
+      - (@iteration_mode ? @iteration_team.iteration_enum(@tasks) : @tasks).each do |task, iteration = nil, points = nil, end_date = nil|
+        - if iteration.present? && task.blank?
+          %li.iteration_marker{data: {iteration: iteration}}
+            .row
+              .three.columns=end_date.to_formatted_s(:medium)
+              .two.offset-by-two.columns.end= "#{points} Points"
+            .iteration_toggle
+        - else
+          = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
     = javascript_include_tag 'task_list'

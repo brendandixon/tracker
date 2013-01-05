@@ -1,6 +1,6 @@
 - in_edit_mode ||= []
-- iteration ||= 0
-- classes = cycle('odd', 'even') + " iteration_#{iteration}"
+- iteration ||= nil
+- classes = cycle('odd', 'even') << (iteration ? " iteration_#{iteration}" : '')
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 - task ||= @task
