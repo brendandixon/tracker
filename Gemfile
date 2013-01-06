@@ -15,6 +15,7 @@ group :development, :test do
   gem 'annotate'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'rspec-rails', '~> 2.0'
+  gem 'thin'
 end
 
 group :production do

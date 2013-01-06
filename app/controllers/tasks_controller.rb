@@ -153,10 +153,11 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.update_attribute(:points, params[:points].to_i)
+        flash[:notice] = "Task set to #{@task.points} points"
         @was_changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
-        format.js { render 'shared/index' }
+        format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
         @in_edit_mode << @task.id
