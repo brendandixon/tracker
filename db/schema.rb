@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121231213312) do
+ActiveRecord::Schema.define(:version => 20130107035957) do
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -69,22 +69,6 @@ ActiveRecord::Schema.define(:version => 20121231213312) do
   add_index "supported_services", ["project_id", "service_id"], :name => "index_supported_services_on_project_id_and_service_id", :unique => true
   add_index "supported_services", ["project_id"], :name => "index_supported_services_on_project_id"
   add_index "supported_services", ["service_id"], :name => "index_supported_services_on_service_id"
-
-  create_table "tagged_items", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
-
-  create_table "tags", :force => true do |t|
-    t.string   "name"
-    t.string   "category"
-    t.string   "scope"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "tasks", :force => true do |t|
     t.integer  "story_id"
