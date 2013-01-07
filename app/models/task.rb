@@ -122,8 +122,8 @@ class Task < ActiveRecord::Base
     
     def ensure_story_tasks(story)
       story.service.projects.each do |project|
-        next if Task.for_stories(f).for_projects(project).exists?
-        Task.create(story_id:f.id, project_id:project.id, status: :pending)
+        next if Task.for_stories(story).for_projects(project).exists?
+        Task.create(story_id:story.id, project_id:project.id, status: :pending)
       end
     end
 
