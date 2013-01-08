@@ -123,7 +123,7 @@ class StoriesController < ApplicationController
     status = if @filter.content[:status] == :complete
               query.completed
             elsif @filter.content[:status] == :incomplete
-              query.incomlete
+              query.incomplete
             else
               @filter.content[:status]
             end
