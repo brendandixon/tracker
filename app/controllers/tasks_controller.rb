@@ -198,7 +198,7 @@ class TasksController < ApplicationController
       query = query.completed
     elsif status == :incomplete
       query = query.incomplete
-    elsif status != :iteration
+    elsif status != :iteration && status.present?
       query = query.in_state(status)
     end
     
