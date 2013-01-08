@@ -193,16 +193,14 @@ class TasksController < ApplicationController
 
     @iteration_mode = @filter.content[:status] == :iteration && @filter.content[:teams].length == 1
 
-    status = if @filter.content[:status] == :complete
-              Task::COMPLETED
-            elsif @filter.content[:status] == :incomplete
-              Task::INCOMPLETE
-            elsif @filter.content[:status] == :iteration
-              nil
-            else
-              @filter.content[:status]
-            end
-    query = query.in_state(status) if status.present?
+    status = @filter.content[:status]
+    if status == :complete
+      query = query.completed
+    elsif status == :incomplete
+      query = query.incomplete
+    elsif status != :iteration
+      query = query.in_state(status)
+    end
     
     projects = @filter.content[:projects] || []
     services = @filter.content[:services] || []
