@@ -121,9 +121,9 @@ class StoriesController < ApplicationController
     query = Story
 
     status = if @filter.content[:status] == :complete
-              Task::COMPLETED
+              query.completed
             elsif @filter.content[:status] == :incomplete
-              Task::INCOMPLETE
+              query.incomlete
             else
               @filter.content[:status]
             end

@@ -101,14 +101,6 @@ class Task < ActiveRecord::Base
     end
 
     def compute_rank_between(after, before)
-      after = (Task.only_rank.find(after) rescue nil) unless after.blank? || after.is_a?(Task)
-      after = after.rank unless after.blank?
-
-      before = (Task.only_rank.find(before) rescue nil) unless before.blank? || before.is_a?(Task)
-      before = before.rank unless before.blank?
-
-      return task unless after.present? || before.present?
-
       if after.blank?
         after = Task.in_rank_order('DESC').before_rank(before).only_rank.limit(1).first
         after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
@@ -125,12 +117,6 @@ class Task < ActiveRecord::Base
         next if Task.for_stories(story).for_projects(project).exists?
         Task.create(story_id:story.id, project_id:project.id, status: :pending)
       end
-    end
-
-    def set_rank_between(task, after, before)
-      task = task.is_a?(Task) ? task : (Task.find(task) rescue nil)
-      task.update_attribute(:rank, compute_rank_between(after, before)) if task.present?
-      task
     end
 
   end
@@ -150,29 +136,42 @@ class Task < ActiveRecord::Base
   end
 
   def ensure_rank
-    task_after = nil
-    task_before = nil
+    after = nil
+    before = nil
 
     if self.completed?
-      task_before = Task.in_rank_order.incomplete.only_rank.limit(1).first
-      task_before = nil if task_before.present? && self.rank.present? && self.rank < task_before.rank
+      before = Task.in_rank_order.incomplete.only_rank.limit(1).first
+      before = nil if before.present? && self.rank.present? && self.rank < before.rank
     elsif self.in_progress?
-      task_before = Task.in_rank_order.pending.only_rank.limit(1).first
-      task_before = nil if task_before.present? && self.rank.present? && self.rank < task_before.rank
+      before = Task.in_rank_order.pending.only_rank.limit(1).first
+      before = nil if before.present? && self.rank.present? && self.rank < before.rank
     elsif self.pending?
-      task_after = Task.in_rank_order('DESC').started.only_rank.limit(1).first
-      task_after = nil if task_after.present? && self.rank.present? && self.rank > task_after.rank
+      after = Task.in_rank_order('DESC').started.only_rank.limit(1).first
+      after = nil if after.present? && self.rank.present? && self.rank > after.rank
     end
 
-    if task_after.present? || task_before.present?
-      self.rank = Task.compute_rank_between(task_after, task_before)
+    if after.present? || before.present?
+      self.rank_between(after, before)
     elsif self.rank.blank?
       self.rank = Task.count > 0 ? Task.in_rank_order(self.started? ? 'DESC' : 'ASC').only_rank.limit(1).first.rank : 1
     end
   end
 
-  def set_rank_between(after, before)
-    Task.set_rank_between(self, after, before)
+  def rank_between(after, before)
+    after = (Task.only_rank.find(after) rescue nil) unless after.blank? || after.is_a?(Task)
+    after = after.rank unless after.blank?
+
+    before = (Task.only_rank.find(before) rescue nil) unless before.blank? || before.is_a?(Task)
+    before = before.rank unless before.blank?
+
+    return false if after.blank? && before.blank?
+
+    self.rank = Task.compute_rank_between(after, before)
+    true
+  end
+
+  def rank_between!(after, before)
+    self.rank_between(after, before) && save
   end
 
   def started?

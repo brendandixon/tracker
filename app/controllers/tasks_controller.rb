@@ -171,7 +171,9 @@ class TasksController < ApplicationController
 
   # POST /tasks/1/rank?before=xx or /tasks/1/rank?after=xx
   def rank
-    @task = Task.set_rank_between(params[:id], params[:after], params[:before])
+    @task = Task.find(params[:id])
+    @task.rank_between(params[:after], params[:before])
+    flash[:notice] = "Unable to move task" unless @task.save
 
     respond_to do |format|
       format.html { redirect_to :back }
