@@ -10,8 +10,8 @@ $('#TaskList')
   .on('sortupdate', function(event, ui) {
     task = ui.item.eq(0);
 
-    sibilings = task.prevAll('li:not(.iteration_marker)');
-    query = sibilings.length > 0 ? 'after=' + siblings.eq(0).attr('id').split('_')[1] : '';
+    siblings = task.prevAll('li:not(.iteration_marker)');
+    query = siblings.length > 0 ? 'after=' + siblings.eq(0).attr('id').split('_')[1] : '';
 
     if (query.length <= 0) {
       siblings = task.nextAll('li:not(.iteration_marker)');
