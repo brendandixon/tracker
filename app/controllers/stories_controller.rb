@@ -122,11 +122,11 @@ class StoriesController < ApplicationController
 
     status = @filter.content[:status]
     if status == :complete
-      query = query.completed
+      query = query.joins(:tasks).completed
     elsif status == :incomplete
-      query = query.incomplete
+      query = query.joins(:tasks).incomplete
     elsif status.present?
-      query = query.in_state(status)
+      query = query.joins(:tasks).in_state(status)
     end
     
     projects = @filter.content[:projects] || []

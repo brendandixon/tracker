@@ -12,6 +12,7 @@
 #
 
 class Story < ActiveRecord::Base
+  include StatusScopes
   # include Validations
 
   attr_accessor :create_tasks
@@ -32,10 +33,6 @@ class Story < ActiveRecord::Base
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
   # validates_date_of :release_date, allow_nil: true
 
-  scope :in_state, lambda{|status| joins(:tasks).where(tasks: {status: status})}
-  scope :completed, joins(:tasks).where(tasks: {status: Task::COMPLETED})
-  scope :incomplete, joins(:tasks).where(tasks: {status: Task::INCOMPLETE})
-  
   scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
   scope :for_services, lambda{|services| where(service_id: services)}
   scope :for_contact_us, lambda{|cu| where(contact_us_number: cu)}

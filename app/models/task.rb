@@ -18,18 +18,13 @@
 
 class Task < ActiveRecord::Base
   include FieldExtensions
+  include StatusScopes
 
   RANK_MINIMUM = Float::MIN
   RANK_MAXIMUM = Float::MAX
 
   POINTS_MAXIMUM = 5
   POINTS_MINIMUM = 0
-
-  COMPLETED = [:completed]
-  INCOMPLETE = [:pending, :in_progress]
-  STARTED = [:completed, :in_progress]
-  LEGAL_STATES = INCOMPLETE + COMPLETED
-  ALL_STATES = [:iteration, :complete, :incomplete] + INCOMPLETE + COMPLETED
 
   attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
@@ -58,13 +53,6 @@ class Task < ActiveRecord::Base
 
   scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :completed, date, :completed)}
 
-  scope :in_state, lambda{|status| where(status: status)}
-  scope :completed, where(status: Task::COMPLETED)
-  scope :incomplete, where(status: Task::INCOMPLETE)
-  scope :started, where(status: Task::STARTED)
-  scope :in_progress, where(status: :in_progress)
-  scope :pending, where(status: :pending)
-
   scope :at_least_points, lambda{|points| where("points >= ?", points)}
   scope :no_more_points, lambda{|points| where("points <= ?", points)}
 
@@ -79,7 +67,7 @@ class Task < ActiveRecord::Base
   scope :in_abbreviation_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
   
-  LEGAL_STATES.each do |s|
+  StatusScopes::LEGAL_STATES.each do |s|
     class_eval <<-EOM
       def #{s}?
         self.status == :#{s}
@@ -98,7 +86,7 @@ class Task < ActiveRecord::Base
     end
 
     def all_states
-      @all_states ||= [['-', '']] + ALL_STATES.map{|state| [state.to_s.titleize, state]}
+      @all_states ||= [['-', '']] + StatusScopes::ALL_STATES.map{|state| [state.to_s.titleize, state]}
     end
     
     def ensure_story_tasks(story)
@@ -117,7 +105,7 @@ class Task < ActiveRecord::Base
   end
   
   def next_status
-    LEGAL_STATES[LEGAL_STATES.find_index(self.status)+1] || LEGAL_STATES.last
+    StatusScopes::LEGAL_STATES[StatusScopes::LEGAL_STATES.find_index(self.status)+1] || StatusScopes::LEGAL_STATES.last
   end
   
   def title
@@ -179,7 +167,7 @@ class Task < ActiveRecord::Base
   end
 
   def started?
-    STARTED.include?(self.status)
+    StatusScopes::STARTED.include?(self.status)
   end
 
   private
