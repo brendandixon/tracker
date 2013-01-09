@@ -3,7 +3,7 @@
 
 en:
   filter:
-    clear_html: 'Clear Filter'
+    clear_html: 'Unfiltered'
     created_html: 'Filter was successfully created.'
     edit_html: 'Edit Filter&hellip;'
     new_html: 'New Filter&hellip;'

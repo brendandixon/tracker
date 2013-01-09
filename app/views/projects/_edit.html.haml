@@ -34,4 +34,4 @@
             = link_to 'Delete', project, method: :delete, data:{confirm: "WARNING: Are you sure you want to delete this project?" }, remote:remote
             \|
             = link_to 'Cancel', project.new_record? ? projects_path : project_path(project), remote:remote
-            = javascript_include_tag 'dates'
+            = render template: 'shared/bind_dates'

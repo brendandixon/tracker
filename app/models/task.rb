@@ -70,7 +70,8 @@ class Task < ActiveRecord::Base
 
   scope :after_rank, lambda{|rank| where("rank > ?", rank)}
   scope :before_rank, lambda{|rank| where("rank < ?", rank)}
-  scope :only_rank, select(:rank)
+  
+  scope :pick_rank, select(:rank)
 
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
@@ -98,18 +99,6 @@ class Task < ActiveRecord::Base
 
     def all_states
       @all_states ||= [['-', '']] + ALL_STATES.map{|state| [state.to_s.titleize, state]}
-    end
-
-    def compute_rank_between(after, before)
-      if after.blank?
-        after = Task.in_rank_order('DESC').before_rank(before).only_rank.limit(1).first
-        after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
-      elsif before.blank?
-        before = Task.in_rank_order.after_rank(after).only_rank.limit(1).first
-        before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
-      end
-
-      after + ((before - after) / 2.0)
     end
     
     def ensure_story_tasks(story)
@@ -139,34 +128,49 @@ class Task < ActiveRecord::Base
     after = nil
     before = nil
 
+    query = Task
+    query = query.where("tasks.id <> ?", self.id) unless self.new_record?
+
     if self.completed?
-      before = Task.in_rank_order.incomplete.only_rank.limit(1).first
+      before = query.in_rank_order.incomplete.pick_rank.limit(1).first
       before = nil if before.present? && self.rank.present? && self.rank < before.rank
     elsif self.in_progress?
-      before = Task.in_rank_order.pending.only_rank.limit(1).first
+      before = query.in_rank_order.pending.pick_rank.limit(1).first
       before = nil if before.present? && self.rank.present? && self.rank < before.rank
     elsif self.pending?
-      after = Task.in_rank_order('DESC').started.only_rank.limit(1).first
+      after = query.in_rank_order('DESC').started.pick_rank.limit(1).first
       after = nil if after.present? && self.rank.present? && self.rank > after.rank
     end
 
     if after.present? || before.present?
       self.rank_between(after, before)
     elsif self.rank.blank?
-      self.rank = Task.count > 0 ? Task.in_rank_order(self.started? ? 'DESC' : 'ASC').only_rank.limit(1).first.rank : 1
+      self.rank = Task.count > 0 ? query.in_rank_order(self.started? ? 'DESC' : 'ASC').pick_rank.limit(1).first.rank : 1
     end
   end
 
   def rank_between(after, before)
-    after = (Task.only_rank.find(after) rescue nil) unless after.blank? || after.is_a?(Task)
+
+    query = Task
+    query = query.where("tasks.id <> ?", self.id) unless self.new_record?
+    
+    after = (query.pick_rank.find(after) rescue nil) unless after.blank? || after.is_a?(Task)
     after = after.rank unless after.blank?
 
-    before = (Task.only_rank.find(before) rescue nil) unless before.blank? || before.is_a?(Task)
+    before = (query.pick_rank.find(before) rescue nil) unless before.blank? || before.is_a?(Task)
     before = before.rank unless before.blank?
 
     return false if after.blank? && before.blank?
 
-    self.rank = Task.compute_rank_between(after, before)
+    if after.blank?
+      after = query.in_rank_order('DESC').before_rank(before).pick_rank.limit(1).first
+      after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
+    elsif before.blank?
+      before = query.in_rank_order.after_rank(after).pick_rank.limit(1).first
+      before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
+    end
+
+    self.rank = after + ((before - after) / 2.0)
     true
   end
 

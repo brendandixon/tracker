@@ -13,6 +13,7 @@
 //= require foundation
 //= require jquery_ujs
 //= require jquery-tooltip/jquery.tooltip
+//= require dates
 //= require filter
 //= require status
 //= require tasks

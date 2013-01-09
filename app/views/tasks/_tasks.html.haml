@@ -13,4 +13,4 @@
             .iteration_toggle
         - else
           = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
-    = javascript_include_tag 'task_list'
+    = render template: 'shared/bind_list'
