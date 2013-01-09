@@ -194,7 +194,7 @@ class TasksController < ApplicationController
   def build_index_query
     query = Task
 
-    @iteration_mode = @filter.content[:status] == :iteration && @filter.content[:teams].length == 1
+    @iteration_mode = @filter.content[:status] == :iteration && @filter.content[:teams].present? && @filter.content[:teams].length == 1
 
     status = @filter.content[:status]
     if status == :complete
