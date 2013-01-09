@@ -280,6 +280,12 @@ ol.task_list {
   }
 }
 
+.task_sort {
+  table {
+    margin:0;
+  }
+}
+
 .title {
   color: $cyan;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;

@@ -3,14 +3,24 @@
     %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
 - else
   .nine.columns.centered#Main
-    %ol.task_list#TaskList<
-      - (@iteration_mode ? @iteration_team.iteration_enum(@tasks) : @tasks).each do |task, iteration = nil, points = nil, end_date = nil|
-        - if iteration.present? && task.blank?
-          %li.iteration_marker{data: {iteration: iteration}}
-            .row
-              .three.columns=end_date.to_formatted_s(:medium)
-              .two.offset-by-two.columns.end= "#{points} Points"
-            .iteration_toggle
-        - else
-          = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
+    - unless @iteration_mode
+      .task_sort.twelve
+        %table.twelve
+          %thead
+            %tr
+              = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'three'}
+              = render partial: 'shared/sortable', locals: {name: 'Rank', field: 'rank', classes: 'three'}
+              = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'three'}
+              = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'three'}
+      .twelve
+        %ol.task_list#TaskList<
+          - (@iteration_mode ? @iteration_team.iteration_enum(@tasks) : @tasks).each do |task, iteration = nil, points = nil, end_date = nil|
+            - if iteration.present? && task.blank?
+              %li.iteration_marker{data: {iteration: iteration}}
+                .row
+                  .three.columns=end_date.to_formatted_s(:medium)
+                  .two.offset-by-two.columns.end= "#{points} Points"
+                .iteration_toggle
+            - else
+              = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: iteration}
     = render template: 'shared/bind_list'

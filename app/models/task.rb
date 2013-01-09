@@ -61,11 +61,13 @@ class Task < ActiveRecord::Base
   
   scope :pick_rank, select(:rank)
 
-  scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
-  scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
-  scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
   scope :in_abbreviation_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
+  scope :in_point_order, lambda{|dir = 'ASC'| order("points #{dir}")}
+  scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
+  scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
+  scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
+  scope :in_title_order, lambda{|dir = 'ASC'| order("tasks.title #{dir}").in_story_order(dir)}
   
   StatusScopes::LEGAL_STATES.each do |s|
     class_eval <<-EOM

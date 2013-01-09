@@ -1,5 +1,8 @@
 class TasksController < ApplicationController
   include FilterHandler
+  include SortHandler
+
+  DEFAULT_SORT = ['rank']
 
   INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :rank, :update]
 
@@ -222,8 +225,20 @@ class TasksController < ApplicationController
     query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
     query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
 
-    query = query.in_rank_order
-    query = query.in_status_order('DESC') if @iteration_team
+    @sort = ['-rank', 'status'] if @iteration_mode
+
+    @sort.each do |sort|
+      case sort
+      when 'point' then query = query.in_point_order('ASC')
+      when '-point' then query = query.in_point_order('DESC')
+      when '-rank' then query = query.in_rank_order('ASC')
+      when 'rank' then query = query.in_rank_order('DESC')
+      when '-status' then query = query.in_status_order('ASC')
+      when 'status' then query = query.in_status_order('DESC')
+      when 'title' then query = query.in_title_order('ASC')
+      when '-title' then query = query.in_title_order('DESC')
+      end
+    end
     
     @tasks = query.includes(:story).includes(:project).uniq
   end
