@@ -56,7 +56,7 @@ class Project < ActiveRecord::Base
   private
 
   def ensure_start_date
-    self.start_date ||= DateTime.parse('2012-12-01').utc
+    self.start_date ||= DateTime.parse('2012-12-01')
   end
   
   def refresh_active

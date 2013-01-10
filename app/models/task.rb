@@ -179,7 +179,7 @@ class Task < ActiveRecord::Base
   private
 
   def ensure_dates
-    now = DateTime.now.utc
+    now = DateTime.now
     if self.pending?
       self.start_date = nil
       self.completed_date = nil

@@ -38,11 +38,11 @@ class Team < ActiveRecord::Base
   end
 
   def iteration_start_date
-    return DateTime.now.beginning_of_week.utc if self.projects.blank?
+    return DateTime.now.beginning_of_week if self.projects.blank?
     start_date = self.projects.map{|p| p.start_date}.compact.min
-    return DateTime.now.beginning_of_week.utc if start_date.blank?
+    return DateTime.now.beginning_of_week if start_date.blank?
     start_date = start_date.to_datetime unless start_date.is_a?(DateTime)
-    days_since_start = (DateTime.now.beginning_of_week.utc - start_date.beginning_of_week.utc).to_i
+    days_since_start = (DateTime.now.beginning_of_week - start_date.beginning_of_week).to_i
     iterations_since_start = (days_since_start + (self.iteration * 7) - 1) / (self.iteration * 7)
     (start_date + (iterations_since_start * self.iteration).weeks).beginning_of_week
   end
