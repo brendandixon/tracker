@@ -49,6 +49,20 @@ $(function() {
     }
   });
 
+  $('body').on('click', '#filter_content_iteration_mode', function(event) {
+    e = $('#filter_content_iteration_mode');
+    if (e.length > 0) {
+      e = e[0];
+      if (e.checked) {
+        $('.task_filter').hide();
+        $('.task_iteration_filter').show();
+      } else {
+        $('.task_filter').show();
+        $('.task_iteration_filter').hide();
+      }
+    }
+  });
+
   $('body').on('bind.list', function(event) {
     $('#TaskList')
       .sortable({

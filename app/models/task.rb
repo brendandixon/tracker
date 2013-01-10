@@ -49,7 +49,7 @@ class Task < ActiveRecord::Base
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
   scope :for_stories, lambda {|stories| where(story_id: stories)}
-  scope :for_teams, lambda{|teams| joins(:project).where('projects.team_id IN (?)', teams)}
+  scope :for_teams, lambda{|teams| joins(:teams).where(teams: {id: teams})}
 
   scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :completed, date, :completed)}
 
@@ -104,6 +104,38 @@ class Task < ActiveRecord::Base
     return if self.completed?
     self.status = self.next_status
     self.save unless self.new_record?
+  end
+
+  def completed_after?(date)
+    self.completed? && self.completed_date > date
+  end
+
+  def completed_before?(date)
+    self.completed? && self.completed_date < date
+  end
+
+  def completed_during?(start_date, end_date)
+    self.completed? && self.completed_date >= start_date && self.completed_date <= end_date
+  end
+
+  def incomplete?
+    !self.completed?
+  end
+
+  def started?
+    StatusScopes::STARTED.include?(self.status)
+  end
+
+  def started_after?(date)
+    self.started? && self.start_date > date
+  end
+
+  def started_before?(date)
+    self.started? && self.start_date < date
+  end
+
+  def started_during?(start_date, end_date)
+    self.started? && self.start_date >= start_date && self.start_date <= end_date
   end
   
   def next_status
@@ -170,10 +202,6 @@ class Task < ActiveRecord::Base
 
   def rank_between!(after, before)
     self.rank_between(after, before) && save
-  end
-
-  def started?
-    StatusScopes::STARTED.include?(self.status)
   end
 
   private

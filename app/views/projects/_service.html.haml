@@ -6,6 +6,6 @@
 .three.columns.services{class: classes}
   - if edit
     = check_box_tag 'project[services][]', service.id, @project.services.include?(service), id: "project_service_#{service.id}"
-    = label_tag "project_service_#{service.id}", service.abbreviation
+    = label_tag "project_service_#{service.id}", service.abbreviation, class: 'inline_label'
   - else
     = service.abbreviation

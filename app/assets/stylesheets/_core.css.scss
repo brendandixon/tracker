@@ -91,7 +91,6 @@
   }
 }
 
-
 .filter_container {
   display:none;
   &.visible {
@@ -100,6 +99,9 @@
   .row.section {
     border:none;
     margin-bottom:12px;
+    &.hidden {
+      display:none;
+    }
   }
   form {
     border:1px solid #ccc;
@@ -121,6 +123,11 @@
   a {
     background-color:$cyan;
   }
+}
+
+.inline_label {
+  display:inline-block;
+  line-height:$small;
 }
 
 .sortable span {
@@ -192,10 +199,6 @@
 
 .services {
   padding-left:6px;
-  label {
-    display:inline-block;
-    line-height:$small;
-  }
   span {
     margin:2px 2px;
   }
@@ -235,6 +238,13 @@
   }
 }
 
+.task_iteration_filter {
+  display:none;
+  &.visible {
+    display:block;
+  }
+}
+
 .task_inline {
   font-size:$small;
   .description {
@@ -262,7 +272,7 @@ ol.task_list {
   }
   li.iteration_marker {
     background-color:#b9b9b9;
-    border-bottom:1px solid $dark;
+    border:1px solid $dark;
     color:$dark;
     padding:4px 8px;
     position:relative;

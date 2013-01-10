@@ -14,7 +14,7 @@ class TasksController < ApplicationController
   def index
     respond_to do |format|
       format.html { render 'shared/index'}
-      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'shared/filter'; flash.discard }
       format.json { render json: @tasks }
     end
   end
@@ -180,7 +180,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { render json: @tasks }
     end
   end
@@ -194,53 +194,59 @@ class TasksController < ApplicationController
   def build_index_query
     query = Task
 
-    @iteration_mode = @filter.content[:status] == :iteration && @filter.content[:teams].present? && @filter.content[:teams].length == 1
+    @iteration_mode = @filter.content[:iteration_mode]
 
-    status = @filter.content[:status]
-    if status == :complete
-      query = query.completed
-    elsif status == :incomplete
-      query = query.incomplete
-    elsif status != :iteration && status.present?
-      query = query.in_state(status)
-    end
-    
-    projects = @filter.content[:projects] || []
-    services = @filter.content[:services] || []
-    stories = @filter.content[:stories] || []
-    teams = @filter.content[:teams] || []
-
-    query = query.for_projects(projects) if projects.present?
-    query = query.for_services(services) if services.present?
-    query = query.for_stories(stories) if stories.present?
-
-    if teams.present?
-      query = query.for_teams(teams)
-      if @iteration_mode
-        @iteration_team = Team.find(teams.first) rescue nil
-        query = query.started_on_or_after(@iteration_team.iteration_start_date) if @iteration_team.present?
+    if @iteration_mode
+      @iteration_number = @filter.content[:iteration_number]
+      @iteration_team = Team.find(@filter.content[:iteration_team]) rescue nil
+      if @iteration_team.present?
+        query = @iteration_team.iteration_tasks(@iteration_number)
+      else
+        @filter.errors.add(:base, "A team is required for grouping by iteration")
       end
-    end
-    
-    query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
-    query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
-
-    @sort = ['-rank', 'status'] if @iteration_mode
-
-    @sort.each do |sort|
-      case sort
-      when 'point' then query = query.in_point_order('ASC')
-      when '-point' then query = query.in_point_order('DESC')
-      when '-rank' then query = query.in_rank_order('ASC')
-      when 'rank' then query = query.in_rank_order('DESC')
-      when '-status' then query = query.in_status_order('ASC')
-      when 'status' then query = query.in_status_order('DESC')
-      when 'title' then query = query.in_title_order('ASC')
-      when '-title' then query = query.in_title_order('DESC')
+    else
+      status = @filter.content[:status]
+      if status == :complete
+        query = query.completed
+      elsif status == :incomplete
+        query = query.incomplete
+      elsif status != :iteration && status.present?
+        query = query.in_state(status)
       end
+      
+      projects = @filter.content[:projects] || []
+      services = @filter.content[:services] || []
+      stories = @filter.content[:stories] || []
+      teams = @filter.content[:teams] || []
+
+      query = query.for_projects(projects) if projects.present?
+      query = query.for_services(services) if services.present?
+      query = query.for_stories(stories) if stories.present?
+
+      query = query.for_teams(teams) if teams.present?
+      
+      query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
+      query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
+
+      @sort = ['-rank', 'status'] if @iteration_mode
+
+      @sort.each do |sort|
+        case sort
+        when 'point' then query = query.in_point_order('ASC')
+        when '-point' then query = query.in_point_order('DESC')
+        when '-rank' then query = query.in_rank_order('ASC')
+        when 'rank' then query = query.in_rank_order('DESC')
+        when '-status' then query = query.in_status_order('ASC')
+        when 'status' then query = query.in_status_order('DESC')
+        when 'title' then query = query.in_title_order('ASC')
+        when '-title' then query = query.in_title_order('DESC')
+        end
+      end
+
+      query = query.includes(:story).includes(:project).uniq.to_enum
     end
     
-    @tasks = query.includes(:story).includes(:project).uniq
+    @tasks = query
   end
 
   def ensure_initial_state

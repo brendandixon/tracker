@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
     end
 
     def all_projects
-      @all_projects ||= [['-', '']] + Project.active.map{|project| [project.name, project.name]}.uniq
+      @all_projects ||= [['-', '']] + Project.active.map{|project| [project.name, project.id]}.uniq
     end
     
     def refresh_active

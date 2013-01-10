@@ -15,7 +15,7 @@ class Team < ActiveRecord::Base
   ITERATION_MAX = 4
   ITERATION_MIN = 1
   
-  VELOCITY_MAX = (2**(0.size * 8 -2) -1)
+  VELOCITY_MAX = Constants::INTEGER_MAX
   VELOCITY_MIN = 1
   
   attr_accessible :iteration, :name, :projects, :velocity
@@ -33,51 +33,29 @@ class Team < ActiveRecord::Base
 
   class<<self
     def all_teams
-      [['-', '']] + Team.in_name_order.all.map{|team| [team.name, team.id]}.uniq
+      [['-', '']] + iteration_teams
+    end
+
+    def iteration_teams
+      Team.in_name_order.all.map{|team| [team.name, team.id]}.uniq
     end
   end
 
-  def iteration_start_date
-    return DateTime.now.beginning_of_week if self.projects.blank?
-    start_date = self.projects.map{|p| p.start_date}.compact.min
-    return DateTime.now.beginning_of_week if start_date.blank?
-    start_date = start_date.to_datetime unless start_date.is_a?(DateTime)
-    days_since_start = (DateTime.now.beginning_of_week - start_date.beginning_of_week).to_i
-    iterations_since_start = (days_since_start + (self.iteration * 7) - 1) / (self.iteration * 7)
-    (start_date + (iterations_since_start * self.iteration).weeks).beginning_of_week
-  end
+  def iteration_tasks(for_iteration = 0, number_of_iterations = nil)
+    iteration = Iteration.new(self, for_iteration)
 
-  def iteration_end_date(start_date = iteration_start_date)
-    start_date.beginning_of_week + self.iteration.weeks - 1.day
-  end
+    tasks = self.tasks.in_rank_order.started_on_or_after(iteration.start_date).to_enum
 
-  def iteration_tasks(start_date = iteration_start_date)
-    all_tasks = self.tasks.in_rank_order.in_status_order('DESC').started_on_or_after(iteration_start_date)
-    tasks = []
-    iteration_enum(all_tasks).each do |task, iteration = nil, points = nil, end_date = nil|
-      next if start_date > end_date
-      break if task.blank?
-      tasks << task
-    end
-    tasks
-  end
-
-  def iteration_enum(tasks = [])
-    current_iteration = 0
-    end_date = iteration_end_date
-    velocity_remaining = self.velocity
     Enumerator.new do |yielder|
-      tasks.each do |task|
-        if velocity_remaining <= 0 && task.pending?
-          yielder.yield nil, current_iteration, self.velocity - velocity_remaining, end_date
-          current_iteration += 1
-          end_date = iteration_end_date(end_date + 1.day)
-          velocity_remaining = self.velocity
-        end
-        yielder.yield task, current_iteration, self.velocity - velocity_remaining, end_date
-        velocity_remaining -= task.points
+      task = tasks.next rescue nil
+      
+      while (number_of_iterations.present? && number_of_iterations > 0) || task.present? do
+        task = (tasks.next rescue nil) while task.present? && iteration.consume_task?(task)
+        iteration.tasks.each {|task| yielder.yield task, iteration }
+        iteration.advance!
+        number_of_iterations -= 1 if number_of_iterations.present?
       end
-      yielder.yield nil, current_iteration, self.velocity - velocity_remaining, end_date
+
     end
   end
 

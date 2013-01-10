@@ -20,6 +20,18 @@
         = f.text_field :name
     
     .row.section
+      .four.columns
+        = check_box_tag 'filter[content][iteration_mode]', 1, content[:iteration_mode], data: {iteration_mode: true}
+        = label_tag 'iteration_mode', 'Group tasks by iteration', class: 'inline_label'
+    .row.section.task_iteration_filter{class: content[:iteration_mode] ? 'visible' : nil}
+      .four.columns
+        = label_tag 'iteration_number', 'Starting Iteration'
+        = text_field_tag 'filter[content][iteration_number]', content[:iteration_number]
+      .five.columns.end
+        = label_tag 'iteration_team', 'Team'
+        = select_tag 'filter[content][iteration_team]', options_for_select(Team.iteration_teams, content[:iteration_team] || '')
+
+    .row.section.task_filter{class: content[:iteration_mode] ? 'hidden' : nil}
       .two.columns.multi-select
         = label_tag 'teams', 'Teams'
         = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || ''), multiple: true
@@ -33,7 +45,7 @@
         = label_tag 'stories', 'Stories'
         = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     
-    .row.section
+    .row.section.task_filter{class: content[:iteration_mode] ? 'hidden' : nil}
       .three.columns
         = label_tag 'status', 'Status'
         = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
@@ -43,7 +55,7 @@
       .three.columns.end
         = label_tag 'points', 'Maximum Points'
         = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
-    
+
     .row
       .four.columns.offset-by-eight.text-right.actions
         = submit_tag 'Apply', name: :apply

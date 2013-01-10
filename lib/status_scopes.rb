@@ -5,7 +5,7 @@ module StatusScopes
   INCOMPLETE = [:pending, :in_progress]
   STARTED = [:completed, :in_progress]
   LEGAL_STATES = INCOMPLETE + COMPLETED
-  ALL_STATES = [:iteration, :complete, :incomplete] + INCOMPLETE + COMPLETED
+  ALL_STATES = [:complete, :incomplete] + INCOMPLETE + COMPLETED
 
   included do  
     scope :in_state, lambda{|status| where('tasks.status IN (?)', status)}
