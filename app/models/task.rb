@@ -135,7 +135,13 @@ class Task < ActiveRecord::Base
     if after.present? || before.present?
       self.rank_between(after, before)
     elsif self.rank.blank?
-      self.rank = Task.count > 0 ? query.in_rank_order(self.started? ? 'DESC' : 'ASC').pick_rank.limit(1).first.rank : 1
+      if Task.count <= 0
+        self.rank = 1
+      else
+        after = query.started.in_rank_order('DESC').pick_rank.limit(1).first if self.started?
+        before = query.pending.in_rank_order.pick_rank.limit(1).first if after.blank?
+        self.rank = after.present? ? after + 1 : before - 1
+      end
     end
   end
 
@@ -145,22 +151,20 @@ class Task < ActiveRecord::Base
     query = query.where("tasks.id <> ?", self.id) unless self.new_record?
     
     after = (query.pick_rank.find(after) rescue nil) unless after.blank? || after.is_a?(Task)
-    after = after.rank unless after.blank?
-
     before = (query.pick_rank.find(before) rescue nil) unless before.blank? || before.is_a?(Task)
-    before = before.rank unless before.blank?
 
     return false if after.blank? && before.blank?
 
     if after.blank?
       after = query.in_rank_order('DESC').before_rank(before).pick_rank.limit(1).first
-      after = after.present? ? after.rank : (before > RANK_MINIMUM+1 ? before - 1 : RANK_MINIMUM)
     elsif before.blank?
       before = query.in_rank_order.after_rank(after).pick_rank.limit(1).first
-      before = before.present? ? before.rank : (after < RANK_MAXIMUM-1 ? after + 1 : RANK_MAXIMUM)
     end
 
-    self.rank = after + ((before - after) / 2.0)
+    after_rank = after.present? ? after.rank : (before.rank > RANK_MINIMUM+1 ? before.rank - 1 : RANK_MINIMUM)
+    before_rank = before.present? ? before.rank : (after.rank < RANK_MAXIMUM-1 ? after.rank + 1 : RANK_MAXIMUM)
+
+    self.rank = after_rank + ((before_rank - after_rank) / 2.0)
     true
   end
 
