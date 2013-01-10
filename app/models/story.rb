@@ -27,8 +27,6 @@ class Story < ActiveRecord::Base
   has_many :tagged_items, as: :taggable
   has_many :tags, through: :tagged_items
   
-  before_validation :ensure_release_date
-  
   validates_presence_of :service, :title
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
   # validates_date_of :release_date, allow_nil: true
@@ -66,13 +64,6 @@ class Story < ActiveRecord::Base
   def ensure_tasks
     return unless self.create_tasks
     Task.ensure_story_tasks(self)
-  end
-  
-  def ensure_release_date
-    return unless self.release_date.present?
-    self.release_date = ActiveSupport::TimeZone.new(Tracker::Application.config.time_zone).parse(self.release_date) if self.release_date.is_a?(String)
-    self.release_date = self.release_date.to_datetime if self.release_date.is_a?(Date)
-    self.release_date = self.release_date.utc if self.release_date.is_a?(DateTime)
   end
   
 end

@@ -4,8 +4,8 @@ $(function() {
     datefields.datepicker({
       dateFormat: 'MM d, yy',
       defaultDate: +7,
-      minDate: '-12w',
-      maxDate: '52w',
+      minDate: '-6m',
+      maxDate: '12m',
       showAnim: 'slideDown'
     });
     datefields.each(function(i, e) {

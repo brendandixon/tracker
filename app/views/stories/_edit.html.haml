@@ -1,7 +1,6 @@
 - remote = false if remote.nil?
 - stand_alone = true if stand_alone.nil?
 - story ||= @story
-- story.release_date = story.release_date.to_date if story.release_date.present? && story.release_date.acts_like?(:time)
 
 = content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 5} do
   .row
