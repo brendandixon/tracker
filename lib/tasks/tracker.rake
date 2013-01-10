@@ -258,10 +258,10 @@ namespace :tracker do
     desc 'Ensure task dates'
     task ensure_dates: :environment do
       Task.where("status in (?)", [:completed, :in_progress]).where(start_date: nil).each do |task|
-        task.update_attribute(:start_date, task.project.team.iteration_start_date) if task.start_date.blank?
+        task.update_attribute(:start_date, Iteration.new(task.project.team).start_date) if task.start_date.blank?
       end
       Task.where(status: :completed).where(completed_date: nil).each do |task|
-        task.update_attribute(:completed_date, task.project.team.iteration_start_date) if task.completed_date.blank?
+        task.update_attribute(:completed_date, Iteration.new(task.project.team).start_date) if task.completed_date.blank?
       end
     end
 
