@@ -1,7 +1,8 @@
 class Iteration
-  attr_reader :number, :start_date, :end_date, :points, :tasks
+  attr_reader :number, :start_date, :end_date, :points
 
-  def initialize(team, number = 0)
+  def initialize(team, number = 0, *states)
+    self.states = states
     @tasks = []
     @team = team
     @velocity = @team.velocity
@@ -33,6 +34,11 @@ class Iteration
     @end_date += @weeks
     @points = 0
     @tasks = []
+  end
+
+  def states=(*states)
+    states.flatten!
+    @states = StatusScopes.map(*states)
   end
 
   def after_current?
@@ -70,6 +76,10 @@ class Iteration
 
   def owns_task?(task = nil)
     task.present? && (task.completed_during?(@start_date, @end_date) || (current? && task.started?) || (!before_current? && !full?))
+  end
+
+  def tasks
+    @tasks.find_all{|t| @states.empty? || @states.include?(t.status)}
   end
 
   private

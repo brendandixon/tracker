@@ -29,9 +29,8 @@ class Task < ActiveRecord::Base
   attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
   belongs_to :story
+  has_one :service, through: :story
   belongs_to :project
-  has_many :tagged_items, as: :taggable
-  has_many :tags, through: :tagged_items
   has_many :teams, through: :project
   
   symbolize :status
@@ -45,13 +44,15 @@ class Task < ActiveRecord::Base
   validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
   validates_presence_of :project
   validates_inclusion_of :status, in: LEGAL_STATES
+
+  default_scope includes(:project, :service, :story)
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
   scope :for_stories, lambda {|stories| where(story_id: stories)}
   scope :for_teams, lambda{|teams| joins(:teams).where(teams: {id: teams})}
 
-  scope :started_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.start_date >= ?) OR tasks.status <> ?", :completed, date, :completed)}
+  scope :completed_on_or_after, lambda{|date| where("(tasks.status = ? AND tasks.completed_date >= ?) OR tasks.status <> ?", :completed, date, :completed)}
 
   scope :at_least_points, lambda{|points| where("points >= ?", points)}
   scope :no_more_points, lambda{|points| where("points <= ?", points)}
@@ -61,13 +62,13 @@ class Task < ActiveRecord::Base
   
   scope :pick_rank, select(:rank)
 
-  scope :in_abbreviation_order, lambda{|dir = 'ASC'| joins(story: :service).order("services.abbreviation #{dir}")}
+  scope :in_abbreviation_order, lambda{|dir = 'ASC'| order("services.abbreviation #{dir}")}
   scope :in_point_order, lambda{|dir = 'ASC'| order("points #{dir}")}
-  scope :in_project_order, lambda{|dir = 'ASC'| joins(:project).order("projects.name #{dir}")}
+  scope :in_project_order, lambda{|dir = 'ASC'| order("projects.name #{dir}")}
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
-  scope :in_story_order, lambda{|dir = 'ASC'| joins(:story).order("stories.title #{dir}")}
-  scope :in_title_order, lambda{|dir = 'ASC'| order("tasks.title #{dir}").in_story_order(dir)}
+  scope :in_story_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
+  scope :in_title_order, lambda{|dir = 'ASC'| order("tasks.title #{dir}")}
   
   StatusScopes::LEGAL_STATES.each do |s|
     class_eval <<-EOM

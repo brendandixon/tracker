@@ -12,8 +12,8 @@
 #
 
 class Story < ActiveRecord::Base
+  include CacheCleanser
   include StatusScopes
-  # include Validations
 
   attr_accessor :create_tasks
   attr_accessible :contact_us_number, :create_tasks, :release_date, :service_id, :title
@@ -24,12 +24,9 @@ class Story < ActiveRecord::Base
   belongs_to :service
   has_many :tasks, dependent: :destroy
   has_many :projects, through: :tasks
-  has_many :tagged_items, as: :taggable
-  has_many :tags, through: :tagged_items
   
   validates_presence_of :service, :title
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
-  # validates_date_of :release_date, allow_nil: true
 
   scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
   scope :for_services, lambda{|services| where(service_id: services)}
@@ -46,7 +43,11 @@ class Story < ActiveRecord::Base
   
   class<<self
     def all_stories
-      [['-', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
+      @all_stories ||= [['-', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
+    end
+    
+    def refresh_cache
+      @all_stories = nil
     end
   end
 

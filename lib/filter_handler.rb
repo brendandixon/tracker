@@ -37,14 +37,19 @@ module FilterHandler
     content[:iteration_mode] = true if content[:iteration_mode].present?
 
     if content[:iteration_mode]
-      content[:iteration_number] = params[:iteration_number] || content[:iteration_number] || 0
-      content[:iteration_number] = 0 unless content[:iteration_number] =~ /^(-)?\d+$/
-      content[:iteration_number] = content[:iteration_number].to_i
+      content[:iteration] ||= {}
+      content[:iteration][:number] = params[:iteration_number] || content[:iteration][:number] || 0
+      content[:iteration][:number] = 0 unless content[:iteration_number] =~ /^(-)?\d+$/
+      content[:iteration][:number] = content[:iteration][:number].to_i
 
-      content[:iteration_team] = params[:iteration_team] || content[:iteration_team] || nil
-      content[:iteration_team] = nil unless content[:iteration_team] =~ /^\d+$/
+      content[:iteration][:status] = params[:iteration_status] || content[:iteration][:status] || []
+      content[:iteration][:status] = content[:iteration][:status].downcase.to_sym if content[:iteration][:status].is_a?(String)
+      content[:iteration][:status] = StatusScopes.cleanse(*content[:iteration][:status])
 
-      content = content.keep_if {|k, v| ['iteration_mode', 'iteration_number', 'iteration_team'].include?(k)}
+      content[:iteration][:team] = params[:iteration_team] || content[:iteration][:team] || nil
+      content[:iteration][:team] = nil unless content[:iteration][:team] =~ /^\d+$/
+
+      content[:iteration] = content[:iteration].keep_if {|k, v| ['number', 'status', 'team'].include?(k)}
     else
       content[:after] = params[:after] || content[:after]
       content[:before] = params[:before] || content[:before]
@@ -52,9 +57,7 @@ module FilterHandler
       content[:contact_us] = params[:contact_us] || content[:contact_us]
       content[:contact_us] = content[:contact_us].split(',') if content[:contact_us].is_a?(String)
 
-      content[:iteration_mode] = nil
-      content[:iteration_number] = nil
-      content[:iteration_team] = nil
+      content[:iteration] = {}
 
       content[:min_points] = params[:min_points] || content[:min_points]
       content[:min_points] = nil unless content[:min_points] =~ /0|1|2|3|4|5/
@@ -90,8 +93,9 @@ module FilterHandler
         end
       end.compact
 
-      content[:status] = params[:status] || content[:status]
+      content[:status] = params[:status] || content[:status] || []
       content[:status] = content[:status].downcase.to_sym if content[:status].is_a?(String)
+      content[:status] = StatusScopes.cleanse(*content[:status])
 
       content[:stories] = params[:stories] || content[:stories] || []
       content[:stories] = content[:stories].split(',') if content[:stories].is_a?(String)

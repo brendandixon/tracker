@@ -12,6 +12,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'active_record_query_trace'
   gem 'annotate'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'rspec-rails', '~> 2.0'

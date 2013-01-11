@@ -19,15 +19,11 @@ module Rails
   class <<self
     
     def is_development?
-      !is_production? && !is_staging && !is_test?
+      !is_production? && !is_test?
     end
     
     def is_production?
-      [:batch, :production].include?(Rails.env.to_sym)
-    end
-    
-    def is_staging?
-      [:review, :staging].include?(Rails.env.to_sym)
+      [:production].include?(Rails.env.to_sym)
     end
     
     def is_test?

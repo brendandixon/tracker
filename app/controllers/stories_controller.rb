@@ -120,7 +120,7 @@ class StoriesController < ApplicationController
   def build_index_query
     query = Story
 
-    status = @filter.content[:status]
+    status = (@filter.content[:status] || []).first
     if status == :complete
       query = query.joins(:tasks).completed
     elsif status == :incomplete
@@ -128,7 +128,7 @@ class StoriesController < ApplicationController
     elsif status.present?
       query = query.joins(:tasks).in_state(status)
     end
-    
+
     projects = @filter.content[:projects] || []
     services = @filter.content[:services] || []
 

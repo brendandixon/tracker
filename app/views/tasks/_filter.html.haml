@@ -24,12 +24,12 @@
         = check_box_tag 'filter[content][iteration_mode]', 1, content[:iteration_mode], data: {iteration_mode: true}
         = label_tag 'iteration_mode', 'Group tasks by iteration', class: 'inline_label'
     .row.section.task_iteration_filter{class: content[:iteration_mode] ? 'visible' : nil}
-      .four.columns
-        = label_tag 'iteration_number', 'Starting Iteration'
-        = text_field_tag 'filter[content][iteration_number]', content[:iteration_number]
+      .three.columns
+        = label_tag 'iteration_status', 'Status'
+        = select_tag 'filter[content][iteration][status]', options_for_select(Task.all_states, (content[:iteration] || {})[:status])
       .five.columns.end
         = label_tag 'iteration_team', 'Team'
-        = select_tag 'filter[content][iteration_team]', options_for_select(Team.iteration_teams, content[:iteration_team] || '')
+        = select_tag 'filter[content][iteration][team]', options_for_select(Team.iteration_teams, (content[:iteration] || {})[:team] || '')
 
     .row.section.task_filter{class: content[:iteration_mode] ? 'hidden' : nil}
       .two.columns.multi-select

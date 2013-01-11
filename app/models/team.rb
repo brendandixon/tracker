@@ -11,6 +11,7 @@
 #
 
 class Team < ActiveRecord::Base
+  include CacheCleanser
 
   ITERATION_MAX = 4
   ITERATION_MIN = 1
@@ -27,24 +28,31 @@ class Team < ActiveRecord::Base
   validates_numericality_of :velocity, greater_than_or_equal_to: VELOCITY_MIN, only_integer: true, allow_blank: true
   validates_numericality_of :iteration, greater_than_or_equal_to: ITERATION_MIN, only_integer: true, allow_blank: true
 
+  default_scope includes(:projects, :tasks)
+
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
   scope :in_iteration_order, lambda{|dir = 'ASC'| order("iteration #{dir}")}
   scope :in_velocity_order, lambda{|dir = 'ASC'| order("velocity #{dir}")}
 
   class<<self
     def all_teams
-      [['-', '']] + iteration_teams
+      @all_teams ||= [['-', '']] + iteration_teams
     end
 
     def iteration_teams
-      Team.in_name_order.all.map{|team| [team.name, team.id]}.uniq
+      @iteration_teams ||= Team.in_name_order.all.map{|team| [team.name, team.id]}.uniq
+    end
+
+    def refresh_cache
+      @all_teams = nil
+      @iteration_teams = nil
     end
   end
 
-  def iteration_tasks(for_iteration = 0, number_of_iterations = nil)
-    iteration = Iteration.new(self, for_iteration)
+  def iteration_tasks(for_iteration = 0, number_of_iterations = nil, *states)
+    iteration = Iteration.new(self, for_iteration, *states)
 
-    tasks = self.tasks.in_rank_order.started_on_or_after(iteration.start_date).to_enum
+    tasks = self.tasks.in_rank_order.completed_on_or_after(iteration.start_date).uniq.to_enum
 
     Enumerator.new do |yielder|
       task = tasks.next rescue nil

@@ -192,20 +192,19 @@ class TasksController < ApplicationController
   private
 
   def build_index_query
-    query = Task
-
     @iteration_mode = @filter.content[:iteration_mode]
 
     if @iteration_mode
-      @iteration_number = @filter.content[:iteration_number]
-      @iteration_team = Team.find(@filter.content[:iteration_team]) rescue nil
+      @iteration_team = Team.find(@filter.content[:iteration][:team]) rescue nil
       if @iteration_team.present?
-        query = @iteration_team.iteration_tasks(@iteration_number)
+        query = @iteration_team.iteration_tasks(@filter.content[:iteration][:number], nil, *@filter.content[:iteration][:status])
       else
         @filter.errors.add(:base, "A team is required for grouping by iteration")
       end
     else
-      status = @filter.content[:status]
+      query = Task
+
+      status = (@filter.content[:status] || []).first
       if status == :complete
         query = query.completed
       elsif status == :incomplete
@@ -228,8 +227,6 @@ class TasksController < ApplicationController
       query = query.at_least_points(@filter.content[:min_points]) if @filter.content[:min_points] =~ /0|1|2|3|4|5/
       query = query.no_more_points(@filter.content[:max_points]) if @filter.content[:max_points] =~ /0|1|2|3|4|5/
 
-      @sort = ['-rank', 'status'] if @iteration_mode
-
       @sort.each do |sort|
         case sort
         when 'point' then query = query.in_point_order('ASC')
@@ -243,7 +240,7 @@ class TasksController < ApplicationController
         end
       end
 
-      query = query.includes(:story).includes(:project).uniq.to_enum
+      query = query.uniq.to_enum
     end
     
     @tasks = query

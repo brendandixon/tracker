@@ -10,9 +10,9 @@
 #
 
 class Service < ActiveRecord::Base
-  attr_accessible :name, :abbreviation
+  include CacheCleanser
   
-  after_save :refresh_active
+  attr_accessible :name, :abbreviation
 
   has_many :stories, dependent: :destroy
   has_many :supported_services, dependent: :destroy
@@ -39,16 +39,10 @@ class Service < ActiveRecord::Base
       @all_services ||= [['-', '']] + Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }
     end
     
-    def refresh_active
+    def refresh_cache
       @active = nil
       @all_services = nil
     end
-  end
-  
-  private
-  
-  def refresh_active
-    self.class.refresh_active
   end
 
 end

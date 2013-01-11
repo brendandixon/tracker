@@ -12,9 +12,9 @@
 #
 
 class Project < ActiveRecord::Base
-  attr_accessible :end_date, :name, :services, :start_date
+  include CacheCleanser
   
-  after_save :refresh_active
+  attr_accessible :end_date, :name, :services, :start_date
 
   belongs_to :team
 
@@ -47,7 +47,7 @@ class Project < ActiveRecord::Base
       @all_projects ||= [['-', '']] + Project.active.map{|project| [project.name, project.id]}.uniq
     end
     
-    def refresh_active
+    def refresh_cache
       @active = nil
       @all_projects = nil
     end
@@ -57,10 +57,6 @@ class Project < ActiveRecord::Base
 
   def ensure_start_date
     self.start_date ||= DateTime.parse('2012-12-01')
-  end
-  
-  def refresh_active
-    self.class.refresh_active
   end
 
 end
