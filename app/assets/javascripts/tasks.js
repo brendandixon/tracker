@@ -45,7 +45,16 @@ $(function() {
     if (e.length > 0) {
       e = e.eq(0);
       iteration = e.attr('data-iteration');
-      $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').toggle();
+      collapsed = parseInt(e.attr('data-collapsed'));
+      if (collapsed != 0) {
+        $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').show();
+        e.find('.glyphicon').removeClass('expand').addClass('collapse_top');
+        e.attr('data-collapsed', 0);
+      } else {
+        $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').hide();
+        e.find('.glyphicon').removeClass('collapse_top').addClass('expand');
+        e.attr('data-collapsed', 1);
+      }
     }
   });
 

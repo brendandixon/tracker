@@ -282,10 +282,14 @@ ol.task_list {
     .iteration_toggle {
       position:absolute;
       top:0;
-      left:0;
-      bottom:0;
       right:0;
+      height:100%;
+      padding:3px $glyphWidth/2 0;
+      width:2*$glyphWidth;
       z-index:1;
+      div {
+        font-size:120%;
+      }
     }
   }
 }
