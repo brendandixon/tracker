@@ -78,6 +78,10 @@
   }
 }
 
+.contact-us {
+  display:none;
+}
+
 .description {
   margin:0 0 0 15px;
   padding:4px;
@@ -191,6 +195,13 @@
     line-height:$small;
     height:$small;
   }
+}
+
+.release-date {
+  font-size:95%;
+  position:relative;
+  text-align:right;
+  top:6px;
 }
 
 .row.section {

@@ -8,7 +8,7 @@
     .five.columns.text-right= story_project_labels(@story)
   .row<
     .two.columns= @story.service.abbreviation if @story.service.present?
-    .two.columns= @story.release_date.in_time_zone.to_date.to_s(:medium) if @story.release_date.present?
+    .two.columns= @story.release_date.to_date.to_s(:medium) if @story.release_date.present?
     .two.columns.end
       %a{href: @story.contact_us_link, target: '_blank'}= @story.contact_us_number
   .row<

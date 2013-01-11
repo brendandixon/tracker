@@ -20,11 +20,12 @@
           = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
           = glyph_link_to edit_task_path(task), glyph: 'edit', remote:true
     .row
+      .contact-us= "##{task.story.contact_us_number}" if task.story.present?
       .two.columns<
         = task.project.name
       .three.columns<
         = task.story.service.abbreviation if task.story.present?
-      .three.columns.end
+      .three.columns
         .points<
           .overlay{class: points_to_class(task.points)}<
             - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
@@ -35,6 +36,8 @@
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
             %span<
               %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
+      .three.columns.release-date
+        =task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
       / .two.columns{style: 'text-align:right;'}
       /   = task.rank
     .row
