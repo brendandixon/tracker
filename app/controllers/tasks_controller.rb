@@ -232,7 +232,7 @@ class TasksController < ApplicationController
         end
       end
 
-      query = query.uniq
+      query = query.includes(:project, :service).uniq
     end
     
     @tasks = query

@@ -128,8 +128,6 @@ class ProjectsController < ApplicationController
 
     query = query.for_services(*services) if services.present?
 
-    query.includes(:supported_services).includes(:services)
-    
     @sort.each do |sort|
       case sort
       when '-name' then query = query.in_name_order('ASC')
@@ -137,7 +135,7 @@ class ProjectsController < ApplicationController
       end
     end
 
-    @projects = query
+    @projects = query.includes(:services, :stories, :tasks)
   end
 
   def ensure_initial_state

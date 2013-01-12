@@ -124,7 +124,7 @@ class TeamsController < ApplicationController
   def build_index_query
     query = Team
 
-    query = query.includes(:projects)
+    query = query.includes(:projects, :tasks)
 
     @sort.each do |sort|
       case sort

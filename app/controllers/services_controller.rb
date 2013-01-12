@@ -132,7 +132,7 @@ class ServicesController < ApplicationController
       end
     end
 
-    @services = query
+    @services = query.includes(:projects, :stories)
   end
 
   def ensure_initial_state

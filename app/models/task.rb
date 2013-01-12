@@ -45,9 +45,9 @@ class Task < ActiveRecord::Base
   validates_presence_of :project
   validates_inclusion_of :status, in: ALL_STATES
 
-  default_scope includes(:project, :service)
+  # default_scope includes(:project, :service)
 
-  scope :for_iteration, lambda{|iteration_start_date| in_rank_order.completed_on_or_after(iteration_start_date).uniq }
+  scope :for_iteration, lambda{|iteration_start_date| includes(:project, :service).in_rank_order.completed_on_or_after(iteration_start_date).uniq }
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
