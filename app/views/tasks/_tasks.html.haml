@@ -19,18 +19,15 @@
     .twelve
       %ol.task_list#TaskList<
         - if group_by_iteration
-          - current_iteration = nil
-          - @tasks.each_with_iteration(@filter.content[:iteration]) do |task, iteration|
-            - if !iteration.is?(current_iteration)
-              - current_iteration = iteration.number
-              %li.iteration_marker{data: {iteration: iteration.number, collapsed: 0}}
-                .row
-                  .three.columns= iteration.end_date.to_formatted_s(:medium)
-                  .two.offset-by-two.columns= "#{iteration.points} Points"
-                  .two.columns.iteration_toggle
-                    .glyphicon.collapse_top
-            - if task.present? && states.include?(task.status)
-              = render partial: 'task', object: task, locals: {in_edit_mode: @in_edit_mode, iteration: current_iteration}
+          - @tasks.each_iteration(@filter.content[:iteration]) do |iteration|
+            %li.iteration_marker{data: {iteration: iteration.number, collapsed: 0}}
+              .row
+                .three.columns= iteration.end_date.to_formatted_s(:medium)
+                .two.offset-by-two.columns= "#{iteration.points} Points"
+                .two.columns.iteration_toggle
+                  .glyphicon.collapse_top
+            - tasks = iteration.tasks.find_all{|task| states.include?(task.status)}
+            = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number}
 
         - else
           = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
