@@ -147,7 +147,7 @@ class StoriesController < ApplicationController
       end
     end
 
-    @stories = query.includes(:projects, :service, :tasks).uniq
+    @stories = query.includes(:service, :tasks).uniq
   end
 
   def ensure_initial_state

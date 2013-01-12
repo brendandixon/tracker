@@ -3,3 +3,6 @@
 <%= render template: 'shared/filter' %>
 $('#Main').replaceWith('<%= escape_javascript(render(partial: "#{controller.controller_name}"))%>');
 <%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>
+<% (@was_changed || []).each do |id| %>
+$('#<%= controller.controller_name.to_s.singularize.titleize %>_<%= id%>').effect('highlight',{duration: 750});
+<% end %>

@@ -2,12 +2,9 @@
 - states = @filter.content[:status] || []
 - states = StatusScopes::ALL_STATES if states.empty?
 
-- if false && (tasks.peek rescue nil).blank?
-  .eleven.columns.centered#Main
-    %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
-- else
-  .nine.columns.centered#Main
-    - unless group_by_iteration
+.nine.columns.centered#Main
+  - unless group_by_iteration
+    - if @tasks.count > 0
       .task_sort.twelve
         %table.twelve
           %thead
@@ -16,6 +13,12 @@
               = render partial: 'shared/sortable', locals: {name: 'Rank', field: 'rank', classes: 'three'}
               = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'three'}
               = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'three'}
+      .twelve
+        %ol.task_list#TaskList<
+          = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
+    - else
+      %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
+  - else
     .twelve
       %ol.task_list#TaskList<
         - if group_by_iteration
@@ -28,7 +31,4 @@
                   .glyphicon.collapse_top
             - tasks = iteration.tasks.find_all{|task| states.include?(task.status)}
             = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number}
-
-        - else
-          = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
-    = render template: 'shared/bind_list'
+  = render template: 'shared/bind_list'
