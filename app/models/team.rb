@@ -49,22 +49,4 @@ class Team < ActiveRecord::Base
     end
   end
 
-  def iteration_tasks(for_iteration = 0, number_of_iterations = nil, *states)
-    iteration = Iteration.new(self, for_iteration, *states)
-
-    tasks = self.tasks.in_rank_order.completed_on_or_after(iteration.start_date).uniq.to_enum
-
-    Enumerator.new do |yielder|
-      task = tasks.next rescue nil
-      
-      while (number_of_iterations.present? && number_of_iterations > 0) || task.present? do
-        task = (tasks.next rescue nil) while task.present? && iteration.consume_task?(task)
-        iteration.tasks.each {|task| yielder.yield task, iteration }
-        iteration.advance!
-        number_of_iterations -= 1 if number_of_iterations.present?
-      end
-
-    end
-  end
-
 end

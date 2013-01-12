@@ -21,17 +21,17 @@
     
     .row.section
       .four.columns
-        = check_box_tag 'filter[content][iteration_mode]', 1, content[:iteration_mode], data: {iteration_mode: true}
-        = label_tag 'iteration_mode', 'Group tasks by iteration', class: 'inline_label'
-    .row.section.task_iteration_filter{class: content[:iteration_mode] ? 'visible' : nil}
-      .three.columns
+        = check_box_tag 'filter[content][group_by]', 1, content[:group_by] == :iteration, data: {group_by: :iteration}
+        = label_tag 'group_by', 'Group tasks by iteration', class: 'inline_label'
+    .row.section.task_iteration_filter{class: content[:group_by] ? 'visible' : nil}
+      .three.columns.multi-select
         = label_tag 'iteration_status', 'Status'
-        = select_tag 'filter[content][iteration][status]', options_for_select(Task.all_states, (content[:iteration] || {})[:status])
+        = select_tag 'filter[content][iteration_status]', options_for_select(Task.all_states, content[:status] || ''), multiple: true
       .five.columns.end
         = label_tag 'iteration_team', 'Team'
-        = select_tag 'filter[content][iteration][team]', options_for_select(Team.iteration_teams, (content[:iteration] || {})[:team] || '')
+        = select_tag 'filter[content][iteration_team]', options_for_select(Team.iteration_teams, (content[:teams] || []).first)
 
-    .row.section.task_filter{class: content[:iteration_mode] ? 'hidden' : nil}
+    .row.section.task_filter{class: content[:group_by] ? 'hidden' : nil}
       .two.columns.multi-select
         = label_tag 'teams', 'Teams'
         = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || ''), multiple: true
@@ -45,10 +45,10 @@
         = label_tag 'stories', 'Stories'
         = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
     
-    .row.section.task_filter{class: content[:iteration_mode] ? 'hidden' : nil}
+    .row.section.task_filter{class: content[:group_by] ? 'hidden' : nil}
       .three.columns
         = label_tag 'status', 'Status'
-        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
+        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status]), multiple: true
       .three.columns
         = label_tag 'points', 'Minimum Points'
         = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])

@@ -58,8 +58,8 @@ $(function() {
     }
   });
 
-  $('body').on('click', '#filter_content_iteration_mode', function(event) {
-    e = $('#filter_content_iteration_mode');
+  $('body').on('click', '#filter_content_group_by', function(event) {
+    e = $('#filter_content_group_by');
     if (e.length > 0) {
       e = e[0];
       if (e.checked) {

@@ -192,31 +192,23 @@ class TasksController < ApplicationController
   private
 
   def build_index_query
-    @iteration_mode = @filter.content[:iteration_mode]
 
-    if @iteration_mode
-      @iteration_team = Team.find(@filter.content[:iteration][:team]) rescue nil
-      if @iteration_team.present?
-        query = @iteration_team.iteration_tasks(@filter.content[:iteration][:number], nil, *@filter.content[:iteration][:status])
-      else
-        @filter.errors.add(:base, "A team is required for grouping by iteration")
-      end
-    else
+    if @filter.content[:group_by] == :iteration
+      query = IterationEnumerator.new(Team.find(@filter.content[:teams].first)) rescue nil
+    end
+
+    if query.blank?
+      @filter.content[:group_by] = nil
+      
       query = Task
 
-      status = (@filter.content[:status] || []).first
-      if status == :complete
-        query = query.completed
-      elsif status == :incomplete
-        query = query.incomplete
-      elsif status != :iteration && status.present?
-        query = query.in_state(status)
-      end
-      
-      projects = @filter.content[:projects] || []
-      services = @filter.content[:services] || []
-      stories = @filter.content[:stories] || []
-      teams = @filter.content[:teams] || []
+      projects = @filter.content[:projects]
+      services = @filter.content[:services]
+      status = @filter.content[:status]
+      stories = @filter.content[:stories]
+      teams = @filter.content[:teams]
+
+      query = query.in_state(status) if status.present?
 
       query = query.for_projects(projects) if projects.present?
       query = query.for_services(services) if services.present?
@@ -240,7 +232,7 @@ class TasksController < ApplicationController
         end
       end
 
-      query = query.uniq.to_enum
+      query = query.uniq
     end
     
     @tasks = query
@@ -248,7 +240,6 @@ class TasksController < ApplicationController
 
   def ensure_initial_state
     @in_edit_mode = []
-    @iteration_mode = false
     @was_changed = []
   end
 

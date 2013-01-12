@@ -43,9 +43,11 @@ class Task < ActiveRecord::Base
   validate :has_title_or_story
   validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
   validates_presence_of :project
-  validates_inclusion_of :status, in: LEGAL_STATES
+  validates_inclusion_of :status, in: ALL_STATES
 
   default_scope includes(:project, :service, :story)
+
+  scope :for_iteration, lambda{|iteration_start_date| in_rank_order.completed_on_or_after(iteration_start_date).uniq }
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
@@ -70,7 +72,7 @@ class Task < ActiveRecord::Base
   scope :in_story_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("tasks.title #{dir}")}
   
-  StatusScopes::LEGAL_STATES.each do |s|
+  StatusScopes::ALL_STATES.each do |s|
     class_eval <<-EOM
       def #{s}?
         self.status == :#{s}
@@ -140,7 +142,7 @@ class Task < ActiveRecord::Base
   end
   
   def next_status
-    StatusScopes::LEGAL_STATES[StatusScopes::LEGAL_STATES.find_index(self.status)+1] || StatusScopes::LEGAL_STATES.last
+    StatusScopes::ALL_STATES[StatusScopes::ALL_STATES.find_index(self.status)+1] || StatusScopes::ALL_STATES.last
   end
   
   def title

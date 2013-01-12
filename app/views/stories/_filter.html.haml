@@ -19,9 +19,9 @@
         = f.text_field :name
     
     .row.section
-      .three.columns
+      .three.columns.multi-select
         = label_tag 'status', 'Status'
-        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status])
+        = select_tag 'filter[content][status]', options_for_select(Task.all_states, content[:status]), multiple: true
       .two.columns.multi-select
         = label_tag 'projects', 'Projects'
         = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects]), multiple: true

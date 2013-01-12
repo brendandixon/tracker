@@ -120,21 +120,16 @@ class StoriesController < ApplicationController
   def build_index_query
     query = Story
 
-    status = (@filter.content[:status] || []).first
-    if status == :complete
-      query = query.joins(:tasks).completed
-    elsif status == :incomplete
-      query = query.joins(:tasks).incomplete
-    elsif status.present?
-      query = query.joins(:tasks).in_state(status)
-    end
+    contact_us = @filter.content[:contact_us]
+    projects = @filter.content[:projects]
+    services = @filter.content[:services]
+    status = @filter.content[:status]
 
-    projects = @filter.content[:projects] || []
-    services = @filter.content[:services] || []
+    query = query.joins(:tasks).in_state(status) if status.present?
 
     query = query.for_projects(projects) if projects.present?
     query = query.for_services(services) if services.present?
-    query = query.for_contact_us(@filter.content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact) if @filter.content[:contact_us].present?
+    query = query.for_contact_us(contact_us) if contact_us.present?
 
     query = query.on_or_after_date(@filter.content[:after]) if @filter.content[:after].present?
     query = query.on_or_before_date(@filter.content[:before]) if @filter.content[:before].present?
@@ -152,7 +147,7 @@ class StoriesController < ApplicationController
       end
     end
 
-    @stories = query.includes(:service).includes(:projects).uniq
+    @stories = query.includes(:projects, :service, :tasks).uniq
   end
 
   def ensure_initial_state
