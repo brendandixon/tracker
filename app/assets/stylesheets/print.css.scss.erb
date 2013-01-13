@@ -19,8 +19,11 @@
 
 li {
   display:none;
-  &.iteration_0 {
+  &[data-iteration='0'] {
     display:inline-block;
+  }
+  &.iteration_marker {
+    display:none;
   }
   &.task_inline {
     border:2px solid black;
