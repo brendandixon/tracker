@@ -31,4 +31,7 @@
                   .glyphicon.collapse_top
             - tasks = iteration.tasks.find_all{|task| states.include?(task.status)}
             = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number}
+      %div
+        :javascript
+          $(function() {$('body').trigger('iteration.visibility');});
   = render template: 'shared/bind_list'

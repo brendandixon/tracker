@@ -13,6 +13,8 @@
 //= require foundation
 //= require jquery_ujs
 //= require jquery-tooltip/jquery.tooltip
+//= require jquery.cookie
+//= require underscore-min
 //= require dates
 //= require filter
 //= require status

@@ -1,5 +1,43 @@
+var Tracker = Tracker || {};
+Tracker.Tasks = {};
+
+Tracker.Tasks.getIterationState = function() {
+  var c = $.cookie('iterations');
+  if (c === null) {
+    c = '0';
+    $.cookie('iterations', c);
+  }
+  return c.split(',');
+}
+
+Tracker.Tasks.saveIterationState = function(iteration, fShow) {
+  var c = $.cookie('iterations');
+  c = (c === null ? [] : c.split(','));
+  if (fShow) {
+    c.push(iteration);
+    c.sort();
+    c = _.uniq(c, true);
+  } else {
+    c = _.without(c, iteration);
+  }
+  $.cookie('iterations', c.join());
+};
+
+Tracker.Tasks.toggleIteration = function(li, iteration, fShow) {
+  if (fShow) {
+    $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').removeClass('hidden').addClass('visible');
+    li.find('.glyphicon').removeClass('expand').addClass('collapse_top');
+    li.attr('data-collapsed', 0);
+  } else {
+    $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').removeClass('visible').addClass('hidden');
+    li.find('.glyphicon').removeClass('collapse_top').addClass('expand');
+    li.attr('data-collapsed', 1);
+  }
+};
+
 $(function() {
   $('body').on('click', '*[data-points]', function(event) {
+    var e, points, pointsClass;
     e = $(event.target);
     points = parseInt(e.attr('data-points'));
     pointsClass = points === 1
@@ -40,25 +78,30 @@ $(function() {
   });
 
   $('body').on('click', '.iteration_toggle', function(event) {
+    var e, iteration, collapsed;
     e = $(event.target);
     e = e.parents('li.iteration_marker');
     if (e.length > 0) {
       e = e.eq(0);
       iteration = e.attr('data-iteration');
-      collapsed = parseInt(e.attr('data-collapsed'));
-      if (collapsed != 0) {
-        $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').show();
-        e.find('.glyphicon').removeClass('expand').addClass('collapse_top');
-        e.attr('data-collapsed', 0);
-      } else {
-        $('li[data-iteration=' + iteration + ']:not(.iteration_marker)').hide();
-        e.find('.glyphicon').removeClass('collapse_top').addClass('expand');
-        e.attr('data-collapsed', 1);
-      }
+      collapsed = e.attr('data-collapsed') !== '0';
+      Tracker.Tasks.toggleIteration(e, iteration, collapsed);
+      Tracker.Tasks.saveIterationState(iteration, collapsed);
     }
   });
 
+  $('body').on('iteration.visibility', function(event) {
+    var e, iteration, visible;
+    visible = Tracker.Tasks.getIterationState();
+    $('li.iteration_marker').each(function(i, e) {
+      e = $(e);
+      iteration = e.attr('data-iteration');
+      Tracker.Tasks.toggleIteration(e, iteration, _.contains(visible, iteration));
+    });
+  });
+
   $('body').on('click', '#filter_content_group_by', function(event) {
+    var e;
     e = $('#filter_content_group_by');
     if (e.length > 0) {
       e = e[0];
@@ -83,6 +126,8 @@ $(function() {
         scrollSpeed:100
       })
       .on('sortupdate', function(event, ui) {
+        var task, siblings, query;
+
         task = ui.item.eq(0);
 
         siblings = task.prevAll('li:not(.iteration_marker)');

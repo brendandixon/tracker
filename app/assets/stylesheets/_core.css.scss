@@ -276,29 +276,35 @@ ol.task_list {
     &:hover {
       outline:1px solid #999;
     }
-  }
-  li.task_inline:hover {
-    background-color:#ffc;
-  }
-  li.iteration_marker {
-    background-color:#b9b9b9;
-    border:1px solid $dark;
-    color:$dark;
-    padding:4px 8px;
-    position:relative;
-    &:hover {
-      outline:none;
+    &.hidden {
+      display:none;
     }
-    .iteration_toggle {
-      position:absolute;
-      top:0;
-      right:0;
-      height:100%;
-      padding:3px $glyphWidth/2 0;
-      width:2*$glyphWidth;
-      z-index:1;
-      div {
-        font-size:120%;
+    &.visible {
+      display:block;
+    }
+    &.task_inline:hover {
+      background-color:#ffc;
+    }
+    &.iteration_marker {
+      background-color:#b9b9b9;
+      border:1px solid $dark;
+      color:$dark;
+      padding:4px 8px;
+      position:relative;
+      &:hover {
+        outline:none;
+      }
+      .iteration_toggle {
+        position:absolute;
+        top:0;
+        right:0;
+        height:100%;
+        padding:3px $glyphWidth/2 0;
+        width:2*$glyphWidth;
+        z-index:1;
+        div {
+          font-size:120%;
+        }
       }
     }
   }

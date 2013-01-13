@@ -1,6 +1,6 @@
 - in_edit_mode ||= []
-- iteration ||= nil
-- classes = (iteration ? "iteration_#{iteration} " : '') << cycle('odd', 'even')
+- iteration = nil unless defined?(iteration)
+- classes = cycle('odd', 'even')
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 - task ||= @task
@@ -32,6 +32,7 @@
               %i.small.glyphicon{class: 'star', data: {points:points}}
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
             %i.small.glyphicon{class: 'dislikes', data: {points:points}}
+        = task.rank
         .printed-points<
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
             %span<
