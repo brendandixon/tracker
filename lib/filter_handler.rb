@@ -82,10 +82,10 @@ module FilterHandler
       end
     end.compact
 
-    content[:status] = params[:status] || (group_by_iteration ? content[:iteration_status] : nil) || content[:status] || []
-    content[:status] = Array(content[:status]) if content[:status].present?
-    content[:status] = content[:status].map {|s| s.downcase.to_sym}
-    content[:status] = StatusScopes.cleanse(*content[:status])
+    content[:status] = params[:status] || content[:status] || []
+    content[:status] = content[:status].split(',') if content[:status].is_a?(String)
+    content[:status] = content[:status].map{|s| s.downcase.to_sym}
+    content[:status] = StatusScopes.expand(*content[:status])
 
     content[:stories] = params[:stories] || content[:stories] || []
     content[:stories] = content[:stories].split(',') if content[:stories].is_a?(String)
@@ -99,7 +99,7 @@ module FilterHandler
     content[:teams] = content[:teams].map{|team| team =~ /^\d+$/ ? team : nil}.flatten.compact
     content[:teams] = content[:teams][0...1] || [] if group_by_iteration
 
-    [:iteration_status, :iteration_team].each {|k| content.delete(k)}
+    content.delete_if{|k,v| v.blank?}
   end
 
   def is_index_action

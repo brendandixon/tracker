@@ -30,7 +30,7 @@ class Iteration
       iterations_since_start = (days_since_start + (@team.iteration * 7) - 1) / (@team.iteration * 7)
       iterations_since_start += number
       if iterations_since_start < 0
-        number -= iterations_since_start
+        @number -= iterations_since_start
         iterations_since_start = 0
       end
       

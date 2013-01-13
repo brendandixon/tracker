@@ -89,10 +89,6 @@ class Task < ActiveRecord::Base
     def all_points
       @all_points ||= [['-', '']] + (Task::POINTS_MINIMUM..Task::POINTS_MAXIMUM).map{|p| [p, p]}
     end
-
-    def all_states
-      @all_states ||= [['-', '']] + StatusScopes::ALL_STATES.map{|state| [state.to_s.titleize, state]}
-    end
     
     def ensure_story_tasks(story)
       story.service.projects.each do |project|

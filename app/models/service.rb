@@ -36,7 +36,7 @@ class Service < ActiveRecord::Base
     end
     
     def all_services
-      @all_services ||= [['-', '']] + Service.active.map{|s| [ s.abbreviation, s.abbreviation ] }
+      @all_services ||= [['-', '']] + Service.active.map{|s| [ s.abbreviation, s.id ] }
     end
     
     def refresh_cache

@@ -107,10 +107,8 @@ $(function() {
       e = e[0];
       if (e.checked) {
         $('.task_filter').hide();
-        $('.task_iteration_filter').show();
       } else {
         $('.task_filter').show();
-        $('.task_iteration_filter').hide();
       }
     }
   });
