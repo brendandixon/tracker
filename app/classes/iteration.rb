@@ -27,7 +27,7 @@ class Iteration
       start_date = start_date.to_datetime unless start_date.is_a?(DateTime)
 
       days_since_start = (DateTime.now.beginning_of_week - start_date.beginning_of_week).to_i
-      iterations_since_start = (days_since_start + (@team.iteration * 7) - 1) / (@team.iteration * 7)
+      iterations_since_start = days_since_start / (@team.iteration * 7)
       iterations_since_start += number
       if iterations_since_start < 0
         @number -= iterations_since_start
