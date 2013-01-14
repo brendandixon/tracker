@@ -138,7 +138,11 @@ class Task < ActiveRecord::Base
   end
   
   def next_status
-    StatusScopes::ALL_STATES[StatusScopes::ALL_STATES.find_index(self.status)+1] || StatusScopes::ALL_STATES.last
+    case self.status
+    when :pending then :in_progress
+    when :in_progress then :completed
+    else self.status
+    end
   end
   
   def title
