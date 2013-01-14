@@ -42,6 +42,7 @@ module FilterHandler
 
     content[:contact_us] = params[:contact_us] || content[:contact_us] || []
     content[:contact_us] = content[:contact_us].split(',') if content[:contact_us].is_a?(String)
+    content[:contact_us] = Array(content[:contact_us]) unless content[:contact_us].is_a?(Array)
     content[:contact_us] = content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact
     
     content[:iteration] = params[:iteration] || content[:iteration] || 0
@@ -55,6 +56,7 @@ module FilterHandler
 
     content[:projects] = params[:projects] || content[:projects] || []
     content[:projects] = content[:projects].split(',') if content[:projects].is_a?(String)
+    content[:projects] = Array(content[:projects]) unless content[:projects].is_a?(Array)
     content[:projects] = content[:projects].map{|p| p.present? ? p : nil}.compact
     content[:projects] = [] if content[:projects].any?{|p| p =~ /all/i}
     content[:projects] = content[:projects].map do |project|
@@ -69,6 +71,7 @@ module FilterHandler
 
     content[:services] = params[:services] || content[:services] || []
     content[:services] = content[:services].split(',') if content[:services].is_a?(String)
+    content[:services] = Array(content[:services]) unless content[:services].is_a?(Array)
     content[:services] = content[:services].map{|s| s.present? ? s : nil}.compact
     content[:services] = [] if content[:services].any?{|s| s =~ /all/i}
     content[:services] = content[:services].map do |service|
@@ -84,16 +87,19 @@ module FilterHandler
 
     content[:status] = params[:status] || content[:status] || []
     content[:status] = content[:status].split(',') if content[:status].is_a?(String)
+    content[:status] = Array(content[:status]) unless content[:status].is_a?(Array)
     content[:status] = content[:status].map{|s| s.downcase.to_sym}
     content[:status] = StatusScopes.expand(*content[:status])
 
     content[:stories] = params[:stories] || content[:stories] || []
     content[:stories] = content[:stories].split(',') if content[:stories].is_a?(String)
+    content[:stories] = Array(content[:stories]) unless content[:stories].is_a?(Array)
     content[:stories] = content[:stories].map{|s| s =~ /^\d+$/ ? s : nil}.compact
     content[:stories] = content[:stories].map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
 
     content[:teams] = params[:teams] || (group_by_iteration ? content[:iteration_team] : nil) || content[:teams] || []
     content[:teams] = content[:teams].split(',') if content[:teams].is_a?(String)
+    content[:teams] = Array(content[:teams]) unless content[:teams].is_a?(Array)
     content[:teams] = content[:teams].map{|t| t.present? ? t : nil}.compact
     content[:teams] = [] if content[:teams].any?{|t| t =~ /all/i}
     content[:teams] = content[:teams].map{|team| team =~ /^\d+$/ ? team : nil}.flatten.compact

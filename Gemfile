@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'haml'
 gem 'mysql2'
-gem 'rails', '~> 3.2.11'
+gem 'rails', '3.2.11'
 
 group :development do
   gem 'capistrano'
@@ -24,11 +24,15 @@ group :production do
 end
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  # Upgrade to 1.0.x when they fix error with SASS compilation
+  # https://github.com/scottkellum/modular-scale/issues/45
+  gem 'modular-scale', '1.0.4'
+  gem 'sass', '3.2.5'
+  gem 'sass-rails'
+  gem 'coffee-rails'
 
   gem 'compass-rails'
-  gem 'zurb-foundation'
+  gem "zurb-foundation"
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
