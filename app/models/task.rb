@@ -171,13 +171,12 @@ class Task < ActiveRecord::Base
       else
         after = query.started.in_rank_order('DESC').pick_rank.limit(1).first if self.started?
         before = query.pending.in_rank_order.pick_rank.limit(1).first if after.blank?
-        self.rank = after.present? ? after + 1 : before - 1
+        rank_between(after, before)
       end
     end
   end
 
   def rank_between(after, before)
-
     query = Task
     query = query.where("tasks.id <> ?", self.id) unless self.new_record?
     
@@ -187,9 +186,9 @@ class Task < ActiveRecord::Base
     return false if after.blank? && before.blank?
 
     if after.blank?
-      after = query.in_rank_order('DESC').before_rank(before).pick_rank.limit(1).first
+      after = query.in_rank_order('DESC').before_rank(before.rank).pick_rank.limit(1).first
     elsif before.blank?
-      before = query.in_rank_order.after_rank(after).pick_rank.limit(1).first
+      before = query.in_rank_order.after_rank(after.rank).pick_rank.limit(1).first
     end
 
     after_rank = after.present? ? after.rank : (before.rank > RANK_MINIMUM+1 ? before.rank - 1 : RANK_MINIMUM)
