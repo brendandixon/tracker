@@ -244,27 +244,6 @@
   width:100px;
 }
 
-.task_edit {
-  .points {
-    position:relative;
-    top:4px;
-  }
-  li:hover {
-    background-color:inherit;
-  }
-  textarea {
-    height:100px;
-  }
-}
-
-.task_inline {
-  font-size:$small;
-  position:relative;
-  .description {
-    display:none;
-  }
-}
-
 ol.task_list {
   border:1px solid #ccc;
   border-top:none;
@@ -283,6 +262,24 @@ ol.task_list {
     }
     &.visible {
       display:block;
+    }
+    &.task_edit {
+      .points {
+        position:relative;
+        top:4px;
+      }
+      li:hover {
+        background-color:inherit;
+      }
+      textarea {
+        height:100px;
+      }
+    }
+    &.task_inline {
+      font-size:$small;
+      .description {
+        display:none;
+      }
     }
     &.task_inline:hover {
       background-color:#ffc;
