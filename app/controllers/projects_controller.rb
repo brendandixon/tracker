@@ -44,7 +44,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
-    @project = Project.find(params[:id])
+    @project = Project.includes(:services, :stories, :tasks).find(params[:id])
     @in_edit_mode << @project.id
 
     respond_to do |format|

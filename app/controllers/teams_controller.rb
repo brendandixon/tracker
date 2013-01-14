@@ -44,7 +44,7 @@ class TeamsController < ApplicationController
 
   # GET /teams/1/edit
   def edit
-    @team = Team.find(params[:id])
+    @team = Team.includes(:projects, :tasks).find(params[:id])
     @in_edit_mode << @team.id
 
     respond_to do |format|
