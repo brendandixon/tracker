@@ -79,6 +79,14 @@
 }
 
 .contact-us {
+  font-size:80%;
+  margin:4px 4px;
+  position:absolute;
+  top:0;
+  right:0;
+  text-align:right;
+}
+.printed-contact-us {
   display:none;
 }
 
@@ -251,6 +259,7 @@
 
 .task_inline {
   font-size:$small;
+  position:relative;
   .description {
     display:none;
   }
@@ -305,6 +314,12 @@ ol.task_list {
       margin:-2px 0;
     }
   }
+}
+
+.task-rank {
+  display:inline-block;
+  font-size:85%;
+  margin-left:15px;
 }
 
 .task_sort {

@@ -20,11 +20,15 @@
           = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
           = glyph_link_to edit_task_path(task), glyph: 'edit', remote:true
     .row
-      .contact-us= "##{task.story.contact_us_number}" if task.story.present?
+      - if task.story.present? && task.story.contact_us_number.present?
+        .printed-contact-us="CU ##{task.story.contact_us_number}"
       .two.columns<
         = task.project.name
       .three.columns<
-        = task.story.service.abbreviation if task.story.present?
+        - if task.story.present?
+          = task.story.service.abbreviation
+          - if task.story.contact_us_number.present?
+            %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
       .three.columns
         .points<
           .overlay{class: points_to_class(task.points)}<
@@ -32,7 +36,7 @@
               %i.small.glyphicon{class: 'star', data: {points:points}}
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
             %i.small.glyphicon{class: 'dislikes', data: {points:points}}
-        = task.rank
+        .task-rank= task.rank
         .printed-points<
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
             %span<
