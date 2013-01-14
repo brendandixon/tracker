@@ -17,18 +17,18 @@ class IterationEnumerator
 
   def each_iteration(initial_iteration = 0)
     if block_given?
-      iteration = Iteration.new(@team, number: initial_iteration)
+      iteration = Iteration.new(@team, number: [0, initial_iteration].min)
       
       @team.tasks.for_iteration(iteration.start_date).each do |task|
         
         until iteration.wants_task?(task)
-          yield iteration
+          yield iteration if iteration.number >= initial_iteration
           iteration = Iteration.new(iteration)
         end
 
         iteration.add_task(task)
       end
-      yield iteration
+      yield iteration if iteration.number >= initial_iteration
     else
       Enumerator.new(self, :each_iteration, initial_iteration)
     end

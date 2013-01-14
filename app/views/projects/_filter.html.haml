@@ -29,7 +29,7 @@
             - classes = 'end' if services.length < slice_size && i == services.length-1
             .three.columns.services{class: classes}<
               = check_box_tag 'filter[content][services][]', service.id, content[:services].include?(service.id), id: "filter_content_services_#{service.id}"
-              = label_tag "filter_content_services_#{service.id}", service.abbreviation
+              = label_tag "filter_content_services_#{service.id}", service.abbreviation, class: 'inline_label'
 
     .row
       .four.columns.offset-by-eight.text-right.actions

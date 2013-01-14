@@ -1,7 +1,27 @@
-- group_by_iteration = @tasks.is_a?(IterationEnumerator)
-
 .nine.columns.centered#Main
-  - unless group_by_iteration
+  - if @tasks.is_a?(IterationEnumerator)
+    .twelve
+      %ol.task_list#TaskList<
+        - projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
+        - states = @filter.content[:status] || []
+        - states = StatusScopes::ALL_STATES if states.empty?
+        - @tasks.each_iteration(-1) do |iteration|
+          %li.iteration_marker{data: {iteration: iteration.number, collapsed: 0}}
+            .row
+              .three.columns= iteration.end_date.to_formatted_s(:medium)
+              .two.offset-by-two.columns= "#{iteration.points} Points"
+              .two.columns.iteration_toggle
+                .glyphicon.collapse_top
+          - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
+          - if tasks.count > 0
+            = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number}
+          - else
+            %li{data: {iteration: iteration.number, collapsed: 0}}
+              %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
+      %div
+        :javascript
+          $(function() {$('body').trigger('iteration.visibility');});
+  - else
     - if @tasks.count > 0
       .task_sort.twelve
         %table.twelve
@@ -16,27 +36,4 @@
           = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
     - else
       %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
-  - else
-    .twelve
-      %ol.task_list#TaskList<
-        - if group_by_iteration
-          - projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
-          - states = @filter.content[:status] || []
-          - states = StatusScopes::ALL_STATES if states.empty?
-          - @tasks.each_iteration(-1) do |iteration|
-            %li.iteration_marker{data: {iteration: iteration.number, collapsed: 0}}
-              .row
-                .three.columns= iteration.end_date.to_formatted_s(:medium)
-                .two.offset-by-two.columns= "#{iteration.points} Points"
-                .two.columns.iteration_toggle
-                  .glyphicon.collapse_top
-            - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
-            - if tasks.count > 0
-              = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number}
-            - else
-              %li{data: {iteration: iteration.number, collapsed: 0}}
-                %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
-      %div
-        :javascript
-          $(function() {$('body').trigger('iteration.visibility');});
   = render template: 'shared/bind_list'
