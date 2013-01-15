@@ -196,7 +196,9 @@ DEPENDENCIES
   rails (= 3.2.11)
   rspec-rails (~> 2.0)
   sass (= 3.2.5)
-  sass-rails
+  sass-rails (= 3.2.5)
+  sassy-math (= 1.5)
+  sprockets (= 2.2.2)
   thin
   uglifier (>= 1.0.3)
-  zurb-foundation
+  zurb-foundation (= 3.2.3)

@@ -28,11 +28,14 @@ group :assets do
   # https://github.com/scottkellum/modular-scale/issues/45
   gem 'modular-scale', '1.0.4'
   gem 'sass', '3.2.5'
-  gem 'sass-rails'
+  gem 'sassy-math', '1.5'
+  gem 'sass-rails', '3.2.5'
   gem 'coffee-rails'
 
+  gem 'sprockets', '2.2.2'
+
   gem 'compass-rails'
-  gem "zurb-foundation"
+  gem 'zurb-foundation', '3.2.3'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
