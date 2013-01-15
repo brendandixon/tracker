@@ -13,7 +13,7 @@
   %li.task_inline#Task{id: task.id, class: classes, data: {iteration: iteration}}
     .row
       .seven.columns
-        .title{title_options(task)}= task.title
+        .title{title_options(task)}= link_to task.title, task_path(task)
       .three.columns.offset_by_two.last.text_right
         = task_status_tag(task)
         .command_block.on_hover<
@@ -36,15 +36,13 @@
               %i.small.glyphicon{class: 'star', data: {points:points}}
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
             %i.small.glyphicon{class: 'dislikes', data: {points:points}}
-        .task-rank= task.rank
+        / .task-rank= task.rank
         .printed-points<
           - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
             %span<
               %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
       .three.columns.release-date
         =task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
-      / .two.columns{style: 'text-align:right;'}
-      /   = task.rank
     .row
       .twelve.columns
         .description= task.description

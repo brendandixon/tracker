@@ -91,7 +91,6 @@
 }
 
 .description {
-  outline:1px solid red;
   margin:0 0 0 15px;
   padding:4px;
   min-height:100px;
@@ -242,7 +241,7 @@
 .status {
   position:relative;
   top:1px;
-  width:100px;
+  width:85px;
 }
 
 ol.task_list {
@@ -329,7 +328,7 @@ ol.task_list {
 .title {
   color: $cyan;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-size:$large;
+  font-size:110%;
   font-weight:$thin;
   margin:2px 0;
 }

@@ -1,6 +1,8 @@
+- name = controller.controller_name.singularize
+- object = controller.instance_variable_get("@#{name}")
 .row<
   = render 'shared/top_bar'
 .row
   .eight.columns.offset-by-two
-    %h3.subheader= controller.controller_name.singularize.titleize
+    %h3.subheader= "#{name.titleize} ##{object.id}"
     = render partial: "#{controller.controller_name}/show"
