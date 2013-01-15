@@ -1,5 +1,5 @@
 class Iteration
-  attr_reader :number, :start_date, :end_date, :next, :points, :previous, :team
+  attr_reader :completed, :number, :start_date, :end_date, :next, :points, :previous, :team
 
   CURRENT_ITERATION = 0
   DEFAULT_START_DATE = '2012-01-01'
@@ -38,6 +38,7 @@ class Iteration
     end
 
     @end_date = @start_date + @weeks - 1.day
+    @completed = 0
     @points = 0
     @tasks = []
     @velocity = @team.velocity
@@ -64,6 +65,7 @@ class Iteration
   end
 
   def add_task(task)
+    @completed += task.points if task.completed?
     @points += task.points
     @tasks << task
   end
