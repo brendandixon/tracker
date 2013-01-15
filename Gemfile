@@ -36,6 +36,7 @@ group :assets do
 
   gem 'compass-rails'
   # Locking to 3.2.2 - 3.2.3 breakings printing
+  # https://github.com/zurb/foundation/issues/1285
   gem 'zurb-foundation', '3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes

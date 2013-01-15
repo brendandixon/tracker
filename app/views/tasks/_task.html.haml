@@ -14,6 +14,7 @@
     .row
       .seven.columns
         .title{title_options(task)}= link_to task.title, task_path(task)
+        .printed-title= task.title
       .three.columns.offset_by_two.last.text_right
         = task_status_tag(task)
         .command_block.on_hover<
