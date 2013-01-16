@@ -153,6 +153,18 @@
 .points {
   display:inline-block;
   position:relative;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  & > span {
+    display:inline-block;
+    position:relative;
+    width:1em;
+  }
+  & > span:hover:before,
+  & > span:hover ~ span:before {
+    content: "\e050";
+    position: absolute;
+  }
   .overlay {
     cursor:pointer;
     position:absolute;
@@ -285,9 +297,9 @@ ol.task_list {
       background-color:#ffc;
     }
     &.iteration_marker {
-      background-color:#b9b9b9;
-      border:1px solid $dark;
-      color:$dark;
+      background-color:$dark;
+      border-bottom:1px solid $white;
+      color:$white;
       padding:4px 8px;
       position:relative;
       &:hover {

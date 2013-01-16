@@ -40,10 +40,11 @@
           = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
           %span.points<
             .overlay{class: points_to_class(task.points)}<
-              - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+              - (Task::POINTS_MINIMUM+1).upto(Task::POINTS_MAXIMUM) do |points|
                 %i.small.glyphicon{class: 'star', data: {points:points}}
-            - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
-              %i.small.glyphicon{class: 'dislikes', data: {points:points}}
+            - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
+              %span.small.glyphicon{data: {points:points}}
+                %i.small.glyphicon{class: 'dislikes'}
         .three.columns.end.start_date{style: "display:#{task.in_progress? ? 'inline-block' : 'none'}"}
           = f.label :start_date
           = f.text_field :start_date, data: {datefield: true}

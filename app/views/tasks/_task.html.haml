@@ -33,13 +33,14 @@
       .three.columns
         .points<
           .overlay{class: points_to_class(task.points)}<
-            - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
+            - (Task::POINTS_MINIMUM+1).upto(Task::POINTS_MAXIMUM) do |points|
               %i.small.glyphicon{class: 'star', data: {points:points}}
-          - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |points|
-            %i.small.glyphicon{class: 'dislikes', data: {points:points}}
+          - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
+            %span.small.glyphicon{data: {points:points}}
+              %i.small.glyphicon{class: 'dislikes'}
         / .task-rank= task.rank
         .printed-points<
-          - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
+          - (Task::POINTS_MINIMUM+1).upto(Task::POINTS_MAXIMUM) do |point|
             %span<
               %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
       .three.columns.release-date
