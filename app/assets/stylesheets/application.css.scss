@@ -8,10 +8,10 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require foundation_base
- *= require glyphicons
- *= require_self
  */
+
+@import 'foundation_base';
+@import 'glyphicons';
 
 $red:#c00;
 $cyan:#4183c4;
