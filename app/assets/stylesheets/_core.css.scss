@@ -257,7 +257,7 @@
 }
 
 ol.task_list {
-  border:1px solid #ccc;
+  border:1px solid $gray;
   border-top:none;
   line-height:1em;
   margin-left:0;
@@ -279,7 +279,7 @@ ol.task_list {
     margin:0;
     padding:6px 8px;
     &:hover {
-      outline:1px solid #999;
+      outline:1pt solid $darkGray;
     }
     &.hidden {
       display:none;
@@ -294,7 +294,7 @@ ol.task_list {
       }
     }
     &.task_inline:hover {
-      background-color:#ffc;
+      background-color:$highlight;
     }
     &.iteration_marker {
       background-color:$dark;
@@ -302,6 +302,10 @@ ol.task_list {
       color:$white;
       padding:4px 8px;
       position:relative;
+      div {
+        font-size:$small;
+        font-weight:$thickest;
+      }
       &:hover {
         outline:none;
       }
@@ -310,11 +314,12 @@ ol.task_list {
         top:0;
         right:0;
         height:100%;
-        padding:3px $glyphWidth/2 0;
+        padding:4px $glyphWidth/2 0;
         width:2*$glyphWidth;
         z-index:1;
         div {
-          font-size:120%;
+          font-size:175%;
+          font-weight:$thin;
         }
       }
     }

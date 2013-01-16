@@ -12,9 +12,8 @@
     .two.end.columns= task.story.service.abbreviation
   .three.columns.end
     .points<
-      - ((Task::POINTS_MINIMUM+1)..Task::POINTS_MAXIMUM).each do |point|
-        %span<
-          %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
+      - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |point|
+        %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
 .row<
   .four.columns.offset-by-eight.text-right.actions
     = link_to 'Edit', edit_task_path(task)
