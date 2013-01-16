@@ -47,7 +47,7 @@ class Task < ActiveRecord::Base
 
   # default_scope includes(:project, :service)
 
-  scope :for_iteration, lambda{|iteration_start_date| includes(:project, :service).in_rank_order.completed_on_or_after(iteration_start_date).uniq }
+  scope :for_iteration, lambda{|iteration_start_date| includes(:project, :service).completed_on_or_after(iteration_start_date).in_status_order.in_completed_order.in_started_order.in_rank_order.uniq }
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
@@ -65,9 +65,11 @@ class Task < ActiveRecord::Base
   scope :pick_rank, select(:rank)
 
   scope :in_abbreviation_order, lambda{|dir = 'ASC'| order("services.abbreviation #{dir}")}
+  scope :in_completed_order, lambda{|dir = 'ASC'| order("completed_date #{dir}")}
   scope :in_point_order, lambda{|dir = 'ASC'| order("points #{dir}")}
   scope :in_project_order, lambda{|dir = 'ASC'| order("projects.name #{dir}")}
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
+  scope :in_started_order, lambda{|dir = 'ASC'| order("start_date #{dir}")}
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("tasks.title #{dir}")}
@@ -150,34 +152,18 @@ class Task < ActiveRecord::Base
   end
 
   def ensure_rank
-    after = nil
-    before = nil
+    return unless self.rank.blank?
 
     query = Task
     query = query.where("tasks.id <> ?", self.id) unless self.new_record?
 
-    if self.completed?
-      before = query.in_rank_order.incomplete.pick_rank.limit(1).first
-      before = nil if before.present? && self.rank.present? && self.rank < before.rank
-    elsif self.in_progress?
-      before = query.in_rank_order.pending.pick_rank.limit(1).first
-      before = nil if before.present? && self.rank.present? && self.rank < before.rank
-    elsif self.pending?
-      after = query.in_rank_order('DESC').started.pick_rank.limit(1).first
-      after = nil if after.present? && self.rank.present? && self.rank > after.rank
-    end
-
-    if after.present? || before.present?
-      self.rank_between(after, before)
-    elsif self.rank.blank?
-      if Task.count <= 0
-        self.rank = 1
-      else
-        after = query.started.in_rank_order('DESC').pick_rank.limit(1).first if self.started?
-        before = query.pending.in_rank_order.pick_rank.limit(1).first if after.blank?
-        rank_between(after, before)
-      end
-    end
+    self.rank = if self.completed? || self.in_progress?
+                  sibling = query.in_rank_order.in_state(self.status).pick_rank.limit(1).first
+                  sibling.present? ? [sibling.rank, RANK_MAXIMUM-1].min + 1 : 1
+                else
+                  sibling = query.in_rank_order.pending.pick_rank.limit(1).first
+                  sibling.present? ? [RANK_MINIMUM+1, sibling.rank].max - 1 : 1
+                end
   end
 
   def rank_between(after, before)
@@ -190,13 +176,13 @@ class Task < ActiveRecord::Base
     return false if after.blank? && before.blank?
 
     if after.blank?
-      after = query.in_rank_order('DESC').before_rank(before.rank).pick_rank.limit(1).first
+      after = query.in_state(self.status).in_rank_order('DESC').before_rank(before.rank).pick_rank.limit(1).first
     elsif before.blank?
-      before = query.in_rank_order.after_rank(after.rank).pick_rank.limit(1).first
+      before = query.in_state(self.status).in_rank_order.after_rank(after.rank).pick_rank.limit(1).first
     end
 
-    after_rank = after.present? ? after.rank : (before.rank > RANK_MINIMUM+1 ? before.rank - 1 : RANK_MINIMUM)
-    before_rank = before.present? ? before.rank : (after.rank < RANK_MAXIMUM-1 ? after.rank + 1 : RANK_MAXIMUM)
+    after_rank = after.present? ? after.rank : [RANK_MINIMUM+1, before.rank].max - 1
+    before_rank = before.present? ? before.rank : [RANK_MAXIMUM-1, after.rank].min + 1
 
     self.rank = after_rank + ((before_rank - after_rank) / 2.0)
     true
