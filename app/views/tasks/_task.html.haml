@@ -1,5 +1,5 @@
 - in_edit_mode ||= []
-- iteration = nil unless defined?(iteration)
+- iteration = 0 unless defined?(iteration)
 - classes = cycle('odd', 'even')
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?

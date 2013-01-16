@@ -33,7 +33,8 @@
               = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'three'}
       .twelve
         %ol.task_list#TaskList<
-          = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode}
+          / Use Iteration 0 to enable printing - for now
+          = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode, iteration: 0}
     - else
       %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
   = render template: 'shared/bind_list'
