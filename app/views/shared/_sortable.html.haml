@@ -4,7 +4,7 @@
 - descending_field = "-#{field}"
 - sorted_descending = sort.include?(descending_field)
 - sorted = sorted_descending || sort.include?(field)
-- sort_field = sorted_descending ? field : descending_field
+- sort_field = !sorted || sorted_descending ? field : descending_field
 - classes ||= ''
 - classes << ' sorted'
 
