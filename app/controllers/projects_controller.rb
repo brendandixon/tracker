@@ -44,7 +44,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
-    @project = Project.includes(:services, :stories, :tasks).find(params[:id])
+    @project = Project.includes(:features, :stories, :tasks).find(params[:id])
     @in_edit_mode << @project.id
 
     respond_to do |format|
@@ -57,7 +57,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    params[:project][:services] = Service.find_all_by_id(params[:project][:services]) if params[:project][:services].present?
+    params[:project][:features] = Feature.find_all_by_id(params[:project][:features]) if params[:project][:features].present?
     @project = Project.new(params[:project])
 
     respond_to do |format|
@@ -79,7 +79,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    params[:project][:services] = Service.find_all_by_id(params[:project][:services]) if params[:project][:services].present?
+    params[:project][:features] = Feature.find_all_by_id(params[:project][:features]) if params[:project][:features].present?
     @project = Project.find(params[:id])
 
     respond_to do |format|
@@ -124,9 +124,9 @@ class ProjectsController < ApplicationController
   def build_index_query
     query = Project
 
-    services = @filter.content[:services] || []
+    features = @filter.content[:features] || []
 
-    query = query.for_services(*services) if services.present?
+    query = query.for_features(*features) if features.present?
 
     @sort.each do |sort|
       case sort
@@ -135,7 +135,7 @@ class ProjectsController < ApplicationController
       end
     end
 
-    @projects = query.includes(:services, :stories, :tasks)
+    @projects = query.includes(:features, :stories, :tasks)
   end
 
   def ensure_initial_state

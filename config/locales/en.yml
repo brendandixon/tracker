@@ -23,10 +23,10 @@ en:
       none_html: 'No projects were found.'
       new_html: 'Add Project&#8230;'
       edit_html: 'Edit Project&#8230;'
-    services:
-      name_html: 'Services'
-      none_html: 'No services were found.'
-      new_html: 'Add Service&#8230;'
+    features:
+      name_html: 'Features'
+      none_html: 'No features were found.'
+      new_html: 'Add Feature&#8230;'
     stories:
       name_html: 'Stories'
       none_html: 'No stories were found.'
@@ -47,7 +47,7 @@ en:
         contact_us_number: 'Contact Us'
         create_tasks: 'Ensure Tasks'
         release_date: 'Release Date'
-        service_id: 'Service'
+        feature_id: 'Feature'
         title: 'Title'
       task:
         description: 'Details'

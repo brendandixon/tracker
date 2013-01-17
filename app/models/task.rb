@@ -29,7 +29,7 @@ class Task < ActiveRecord::Base
   attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
   belongs_to :story
-  has_one :service, through: :story
+  has_one :feature, through: :story
   belongs_to :project
   has_many :teams, through: :project
   
@@ -45,10 +45,10 @@ class Task < ActiveRecord::Base
   validates_presence_of :project
   validates_inclusion_of :status, in: ALL_STATES
 
-  scope :for_iteration, lambda{|iteration_start_date = (DateTime.now - 5.years)| includes(:project, :service).completed_on_or_after(iteration_start_date).in_iteration_order('ASC').uniq }
+  scope :for_iteration, lambda{|iteration_start_date = (DateTime.now - 5.years)| includes(:project, :feature).completed_on_or_after(iteration_start_date).in_iteration_order('ASC').uniq }
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
-  scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
+  scope :for_features, lambda{|features| joins(:story).where(stories: {feature_id: features})}
   scope :for_stories, lambda {|stories| where(story_id: stories)}
   scope :for_teams, lambda{|teams| joins(:teams).where(teams: {id: teams})}
 
@@ -62,8 +62,8 @@ class Task < ActiveRecord::Base
   
   scope :pick_rank, select(:rank)
 
-  scope :in_abbreviation_order, lambda{|dir = 'ASC'| order("services.abbreviation #{dir}")}
   scope :in_completed_order, lambda{|dir = 'ASC'| order("completed_date #{dir}")}
+  scope :in_feature_order, lambda{|dir = 'ASC'| order("features.name #{dir}")}
   scope :in_point_order, lambda{|dir = 'ASC'| order("points #{dir}")}
   scope :in_project_order, lambda{|dir = 'ASC'| order("projects.name #{dir}")}
   scope :in_rank_order, lambda{|dir = 'ASC'| order("rank #{dir}")}
@@ -93,7 +93,7 @@ class Task < ActiveRecord::Base
     end
     
     def ensure_story_tasks(story)
-      story.service.projects.each do |project|
+      story.feature.projects.each do |project|
         next if Task.for_stories(story).for_projects(project).exists?
         Task.create(story_id:story.id, project_id:project.id, status: :pending)
       end
@@ -181,8 +181,8 @@ class Task < ActiveRecord::Base
       before = query.in_state(self.status).in_rank_order.after_rank(after.rank).pick_rank.limit(1).first
     end
 
-    after_rank = after.present? ? after.rank : [RANK_MINIMUM+1, before.rank].max - 1
-    before_rank = before.present? ? before.rank : [RANK_MAXIMUM-1, after.rank].min + 1
+    after_rank = after.present? ? after.rank : [RANK_MINIMUM+2, before.rank].max - 2
+    before_rank = before.present? ? before.rank : [RANK_MAXIMUM-2, after.rank].min + 2
 
     self.rank = after_rank + ((before_rank - after_rank) / 2.0)
     true

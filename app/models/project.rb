@@ -14,12 +14,12 @@
 class Project < ActiveRecord::Base
   include CacheCleanser
   
-  attr_accessible :end_date, :name, :services, :start_date
+  attr_accessible :end_date, :name, :features, :start_date
 
   belongs_to :team
 
-  has_many :supported_services, dependent: :destroy
-  has_many :services, through: :supported_services
+  has_many :supported_features, dependent: :destroy
+  has_many :features, through: :supported_features
 
   has_many :tasks, dependent: :destroy
   has_many :stories, through: :tasks
@@ -33,7 +33,7 @@ class Project < ActiveRecord::Base
 
   scope :started_on_or_before, lambda{|date| where("projects.start_date <= ?", date)}
 
-  scope :for_services, lambda{|*services| joins(:supported_services).where("? = (select count(*) from supported_services as ss where ss.service_id in (?) and ss.project_id = projects.id)", services.length, services).uniq }
+  scope :for_features, lambda{|*features| joins(:supported_features).where("? = (select count(*) from supported_features as sf where sf.feature_id in (?) and sf.project_id = projects.id)", features.length, features).uniq }
   scope :for_team, lambda{|team| where(team_id: (team.is_a?(Team) ? team.id : team))}
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}

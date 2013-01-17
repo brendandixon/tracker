@@ -20,8 +20,8 @@
           .four.columns.text-right{style:'padding-left:50px'}= story_project_labels(story)
         .row
           .two.columns
-            = f.label :service_id
-            = f.select :service_id, Service.active.map{|s| [ s.abbreviation, s.id ] }
+            = f.label :feature_id
+            = f.select :feature_id, Feature.active.map{|f| [ f.name, f.id ] }
           .two.column
             = f.label :contact_us_number
             = f.text_field :contact_us_number, size: 5

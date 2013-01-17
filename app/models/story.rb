@@ -5,7 +5,7 @@
 #  id                :integer          not null, primary key
 #  release_date      :datetime
 #  title             :string(255)
-#  service_id        :integer
+#  feature_id        :integer
 #  contact_us_number :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -16,21 +16,21 @@ class Story < ActiveRecord::Base
   include StatusScopes
 
   attr_accessor :create_tasks
-  attr_accessible :contact_us_number, :create_tasks, :release_date, :service_id, :title
+  attr_accessible :contact_us_number, :create_tasks, :release_date, :feature_id, :title
 
   after_initialize :initialize_create_tasks
   after_save :ensure_tasks
   
-  belongs_to :service
+  belongs_to :feature
   has_many :tasks, dependent: :destroy
   has_many :projects, through: :tasks
   
-  validates_presence_of :service, :title
+  validates_presence_of :feature, :title
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
 
-  scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
-  scope :for_services, lambda{|services| where(service_id: services)}
   scope :for_contact_us, lambda{|cu| where(contact_us_number: cu)}
+  scope :for_features, lambda{|features| where(feature_id: features)}
+  scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
   
   scope :on_or_after_date, lambda{|date| where('release_date >= ?', date)}
   scope :on_or_before_date, lambda{|date| where('release_date <= ?', date)}
@@ -38,12 +38,12 @@ class Story < ActiveRecord::Base
   
   scope :in_contact_us_order, lambda{|dir = 'ASC'| order("contact_us_number #{dir}")}
   scope :in_date_order, lambda{|dir = 'ASC'| order("release_date #{dir}")}
-  scope :in_abbreviation_order, lambda{|dir = 'ASC'| joins(:service).order("services.abbreviation #{dir}")}
+  scope :in_feature_order, lambda{|dir = 'ASC'| joins(:feature).order("features.name #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("title #{dir}")}
   
   class<<self
     def all_stories
-      @all_stories ||= [['-', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.service.abbreviation})", s.id ] }
+      @all_stories ||= [['-', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.feature.name})", s.id ] }
     end
     
     def refresh_cache

@@ -69,19 +69,19 @@ module FilterHandler
       end
     end.flatten.compact
 
-    content[:services] = params[:services] || content[:services] || []
-    content[:services] = content[:services].split(',') if content[:services].is_a?(String)
-    content[:services] = Array(content[:services]) unless content[:services].is_a?(Array)
-    content[:services] = content[:services].map{|s| s.present? ? s : nil}.compact
-    content[:services] = [] if content[:services].any?{|s| s =~ /all/i}
-    content[:services] = content[:services].map do |service|
-      if service.is_a?(Integer)
-        service
-      elsif service =~ /^\d+$/
-        service.to_i
+    content[:features] = params[:features] || content[:features] || []
+    content[:features] = content[:features].split(',') if content[:features].is_a?(String)
+    content[:features] = Array(content[:features]) unless content[:features].is_a?(Array)
+    content[:features] = content[:features].map{|s| s.present? ? s : nil}.compact
+    content[:features] = [] if content[:features].any?{|s| s =~ /all/i}
+    content[:features] = content[:features].map do |feature|
+      if feature.is_a?(Integer)
+        feature
+      elsif feature =~ /^\d+$/
+        feature.to_i
       else
-        service = Service.with_abbreviation(service).first
-        service.present? ? service.id : nil
+        feature = Feature.with_name(feature).first
+        feature.present? ? feature.id : nil
       end
     end.compact
 

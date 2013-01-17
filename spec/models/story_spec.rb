@@ -5,7 +5,7 @@
 #  id                :integer          not null, primary key
 #  release_date      :datetime
 #  title             :string(255)
-#  service_id        :integer
+#  feature_id        :integer
 #  contact_us_number :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null

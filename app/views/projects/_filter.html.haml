@@ -1,8 +1,8 @@
 - classes = []
 - classes << 'visible' if !@filter.errors.empty? || params[:show]
 - content = @filter.content || {}
-- content[:services] ||= []
-- content[:services] = content[:services].map{|service| service =~ /^\d+$/ ? service.to_i : nil}.compact
+- content[:features] ||= []
+- content[:features] = content[:features].map{|feature| feature =~ /^\d+$/ ? feature.to_i : nil}.compact
 - slice_size = 4
 
 .filter_container.twelve.columns.centered#Filter{data: {filter: 'data-filter'}, class: classes}
@@ -23,13 +23,13 @@
         = f.text_field :name
     
     .row.section
-      - Service.active.each_slice(slice_size) do |services|
-        .row.services
-          - services.each_with_index do |service, i|
-            - classes = 'end' if services.length < slice_size && i == services.length-1
-            .three.columns.services{class: classes}<
-              = check_box_tag 'filter[content][services][]', service.id, content[:services].include?(service.id), id: "filter_content_services_#{service.id}"
-              = label_tag "filter_content_services_#{service.id}", service.abbreviation, class: 'inline_label'
+      - Feature.active.each_slice(slice_size) do |features|
+        .row.features
+          - features.each_with_index do |feature, i|
+            - classes = 'end' if features.length < slice_size && i == features.length-1
+            .three.columns.features{class: classes}<
+              = check_box_tag 'filter[content][features][]', feature.id, content[:features].include?(feature.id), id: "filter_content_features_#{feature.id}"
+              = label_tag "filter_content_features_#{feature.id}", feature.name, class: 'inline_label'
 
     .row
       .four.columns.offset-by-eight.text-right.actions

@@ -7,7 +7,7 @@
     .seven.columns= project.name
   .row
     .twelve.columns
-      .services= service_labels(project.services)
+      .features= feature_labels(project.features)
   .row<
     .four.columns.offset-by-eight.text-right.actions
       = link_to 'Edit', edit_project_path(project), remote:remote
@@ -21,6 +21,6 @@
   %td= project.start_date.to_formatted_s(:medium) if project.start_date.present?
   %td= project.end_date.to_formatted_s(:medium) if project.end_date.present?
   %td
-    .services= service_labels(project.services)
+    .features= feature_labels(project.features)
     .command_block.on_hover<
       = glyph_link_to edit_project_path(project), glyph: 'edit', remote:remote

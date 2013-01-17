@@ -9,7 +9,7 @@
 .row<
   .two.columns= task.project.name
   - if task.story.present?
-    .two.end.columns= task.story.service.abbreviation
+    .two.end.columns= task.story.feature.name
   .three.columns.end
     .points<
       - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |point|

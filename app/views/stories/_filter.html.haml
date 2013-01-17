@@ -26,8 +26,8 @@
         = label_tag 'projects', 'Projects'
         = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects]), multiple: true
       .two.columns.multi-select
-        = label_tag 'services', 'Services'
-        = select_tag 'filter[content][services]', options_for_select(Service.all_services, content[:services]), multiple: true
+        = label_tag 'features', 'Features'
+        = select_tag 'filter[content][features]', options_for_select(Feature.all_features, content[:features]), multiple: true
       .four.columns.end
         .row
           .five.columns.end

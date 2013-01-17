@@ -1,0 +1,21 @@
+<%
+content = escape_javascript(render(partial: @feature, locals: {in_edit_mode: @in_edit_mode}))
+id = @feature.new_record? ? 'new' : @feature.id
+%>
+<%= render template: 'shared/reset_transients' %>
+$('#Feature_new').remove();
+if ($('#Feature_<%= id %>').length <= 0) {
+  if ($('#FeatureList > tbody > tr').length <= 0) {
+    $('#FeatureList > tbody').html('<%= content %>');
+  } else {
+    $('#FeatureList > tbody > tr').first().before('<%= content %>');
+  }
+} else {
+  $('#Feature_<%= id%>').replaceWith('<%= content %>');
+}
+$('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
+$('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
+<% if @was_changed.include?(id) %>
+$('#Feature_<%= id%>').effect('highlight',{duration: 750});
+<% end %>
+<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>

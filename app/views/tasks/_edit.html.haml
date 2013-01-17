@@ -34,8 +34,8 @@
           = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }
         .three.columns{style: 'line-height:16px'}<
           - if task.story.present? && !task.new_record?
-            = f.label :story_id, t(:service, scope: [:activerecord, :attributes, :task])
-            = task.story.service.abbreviation
+            = f.label :story_id, t(:feature, scope: [:activerecord, :attributes, :task])
+            = task.story.feature.name
         .three.columns
           = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
           %span.points<

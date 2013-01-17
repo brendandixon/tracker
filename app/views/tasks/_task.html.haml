@@ -28,7 +28,7 @@
         = task.project.name
       .three.columns<
         - if task.story.present?
-          = task.story.service.abbreviation
+          = task.story.feature.name
           - if task.story.contact_us_number.present?
             %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
       .three.columns

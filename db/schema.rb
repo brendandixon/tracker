@@ -11,7 +11,38 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130109054622) do
+ActiveRecord::Schema.define(:version => 20130117044201) do
+
+  create_table "categories", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "categories", ["name"], :name => "index_categories_on_name", :unique => true
+
+  create_table "features", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "category_id"
+  end
+
+  add_index "features", ["category_id"], :name => "index_features_on_category_id"
+  add_index "features", ["name"], :name => "index_features_on_name", :unique => true
+
+  create_table "features_supported", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "feature_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "status"
+  end
+
+  add_index "features_supported", ["feature_id", "project_id"], :name => "index_features_supported_on_feature_id_and_project_id", :unique => true
+  add_index "features_supported", ["feature_id"], :name => "index_features_supported_on_feature_id"
+  add_index "features_supported", ["project_id"], :name => "index_supported_services_on_project_id"
+  add_index "features_supported", ["status"], :name => "index_features_supported_on_status"
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -35,40 +66,18 @@ ActiveRecord::Schema.define(:version => 20130109054622) do
 
   add_index "projects", ["name"], :name => "index_projects_on_name"
 
-  create_table "services", :force => true do |t|
-    t.string   "name"
-    t.string   "abbreviation"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "services", ["abbreviation"], :name => "index_services_on_abbreviation", :unique => true
-  add_index "services", ["name", "abbreviation"], :name => "index_services_on_name_and_abbreviation", :unique => true
-  add_index "services", ["name"], :name => "index_services_on_name", :unique => true
-
   create_table "stories", :force => true do |t|
     t.datetime "release_date"
     t.string   "title"
-    t.integer  "service_id"
+    t.integer  "feature_id"
     t.integer  "contact_us_number"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
 
   add_index "stories", ["contact_us_number"], :name => "index_features_on_contact_us_number", :unique => true
+  add_index "stories", ["feature_id"], :name => "index_features_on_service_id"
   add_index "stories", ["release_date"], :name => "index_features_on_release_date"
-  add_index "stories", ["service_id"], :name => "index_features_on_service_id"
-
-  create_table "supported_services", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "service_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "supported_services", ["project_id", "service_id"], :name => "index_supported_services_on_project_id_and_service_id", :unique => true
-  add_index "supported_services", ["project_id"], :name => "index_supported_services_on_project_id"
-  add_index "supported_services", ["service_id"], :name => "index_supported_services_on_service_id"
 
   create_table "tasks", :force => true do |t|
     t.integer  "story_id"

@@ -203,15 +203,15 @@ class TasksController < ApplicationController
       query = Task
 
       projects = @filter.content[:projects]
-      services = @filter.content[:services]
+      features = @filter.content[:features]
       status = @filter.content[:status]
       stories = @filter.content[:stories]
       teams = @filter.content[:teams]
 
       query = query.in_state(status) if status.present?
 
+      query = query.for_features(features) if features.present?
       query = query.for_projects(projects) if projects.present?
-      query = query.for_services(services) if services.present?
       query = query.for_stories(stories) if stories.present?
 
       query = query.for_teams(teams) if teams.present?
@@ -230,7 +230,7 @@ class TasksController < ApplicationController
         end
       end
 
-      query = query.includes(:project, :service).uniq
+      query = query.includes(:feature, :project).uniq
     end
     
     @tasks = query

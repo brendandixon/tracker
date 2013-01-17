@@ -64,7 +64,7 @@
     top:4px;
     right:8px;
   }
-  tr.service_inline & {
+  tr.feature_inline & {
     top:10px;
     right:8px;
   }
@@ -228,7 +228,7 @@
   margin-bottom:8px;
 }
 
-.services {
+.features {
   padding-left:6px;
   span {
     margin:2px 2px;
@@ -242,12 +242,12 @@
   }
 }
 
-.service, .status {
+.feature, .status {
   display:inline-block;
   font-size:$small;
   padding:2px;
 }
-.service {
+.feature {
   width:122px;
 }
 .status {

@@ -1,0 +1,12 @@
+- classes = cycle('odd', 'even')
+- in_edit_mode ||= []
+- feature ||= @feature
+- id = feature.new_record? ? 'new' : feature.id
+
+- if in_edit_mode.include?(id) || feature.new_record?
+  %tr.feature_edit#Feature{id: id, class: classes}
+    = render partial: 'edit', locals:{feature:feature, remote:true, stand_alone:false}
+
+- else
+  %tr.feature_inline#Feature{id: id, class: classes}
+    = render partial: 'show', locals:{feature:feature, remote:true, stand_alone:false}

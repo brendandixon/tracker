@@ -122,14 +122,14 @@ class StoriesController < ApplicationController
 
     contact_us = @filter.content[:contact_us]
     projects = @filter.content[:projects]
-    services = @filter.content[:services]
+    features = @filter.content[:features]
     status = @filter.content[:status]
 
     query = query.joins(:tasks).in_state(status) if status.present?
 
-    query = query.for_projects(projects) if projects.present?
-    query = query.for_services(services) if services.present?
     query = query.for_contact_us(contact_us) if contact_us.present?
+    query = query.for_features(features) if features.present?
+    query = query.for_projects(projects) if projects.present?
 
     query = query.on_or_after_date(@filter.content[:after]) if @filter.content[:after].present?
     query = query.on_or_before_date(@filter.content[:before]) if @filter.content[:before].present?
@@ -142,12 +142,12 @@ class StoriesController < ApplicationController
       when 'date' then query = query.in_date_order('DESC')
       when '-story' then query = query.in_title_order('ASC')
       when 'story' then query = query.in_title_order('DESC')
-      when '-service' then query = query.in_abbreviation_order('ASC')
-      when 'service' then query = query.in_abbreviation_order('DESC')
+      when '-feature' then query = query.in_name_order('ASC')
+      when 'feature' then query = query.in_name_order('DESC')
       end
     end
 
-    @stories = query.includes(:service, :tasks).uniq
+    @stories = query.includes(:feature, :tasks).uniq
   end
 
   def ensure_initial_state

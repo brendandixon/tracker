@@ -1,0 +1,13 @@
+.eight.columns.centered#Main
+  %table.twelve#FeatureList
+    %thead
+      %tr
+        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'seven'}
+
+    %tbody
+      - if @features.empty?
+        %tr.feature_inline#Feature_new
+          %td{colspan: 2}
+            %h3.subheader= t(:none_html, scope: [:controllers, :features])
+      - else
+        = render @features

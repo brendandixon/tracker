@@ -24,9 +24,9 @@
             = f.label :end_date
             = f.text_field :end_date, data: {datefield: true}
         .row
-          - Service.active.each_slice(4) do |services|
+          - Feature.active.each_slice(4) do |features|
             .row
-              = render partial: 'service', collection: services, locals: {last: services.length, length: 4, edit: true}
+              = render partial: 'feature', collection: features, locals: {last: features.length, length: 4, edit: true}
         .row
           .four.columns.offset-by-eight.text-right.actions
             = f.submit 'Save'
