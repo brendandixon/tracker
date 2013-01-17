@@ -1,3 +1,4 @@
+- ranked = params.has_key?('ranked')
 .nine.columns.centered#Main
   - if @tasks.is_a?(IterationEnumerator)
     .twelve
@@ -14,7 +15,7 @@
                 .glyphicon.collapse_top
           - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
           - if tasks.count > 0
-            = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number}
+            = render partial: 'task', collection: tasks, locals: {in_edit_mode: @in_edit_mode, iteration: iteration.number, ranked: ranked}
           - else
             %li{data: {iteration: iteration.number, collapsed: 0}}
               %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
@@ -27,14 +28,13 @@
         %table.twelve
           %thead
             %tr
-              = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'three'}
-              = render partial: 'shared/sortable', locals: {name: 'Rank', field: 'rank', classes: 'three'}
-              = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'three'}
-              = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'three'}
+              = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'four'}
+              = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'four'}
+              = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'four'}
       .twelve
         %ol.task_list#TaskList<
           / Use Iteration 0 to enable printing - for now
-          = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode, iteration: 0}
+          = render partial: 'task', collection: @tasks, locals: {in_edit_mode: @in_edit_mode, iteration: 0, ranked: ranked}
     - else
       %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
   = render template: 'shared/bind_list'

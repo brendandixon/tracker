@@ -12,4 +12,4 @@
   .sortable
     = link_to url_for(controller: controller.controller_name, action: :index, sort: sort_field), remote: true do
       = name
-      = content_tag('span', sorted_descending ? '▼' : '▲') if sorted
+      = content_tag('span', sorted_descending ? '▲' : '▼') if sorted

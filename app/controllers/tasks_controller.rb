@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   include FilterHandler
   include SortHandler
 
-  DEFAULT_SORT = ['rank']
+  DEFAULT_SORT = ['status']
 
   INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :rank, :update]
 
@@ -223,10 +223,8 @@ class TasksController < ApplicationController
         case sort
         when 'point' then query = query.in_point_order('ASC')
         when '-point' then query = query.in_point_order('DESC')
-        when '-rank' then query = query.in_rank_order('ASC')
-        when 'rank' then query = query.in_rank_order('DESC')
-        when '-status' then query = query.in_status_order('ASC')
-        when 'status' then query = query.in_status_order('DESC')
+        when 'status' then query = query.in_iteration_order('ASC')
+        when '-status' then query = query.in_iteration_order('DESC')
         when 'title' then query = query.in_title_order('ASC')
         when '-title' then query = query.in_title_order('DESC')
         end

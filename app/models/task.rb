@@ -45,9 +45,7 @@ class Task < ActiveRecord::Base
   validates_presence_of :project
   validates_inclusion_of :status, in: ALL_STATES
 
-  # default_scope includes(:project, :service)
-
-  scope :for_iteration, lambda{|iteration_start_date| includes(:project, :service).completed_on_or_after(iteration_start_date).in_status_order.in_completed_order.in_started_order.in_rank_order.uniq }
+  scope :for_iteration, lambda{|iteration_start_date = (DateTime.now - 5.years)| includes(:project, :service).completed_on_or_after(iteration_start_date).in_iteration_order('ASC').uniq }
   
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_services, lambda{|services| joins(:story).where(stories: {service_id: services})}
@@ -73,6 +71,8 @@ class Task < ActiveRecord::Base
   scope :in_status_order, lambda{|dir = 'ASC'| order("status #{dir}")}
   scope :in_story_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("tasks.title #{dir}")}
+
+  scope :in_iteration_order, lambda{|dir = 'ASC'| in_status_order(dir).in_completed_order(dir).in_started_order(dir).in_rank_order(dir) }
   
   StatusScopes::ALL_STATES.each do |s|
     class_eval <<-EOM

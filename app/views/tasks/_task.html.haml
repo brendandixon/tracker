@@ -3,6 +3,7 @@
 - classes = cycle('odd', 'even')
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
+- ranked = false unless defined?(ranked)
 - task ||= @task
 
 - if in_edit_mode.include?(task.id) || task.new_record?
@@ -38,7 +39,8 @@
           - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
             %span.small.glyphicon{data: {points:points}}
               %i.small.glyphicon{class: 'dislikes'}
-        .task-rank= task.rank
+        - if ranked
+          .task-rank= task.rank
         .printed-points<
           - (Task::POINTS_MINIMUM+1).upto(Task::POINTS_MAXIMUM) do |point|
             %span<
