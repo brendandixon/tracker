@@ -17,11 +17,15 @@ class Feature < ActiveRecord::Base
   has_many :stories, dependent: :destroy
   has_many :supported_features, dependent: :destroy
   has_many :projects, through: :supported_features
+
+  belongs_to :category
   
   validates_presence_of :name
   validates_uniqueness_of :name
+
+  scope :for_category, lambda{|category_id| where(category_id: category_id)}
   
-  scope :with_name, lambda {|name| where(name: name)}
+  scope :with_name, lambda{|name| where(name: name)}
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
   

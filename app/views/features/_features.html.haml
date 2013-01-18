@@ -1,8 +1,9 @@
-.eight.columns.centered#Main
+.nine.columns.centered#Main
   %table.twelve#FeatureList
     %thead
       %tr
-        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'seven'}
+        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'five'}
+        =render partial: 'shared/sortable', locals: {name: 'Category', field: 'category', classes: 'five'}
 
     %tbody
       - if @features.empty?

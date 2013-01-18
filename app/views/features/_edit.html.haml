@@ -14,9 +14,12 @@
                 - feature.errors.full_messages.each do |msg|
                   %li= msg
         .row
-          .seven.columns
+          .five.columns
             = f.label :name
             = f.text_field :name
+          .five.columns.end
+            = f.label :category_id
+            = f.select :category_id, Category.all_categories
         .row
           .four.columns.offset-by-eight.text-right.actions
             = f.submit 'Save'

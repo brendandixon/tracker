@@ -4,8 +4,8 @@
 
 - if stand_alone
   .row
-    .seven.columns= feature.name
-    .five.columns.end= feature.name
+    .five.columns= feature.name
+    .five.columns.end= feature.category.name
   .row<
     .four.columns.offset-by-eight.text-right.actions
       = link_to 'Edit', edit_feature_path(feature), remote:remote
@@ -17,6 +17,6 @@
 - else
   %td= feature.name
   %td
-    = feature.name
+    = feature.category.name if feature.category.present?
     .command_block.on_hover<
       = glyph_link_to edit_feature_path(feature), glyph: 'edit', remote:remote
