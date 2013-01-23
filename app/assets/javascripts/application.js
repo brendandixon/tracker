@@ -10,10 +10,10 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require foundation
 //= require jquery_ujs
 //= require jquery-tooltip/jquery.tooltip
 //= require jquery.cookie
+//= require bootstrap
 //= require underscore-min
 //= require dates
 //= require filter

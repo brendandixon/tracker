@@ -1,6 +1,66 @@
 module ApplicationHelper
 
-  def glyph_button_to(name, options = {}, html_options = {})
+  def awesome_button_to(*args, &block)
+    if block_given?
+      options      = args.first || {}
+      html_options = args.second
+      glyph_button_to(capture(&block), options, html_options)
+    else
+      name         = args[0]
+      options      = args[1] || {}
+      html_options = args[2] || {}
+
+      font_button_to(:awesome, name, options, html_options)
+    end
+  end
+
+  def awesome_link_to(*args, &block)
+    if block_given?
+      options      = args.first || {}
+      html_options = args.second
+      glyph_link_to(capture(&block), options, html_options)
+    else
+      name         = args[0]
+      options      = args[1] || {}
+      html_options = args[2] || {}
+
+      font_link_to(:awesome, name, options, html_options)
+    end
+  end
+
+  def glyph_button_to(*args, &block)
+    if block_given?
+      options      = args.first || {}
+      html_options = args.second
+      glyph_button_to(capture(&block), options, html_options)
+    else
+      name         = args[0]
+      options      = args[1] || {}
+      html_options = args[2] || {}
+
+      font_button_to(:glyphicon, name, options, html_options)
+    end
+  end
+
+  def glyph_link_to(*args, &block)
+    if block_given?
+      options      = args.first || {}
+      html_options = args.second
+      glyph_link_to(capture(&block), options, html_options)
+    else
+      name         = args[0]
+      options      = args[1] || {}
+      html_options = args[2] || {}
+
+      font_link_to(:glyphicon, name, options, html_options)
+    end
+  end
+
+  private
+
+  def font_button_to(family, name, options, html_options)
+    html_options, options, name = options, name, nil if name.is_a?(Hash)
+
     html_options = html_options.stringify_keys
     convert_boolean_attributes!(html_options, %w( disabled ))
 
@@ -27,23 +87,25 @@ module ApplicationHelper
 
     html_options.merge!("type" => "submit", "value" => name)
     
-    glyph_classes = "glyphicon #{html_options.delete('glyph')}"
-    wrapper_classes = "glyphbutton #{'disabled' if html_options.has_key?('disabled')}"
+    glyph_classes = "#{family} #{html_options.delete('glyph')}"
+    wrapper_classes = "#{family} glyphbutton #{'disabled' if html_options.has_key?('disabled')}"
 
     form_options.merge!(method: form_method, action: url)
     form_options.merge!("data-remote" => "true") if remote
+
         
     "#{tag(:form, form_options, true)}<div class='#{wrapper_classes}'><i class='#{glyph_classes}'></i>#{method_tag}#{tag("input", html_options)}#{request_token_tag}</div></form>".html_safe
   end
 
-  def glyph_link_to(*args)
-    options      = args[0] || {}
-    html_options = args[1] || {}
+  def font_link_to(family, name, options, html_options)
+    html_options, options, name = options, name, nil if name.is_a?(Hash)
+
+    name = "<span>#{ERB::Util.html_escape(name)}</span>" if name.present?
     
     html_options = html_options.stringify_keys
     is_disabled = html_options.delete('disabled')
 
-    html_options = html_options.merge('class' => is_disabled ? 'disabled glyphlink' : 'glyphlink')
+    html_options = html_options.merge('class' => "#{family} glyphlink" << (is_disabled ? ' disabled' : ''))
     glyph = html_options.delete('glyph')
 
     html_options = convert_options_to_data_attributes(options, html_options)
@@ -53,10 +115,10 @@ module ApplicationHelper
     tag_options = tag_options(html_options)
 
     if is_disabled
-        "<span #{tag_options}><i class='glyphicon #{glyph}'></i></span>".html_safe
+      "<span #{tag_options}><i class='#{family} #{glyph}'></i></span>".html_safe
     else
-        href_attr = "href=\"#{ERB::Util.html_escape(url)}\"" unless href
-        "<a #{href_attr}#{tag_options}><i class='glyphicon #{glyph}'></i></a>".html_safe
+      href_attr = "href=\"#{ERB::Util.html_escape(url)}\"" unless href
+      "<a #{href_attr}#{tag_options}>#{name}<i class='#{family} #{glyph}'></i></a>".html_safe
     end
   end
 

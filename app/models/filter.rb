@@ -25,6 +25,10 @@ class Filter < ActiveRecord::Base
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
 
+  def empty?
+    self.content.empty?
+  end
+
   def to_hash(*args)
     args = args.map{|v| v.to_sym}
     self.attributes.reject{|k, v| (args.present? && !args.include?(k.to_sym)) || [:created_at, :updated_at].include?(k.to_sym) }

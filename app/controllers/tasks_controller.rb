@@ -198,7 +198,7 @@ class TasksController < ApplicationController
     end
 
     if query.blank?
-      @filter.content[:group_by] = nil
+      @filter.content[:group_by] = nil if @filter.content[:group_by].present?
       
       query = Task
 
@@ -232,7 +232,7 @@ class TasksController < ApplicationController
 
       query = query.includes(:feature, :project).uniq
     end
-    
+
     @tasks = query
   end
 

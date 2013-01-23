@@ -192,6 +192,10 @@ class Task < ActiveRecord::Base
     self.rank_between(after, before) && save
   end
 
+  def to_s
+    self.feature.present? ? "#{self.title} (#{self.feature.name})" : self.title
+  end
+
   private
 
   def ensure_dates

@@ -1,8 +1,8 @@
-<%= render template: 'shared/reset_transients' %>
-<%= render template: 'shared/menu' %>
-<%= render template: 'shared/filter' %>
+<%= render 'shared/reset_transients' %>
+<%= render 'shared/navigation' %>
+<%= render 'shared/filter' %>
 $('#Main').replaceWith('<%= escape_javascript(render(partial: "#{controller.controller_name}"))%>');
-<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/notice' if flash.present? && flash[:notice].present? %>
 <% (@was_changed || []).each do |id| %>
 $('#<%= controller.controller_name.to_s.singularize.titleize %>_<%= id%>').effect('highlight',{duration: 750});
 <% end %>

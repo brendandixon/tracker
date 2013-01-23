@@ -1,6 +1,6 @@
 - filters = (controller.respond_to?(:filters) && controller.filters) || []
 
-%ul.dropdown#FilterMenu
+%ul.dropdown-menu#FilterMenu
   - if filters.present?
     - filters.each do |filter|
       %li{class: @filter.id == filter.id ? 'active' : nil}

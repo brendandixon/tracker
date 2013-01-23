@@ -10,18 +10,12 @@
  *
  */
 
-@import 'foundation_base';
 @import 'glyphicons';
+@import 'font-awesome';
 
-$red:#c00;
-$cyan:#4183c4;
-$dark:#222;
-$gray:#d9d9d9;
-$darkGray:#9c9c9c;
-$lightGray:#f2f2f2;
-$white:#fff;
-$highlight:#ffffde;
-// Consider rgba(65,131,196,0.4)
+@import 'bootstrap_and_overrides';
+
+$highlightColor: rgba(255, 255, 222, 0.4);
 
 $errorColor:#b00;
 
@@ -36,13 +30,13 @@ $thick:700;
 $thickest:900;
 
 $glyphHeight:16px;
-$glyphWidth:16px;
+$glyphWidth:14px;
+$glyphPadding:4px;
 
 $taskPoints:5;
 
+@import 'debug';
 @import 'core';
-@import 'glyphicons_overrides';
-@import 'foundation_overrides';
 
 .button_to {
   display:inline-block;

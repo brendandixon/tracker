@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'bootstrap-sass', '~> 2.2.2.0'
 gem 'haml'
 gem 'mysql2'
 gem 'rails', '3.2.11'
@@ -24,20 +25,11 @@ group :production do
 end
 
 group :assets do
-  # Upgrade to 1.0.x when they fix error with SASS compilation
-  # https://github.com/scottkellum/modular-scale/issues/45
-  gem 'modular-scale', '1.0.4'
   gem 'sass', '3.2.5'
-  gem 'sassy-math', '1.5'
   gem 'sass-rails', '3.2.5'
   gem 'coffee-rails'
 
   gem 'sprockets', '2.2.2'
-
-  gem 'compass-rails'
-  # Locking to 3.2.2 - 3.2.3 breakings printing
-  # https://github.com/zurb/foundation/issues/1285
-  gem 'zurb-foundation', '3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -57,9 +49,6 @@ gem 'jquery-rails'
 
 # Use unicorn as the app server
 # gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'

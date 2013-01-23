@@ -1,52 +1,40 @@
 - in_edit_mode ||= []
 - iteration = 0 unless defined?(iteration)
-- classes = cycle('odd', 'even')
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
-- ranked = false unless defined?(ranked)
 - task ||= @task
 
 - if in_edit_mode.include?(task.id) || task.new_record?
-  %li#Task{id: task.new_record? ? 'new' : task.id, class: classes, data: {iteration: iteration}}
+  %li.task.edit-mode#Task{id: task.new_record? ? 'new' : task.id, class: classes, data: {iteration: iteration}}
     = render partial: 'edit', locals: {task:task, remote:true}
 
 - else
-  %li.task_inline#Task{id: task.id, class: classes, data: {iteration: iteration}}
-    .row
-      .seven.columns
-        .title{title_options(task)}= link_to task.title, task_path(task)
-        .printed-title= task.title
-      .three.columns.offset_by_two.last.text_right
-        = task_status_tag(task)
-        .command_block.on_hover<
-          = glyph_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'check')
-          = glyph_link_to edit_task_path(task), glyph: 'edit', remote:true
-    .row
-      - if task.story.present? && task.story.contact_us_number.present?
-        .printed-contact-us="CU ##{task.story.contact_us_number}"
-      .two.columns<
-        = task.project.name
-      .three.columns<
-        - if task.story.present?
-          = task.story.feature.name
-          - if task.story.contact_us_number.present?
-            %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
-      .three.columns
+  %li.task#Task{id: task.id, data: {iteration: iteration, open: 0}}
+    .row.summary
+      .span3
+        .title= task.to_s
+      .span2
         .points<
           .overlay{class: points_to_class(task.points)}<
-            - (Task::POINTS_MINIMUM+1).upto(Task::POINTS_MAXIMUM) do |points|
+            - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
               %i.small.glyphicon{class: 'star', data: {points:points}}
           - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
-            %span.small.glyphicon{data: {points:points}}
+            %span.small.glyphicon{data: {points:points}}<
               %i.small.glyphicon{class: 'dislikes'}
-        - if ranked
-          .task-rank= task.rank
-        .printed-points<
-          - (Task::POINTS_MINIMUM+1).upto(Task::POINTS_MAXIMUM) do |point|
-            %span<
-              %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
-      .three.columns.release-date
-        =task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
-    .row
-      .twelve.columns
+      .span2.box{class: task.status || :pending}
+        .release-date<
+          =task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
+          .command-block.on-hover.text-right><
+            = awesome_link_to '', '#', glyph: 'awesome-info-sign', remote:true
+            = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-check')
+    .row.full
+      .span7.box{class: task.status || :pending}
         .description= task.description
+        .row
+          .span2
+            .project= task.project.name
+          .span4
+            - if task.story.present? && task.story.contact_us_number.present?
+              %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
+            - else
+              &nbsp;

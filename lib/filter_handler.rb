@@ -45,9 +45,9 @@ module FilterHandler
     content[:contact_us] = Array(content[:contact_us]) unless content[:contact_us].is_a?(Array)
     content[:contact_us] = content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact
     
-    content[:iteration] = params[:iteration] || content[:iteration] || 0
-    content[:iteration] = 0 unless content[:iteration] =~ /^(-)?\d+$/
-    content[:iteration] = content[:iteration].to_i
+    content[:iteration] = params[:iteration] || content[:iteration]
+    content[:iteration] = nil unless content[:iteration] =~ /^(-)?\d+$/
+    content[:iteration] = content[:iteration].to_i if content[:iteration].is_a?(String)
 
     content[:min_points] = params[:min_points] || content[:min_points]
     content[:min_points] = nil unless content[:min_points] =~ /0|1|2|3|4|5/
