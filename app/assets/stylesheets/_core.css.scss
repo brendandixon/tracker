@@ -3,14 +3,20 @@
 }
 
 .glyphbutton {
-  cursor:pointer;
+  position:relative;
   input {
+    outline:1px solid red;
+    cursor:pointer;
     background:transparent;
     border:none;
     padding:0;
-    position:relative;
+    position:absolute;
     text-indent:-10000px;
     z-index:1;
+    height:$glyphHeight;
+    width:$glyphWidth;
+    top:0;
+    left:0;
   }
 }
 
