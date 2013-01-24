@@ -2,10 +2,13 @@
   @include box-sizing(border-box);
 }
 
+.small {
+  font-size:$small;
+}
+
 .glyphbutton {
   position:relative;
   input {
-    outline:1px solid red;
     cursor:pointer;
     background:transparent;
     border:none;
@@ -27,6 +30,11 @@
   *:hover & {
     color:inherit;
     text-decoration:none;
+  }
+  .disabled & {
+    display:inline-block;
+    height:30px;
+    width:43px;
   }
   span {
     display:inline-block;
@@ -51,25 +59,35 @@
   text-align:right;
 }
 
+.closer {
+  color:$grayDark;
+  font-size:$glyphHeight;
+  font-weight:$thick;
+}
+
 .command-block {
   display:inline-block;
-  float:right;
   margin-right:4px;
   position:relative;
-  top:-4px;
+  top:1px;
+  width:3 * ($glyphWidth + $glyphPadding);
   z-index:1;
   .glyphbutton {
-    margin-left:2px;
   }
   .glyphlink {
-    margin-left:2px;
+    height:$glyphHeight;
+    width:$glyphWidth;
+  }
+  a, a:hover {
+    color:$grayDark;
+    text-decoration:none;
   }
 }
 
 .iteration-marker {
   border-top:2px solid $grayDark;
   margin-top:15px;
-  padding-bottom:3px;
+  margin-bottom:5px;
   .iteration-toggle {
     cursor:pointer;
     font-weight:$thick;
@@ -85,6 +103,8 @@
     }
     .badge {
       margin-top:4px;
+      text-align:right;
+      width:20px;
     }
   }
 }
@@ -118,19 +138,19 @@
       width:0;
     }
     &.one-point {
-      width:$glyphWidth + 0*$glyphPadding;
+      width:$glyphWidthSmall + 0*$glyphPadding;
     }
     &.two-points {
-      width:2*$glyphWidth + 1*$glyphPadding;
+      width:2*$glyphWidthSmall + 1*$glyphPadding;
     }
     &.three-points {
-      width:3*$glyphWidth + 2*$glyphPadding;
+      width:3*$glyphWidthSmall + 2*$glyphPadding;
     }
     &.four-points {
-      width:4*$glyphWidth + 3*$glyphPadding;
+      width:4*$glyphWidthSmall + 3*$glyphPadding;
     }
     &.five-points {
-      width:5*$glyphWidth + 4*$glyphPadding;
+      width:5*$glyphWidthSmall + 4*$glyphPadding;
     }
   }
   .task-edit &, .task-inline & {
@@ -146,14 +166,34 @@
 .task {
   border-top:1px solid $grayLight;
   padding:4px 0;
-  &:hover {
+  &:hover:not([data-expanded]) {
     background-color:$highlightColor;
   }
   .completed {
     border-right:8px solid $green;
   }
-  .full {
-    display:none;
+  .expanded {
+    .command-block {
+      float:right;
+      text-align:right;
+    }
+    .release-date {
+      padding-left:4px;
+    }
+    .points {
+      padding-left:4px;
+    }
+    form {
+      margin-bottom:0;
+      label {
+        font-weight:$thin;
+        margin-bottom:0;
+        padding-left:4px;
+      }
+      .completed, .in_progress, .pending {
+        padding-bottom:8px;
+      }
+    }
   }
   .in_progress {
     border-right:8px solid $blue;
@@ -171,20 +211,39 @@
     display:inline-block;
     font-size:90%;
     position:relative;
-    width:100%;
+    margin-right:5px;
   }
-  .title {
-    color:$blue;
+  .status {
     text-overflow:ellipsis;
     overflow:hidden;
     padding-left:4px;
     white-space:nowrap;
+  }
+  .story {
+    @extend .status;
+  }
+  .title {
+    @extend .story;
+    color:$blue;
   }
 }
 
 .task-sort {
   .table {
     margin-bottom:0;
+    th {
+      color:$white;
+      background-color:$grayLight;
+      &.sortable {
+        background-color:$blue;
+      }
+    }
+    .sortable {
+      a, a:hover {
+        color:$white;
+        text-decoration:none;
+      }
+    }
   }
 }
 

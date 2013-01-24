@@ -1,24 +1,15 @@
 <%
-content = escape_javascript(render(partial: @task, locals: {in_edit_mode: @in_edit_mode}))
+content = escape_javascript(render(partial: @task, locals: {edited: @edited, expanded: @expanded}))
 id = @task.new_record? ? 'new' : @task.id
 %>
-<%= render template: 'shared/reset_transients' %>
-$('#Task_new').remove();
-if ($('#Task_<%= id %>').length <= 0) {
-  if ($('#TaskList > li').length <= 0) {
-    if ($('#TaskList').length <= 0) {
-      $('#Main').replaceWith("<div class='nine columns centered' id='Main'><ol class='task_list' id='TaskList'></ol></div>");
-    }
-    $('#TaskList').html('<%= content %>');
-  } else {
-    $('#TaskList > li').first().before('<%= content %>');
-  }
-} else {
+if ($('#Task_<%= id %>').length > 0) {
   $('#Task_<%= id%>').replaceWith('<%= content %>');
+} else if ($('.task-list > li').length > 0) {
+  $('.task-list > li').first().before('<%= content %>');
+  $('.task-list > li[data-empty]').remove();
 }
-$('#Main li:nth-child(even)').removeClass('odd').addClass('even');
-$('#Main li:nth-child(odd)').removeClass('even').addClass('odd');
-<% if @was_changed.include?(id) %>
+<% if @changed.include?(id) %>
 $('#Task_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
-<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/reset_transients' %>

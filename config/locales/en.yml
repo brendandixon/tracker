@@ -9,6 +9,7 @@ en:
     new_html: 'New Filter&hellip;'
     updated_html: 'Filter was successfully updated.'
     warning_html: '"WARNING: Are you sure you want to delete this filter?"'
+    filtered_by_html: "Filtered By: %{name}"
   controllers:
     actions:
       advance: 'Advance'

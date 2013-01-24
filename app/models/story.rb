@@ -55,6 +55,10 @@ class Story < ActiveRecord::Base
     return nil unless self.contact_us_number.present?
     "https://contactus.amazon.com/contact-us/ContactUsIssue.cgi?issue=#{self.contact_us_number}&profile=aws-dr-tools"
   end
+
+  def to_s
+    self.feature.present? ? "#{self.title} (#{self.feature.name})" : self.title
+  end
   
   private
   

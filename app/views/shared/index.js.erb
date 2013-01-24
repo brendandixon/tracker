@@ -1,4 +1,3 @@
-<%= render 'shared/reset_transients' %>
 <%= render 'shared/navigation' %>
 <%= render 'shared/filter' %>
 $('#Main').replaceWith('<%= escape_javascript(render(partial: "#{controller.controller_name}"))%>');
@@ -6,3 +5,4 @@ $('#Main').replaceWith('<%= escape_javascript(render(partial: "#{controller.cont
 <% (@was_changed || []).each do |id| %>
 $('#<%= controller.controller_name.to_s.singularize.titleize %>_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
+<%= render 'shared/reset_transients' %>

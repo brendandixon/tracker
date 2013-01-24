@@ -6,10 +6,9 @@
 - sorted = sorted_descending || sort.include?(field)
 - sort_field = !sorted || sorted_descending ? field : descending_field
 - classes ||= ''
-- classes << ' sorted'
+- classes << ' sortable'
 
 %th{class: classes}
-  .sortable
-    = link_to url_for(controller: controller.controller_name, action: :index, sort: sort_field), remote: true do
-      = name
-      = content_tag('span', sorted_descending ? '▲' : '▼') if sorted
+  = link_to url_for(controller: controller.controller_name, action: :index, sort: sort_field), remote: true do
+    = name
+    = content_tag('span', sorted_descending ? '▲' : '▼') if sorted

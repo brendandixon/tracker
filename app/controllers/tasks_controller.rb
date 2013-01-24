@@ -23,6 +23,7 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     @task = Task.find(params[:id])
+    @expanded << @task.id if params.has_key?(:expanded)
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
@@ -55,7 +56,7 @@ class TasksController < ApplicationController
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
-    @in_edit_mode << @task.id
+    @edited << @task.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
@@ -72,7 +73,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.save
         flash[:notice] = 'Task was successfully created.'
-        @was_changed << @task.id
+        @changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
         format.js { render 'shared/index'; flash.discard }
@@ -93,13 +94,13 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.update_attributes(params[:task])
         flash[:notice] = 'Task was successfully updated.'
-        @was_changed << @task.id
+        @changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
-        @in_edit_mode << @task.id
+        @edited << @task.id
 
         format.html { render action: "edit" }
         format.js { render 'task' }
@@ -126,7 +127,7 @@ class TasksController < ApplicationController
   def advance
     @task = Task.find(params[:id])
     @task.advance!
-    @was_changed << @task.id
+    @changed << @task.id
 
     respond_to do |format|
       format.html { redirect_to :back }
@@ -140,7 +141,7 @@ class TasksController < ApplicationController
   def complete
     @task = Task.find(params[:id])
     @task.completed!
-    @was_changed << @task.id
+    @changed << @task.id
     
     respond_to do |format|
       format.html { redirect_to :back }
@@ -157,13 +158,13 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.update_attribute(:points, params[:points].to_i)
         flash[:notice] = "Task set to #{@task.points} points"
-        @was_changed << @task.id
+        @changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
-        @in_edit_mode << @task.id
+        @edited << @task.id
 
         format.html { render action: "edit" }
         format.js { render 'task' }
@@ -237,8 +238,9 @@ class TasksController < ApplicationController
   end
 
   def ensure_initial_state
-    @in_edit_mode = []
-    @was_changed = []
+    @edited = []
+    @expanded = []
+    @changed = []
   end
 
 end
