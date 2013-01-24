@@ -31,14 +31,16 @@
     color:inherit;
     text-decoration:none;
   }
-  .disabled & {
-    display:inline-block;
-    height:30px;
-    width:43px;
-  }
+  // .disabled & {
+  //   display:inline-block;
+  //   height:30px;
+  //   width:43px;
+  // }
   span {
     display:inline-block;
-    padding-right:6px;
+    padding-right:7px;
+    position:relative;
+    top:-1px;
   }
   .awesome {
     position:relative;
@@ -61,8 +63,12 @@
 
 .closer {
   color:$grayDark;
-  font-size:$glyphHeight;
+  display:inline-block;
+  font-size:$fontLarger;
   font-weight:$fontThick;
+  line-height:$glyphHeight;
+  text-align:center;
+  width:$glyphWidth;
 }
 
 .command-block {
@@ -72,11 +78,17 @@
   top:1px;
   width:3 * ($glyphWidth + $glyphPadding);
   z-index:1;
+  .awesome {
+    width:1em;
+  }
   .glyphbutton {
   }
   .glyphlink {
     height:$glyphHeight;
     width:$glyphWidth;
+    .awesome {
+      width:1em;
+    }
   }
   a, a:hover {
     color:$grayDark;
