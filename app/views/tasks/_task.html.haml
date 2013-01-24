@@ -10,7 +10,7 @@
     = render partial: 'edit', locals: {task:task, remote:true}
 
 - elsif expanded.include?(task.id)
-  %li.task#Task{id: task.id, data: {iteration: iteration, expanded: 1}}
+  %li.task#Task{id: task.id, data: {iteration: iteration, status: task.status, expanded: 1}}
     .row.expanded
       .span7
         %form
@@ -30,7 +30,7 @@
               .span7.box{class: task.status}
                 %label= 'Story'
                 .story
-                  = task.story.to_s
+                  = link_to task.story.to_s, story_path(task.story.id)
                   - if task.story.contact_us_number.present?
                     %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
           - if task.description.present?
@@ -55,7 +55,7 @@
                 .release-date= '&nbsp;'.html_safe
 
 - else
-  %li.task#Task{id: task.id, data: {iteration: iteration}}
+  %li.task#Task{id: task.id, data: {iteration: iteration, status: task.status}}
     .row.compact
       .span3
         .title.has-tooltip{title: task.project.name}= task.to_s

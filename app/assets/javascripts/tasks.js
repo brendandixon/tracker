@@ -113,7 +113,7 @@ $(function() {
       .sortable({
         cursor: 'move',
         connectWith: '.task-list',
-        items: 'li:not(.iteration-marker)',
+        items: "li[data-status='pending']",
         opacity: 0.5,
         revert: true,
         scrollSensitiviy:5,
