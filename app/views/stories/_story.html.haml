@@ -3,7 +3,7 @@
 - story ||= @story
 - id = story.new_record? ? 'new' : story.id
 
-- if edited.include?(id) || story.new_record?
+- if edited.include?(id)
   %tr.story.edit-mode.expanded#Story{id: id, data: {expanded: 1}}
     = render partial: 'edit', locals:{story:story, remote:true, stand_alone:false}
 

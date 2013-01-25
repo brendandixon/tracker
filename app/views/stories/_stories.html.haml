@@ -21,4 +21,4 @@
               %td{colspan: 5}
                 %h3.subheader= t(:none_html, scope: [:controllers, :stories])
           - else
-            = render @stories
+            = render partial: 'story', collection: @stories, locals: {edited: @edited, expanded: @expanded}

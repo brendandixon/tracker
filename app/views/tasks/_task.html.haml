@@ -11,7 +11,7 @@
 %li.task#Task{id: id, class: classes, data: {iteration: iteration, status: task.status, expanded: @expanded.include?(id) ? 1 : 0}}
   .row{class: row_classes}
     .span7
-      - if edited.include?(task.id) || task.new_record?
+      - if edited.include?(task.id)
         = render partial: 'edit', locals: {task:task, remote:true}
 
       - elsif expanded.include?(task.id)

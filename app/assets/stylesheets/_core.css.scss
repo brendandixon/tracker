@@ -191,12 +191,30 @@
 }
 
 .story {
-  .compact {
-
+  &.expanded {
+    .projects {
+      padding-top:10px;
+      text-align:right;
+      label {
+        font-size:normal;
+        font-weight:normal;
+        margin-top:4px;
+        input {
+          margin-right:4px;
+          position:relative;
+          top:-3px;
+        }
+      }
+    }
+    form {
+    margin-bottom:0;
+    label {
+      font-size:$fontSizeSmall;
+      font-weight:$fontThick;
+      margin-bottom:0;
+    }
   }
-  .expanded {
-
-  }
+}
   .label {
     font-size:$fontSizeMini;
     margin-right:2px;

@@ -24,6 +24,7 @@
             .span3
               = f.label :status
               = f.select :status, Task::ALL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}, class: 'span12'}
+
         .row-fluid.section
           .controls.controls-row
             .span9
@@ -35,10 +36,12 @@
             .span3.completed_date{style: "display:#{task.completed? ? 'inline-block' : 'none'}"}
               = f.label :completed_date
               = f.text_field :completed_date, data: {datefield: true}, class: 'span12'
+
         .row-fluid.section
           .span12
             = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])
             = f.text_area :description, rows: 5, placeholder: 'Provide a description or details', class: 'span12'
+
         .row-fluid
           .span3
             = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
@@ -46,6 +49,7 @@
           .span3.offset2
             = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
             = render partial: 'points', locals: {task: task, editable: true}
+
         .row-fluid
           .span6.offset6.text-right
             = f.submit 'Save', class: 'btn btn-small btn-primary'
