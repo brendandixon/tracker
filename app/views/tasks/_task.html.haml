@@ -29,7 +29,7 @@
                       .title= t(task.status, scope: [:activerecord, :labels, :task])
                     .command-block
                       = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
-                      = link_to '&#215;'.html_safe, task_path(task), class: 'closer', remote:true
+                      = awesome_link_to '', task_path(task), glyph: 'awesome-remove', remote:true
                 - if task.story.present?
                   .row-fluid.section
                     .span12
