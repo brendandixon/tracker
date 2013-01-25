@@ -96,6 +96,35 @@
   }
 }
 
+*[data-filter] {
+  display:none;
+  &.visible {
+    display:block;
+  }
+}
+
+.filter-container {
+  .row-fluid.section {
+    border:none;
+    margin-bottom:12px;
+    &.hidden {
+      display:none;
+    }
+  }
+  form {
+    border:1px solid #ccc;
+    border-top:none;
+    margin-bottom:0;
+    padding:15px 8px 8px;
+    .multi-select select {
+      height:145px;
+    }
+    label {
+      white-space:nowrap;
+    }
+  }
+}
+
 .iteration-marker {
   border-top:2px solid $grayDark;
   margin-top:15px;
@@ -342,28 +371,6 @@
 //   margin:0 0 0 15px;
 //   padding:4px;
 //   min-height:100px;
-// }
-
-// .filter-container {
-//   display:none;
-//   &.visible {
-//     display:block;
-//   }
-//   .row.section {
-//     border:none;
-//     margin-bottom:12px;
-//     &.hidden {
-//       display:none;
-//     }
-//   }
-//   form {
-//     border:1px solid #ccc;
-//     border-top:none;
-//     padding:8px;
-//     .multi-select select {
-//       height:145px;
-//     }
-//   }
 // }
 
 // .filter form {

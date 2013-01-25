@@ -1,67 +1,70 @@
 - content = @filter.content || {}
 - classes = []
-- classes << 'visible' if !@filter.errors.empty? || params[:show]
+- classes << 'visible' if !@filter.errors.empty? || params[:show] || true
 
-.filter_container.nine.columns.centered#Filter{data: {filter: 'data-filter'}, class: classes}
-  = form_for @filter, url: tasks_path, method: :get, remote: true do |f|
-    - if @filter.errors.any?
-      .row
-        .twelve.columns#error_explanation
-          %h2= "#{pluralize(@filter.errors.count, "error")} prohibited this filter from being saved:"
-          %ul
-            - @filter.errors.full_messages.each do |msg|
-              %li= msg
-    
-    .row.section
-      = f.hidden_field :id
-      = f.hidden_field :area
-      .twelve.columns
-        = f.label :name
-        = f.text_field :name
-    
-    .row.section
-      .four.columns
-        = check_box_tag 'filter[content][group_by]', 1, content[:group_by] == :iteration, data: {group_by: :iteration}
-        = label_tag 'group_by', 'Group tasks by iteration', class: 'inline_label'
-    
-    .row.section
-      .three.columns
-        = label_tag 'status', 'Status'
-        = select_tag 'filter[content][status]', options_for_select(StatusScopes.all_states, StatusScopes.collapse(content[:status]))
-      .three.columns
-        = label_tag 'teams', 'Team'
-        = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || '')
-      .three.columns.end
-        = label_tag 'projects', 'Projects'
-        = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || '')
+.row#Filter{data: {filter: 1}, class: classes}
+  .span7
+    .filter-container
+      = form_for @filter, url: tasks_path, method: :get, remote: true do |f|
+        = f.hidden_field :id
+        = f.hidden_field :area
 
-    .row.section.task_filter{class: content[:group_by] ? 'hidden' : nil}
-      .two.columns.multi-select
-        = label_tag 'features', 'Features'
-        = select_tag 'filter[content][features]', options_for_select(Feature.all_features, content[:features] || ''), multiple: true
-      .five.columns.multi-select
-        = label_tag 'stories', 'Stories'
-        = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
-      .four.columns.end
-        .row
-          .nine.columns.end
-            = label_tag 'points', 'Minimum Points'
-            = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
-        .row
-          .nine.columns.end
-            = label_tag 'points', 'Maximum Points'
-            = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
+        - if @filter.errors.any?
+          .row-fluid
+            .span12
+              #error_explanation
+                %h2= "#{pluralize(@filter.errors.count, "error")} prohibited this filter from being saved:"
+                %ul
+                  - @filter.errors.full_messages.each do |msg|
+                    %li= msg
+        
+        .row-fluid.section
+          .span12
+            = f.label :name
+            = f.text_field :name, class: 'span8'
+        
+        .row-fluid.section
+          .span12
+            %label.checkbox{for: 'filter_content_group_by'}
+              = check_box_tag 'filter[content][group_by]', 1, content[:group_by] == :iteration, data: {group_by: :iteration}
+              = 'Group tasks by iteration'
 
-    .row
-      .four.columns.offset-by-eight.text-right.actions
-        = submit_tag 'Apply', name: :apply
-        - if @filter.new_record?
-          \|
-          = submit_tag 'Save', name: :commit_filter
-        - else
-          \|
-          = submit_tag 'Update', name: :commit_filter
-          \|
-          = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true
-        \|
-        = link_to 'Close', '#', data: {filter_close: true}
+        .row-fluid.section
+          .span4{style:'display:inline-block;'}
+            = label_tag 'filter_content_status', 'Status'
+            = select_tag 'filter[content][status]', options_for_select(StatusScopes.all_states, StatusScopes.collapse(content[:status]))
+          .span4{style:'display:inline-block;'}
+            = label_tag 'filter_content_teams', 'Team'
+            = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || '')
+          .span4{style:'display:inline-block;'}
+            = label_tag 'filter_content_projects', 'Projects'
+            = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || '')
+
+        .row-fluid.section.task-filter{class: content[:group_by] ? 'hidden' : nil}
+          .span4.multi-select
+            = label_tag 'filter_content_features', 'Features'
+            = select_tag 'filter[content][features]', options_for_select(Feature.all_features, content[:features] || ''), multiple: true
+          .span4.multi-select
+            = label_tag 'filter_content_stories', 'Stories'
+            = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
+          .span4
+            .row-fluid
+              .span2
+                = label_tag 'filter_content_min_points', 'Minimum Points'
+                = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
+                = label_tag 'filter_content_max_points', 'Maximum Points'
+                = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
+
+        .row-fluid
+          .span6.offset6.text-right
+            = submit_tag 'Apply', name: :apply, class: 'btn btn-primary'
+            - if @filter.new_record?
+              \|
+              = submit_tag 'Save', name: :commit_filter, class: 'btn btn-info'
+            - else
+              \|
+              = submit_tag 'Update', name: :commit_filter, class: 'btn btn-info'
+              \|
+              = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true, class: 'btn btn-danger'
+            \|
+            = link_to 'Close', '#', data: {filter_close: true}, class: 'btn btn-link'

@@ -101,9 +101,9 @@ $(function() {
     if (e.length > 0) {
       e = e[0];
       if (e.checked) {
-        $('.task-filter').hide();
+        $('.task-filter').addClass('hidden');
       } else {
-        $('.task-filter').show();
+        $('.task-filter').removeClass('hidden');
       }
     }
   });

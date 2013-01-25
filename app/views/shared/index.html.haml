@@ -1,5 +1,4 @@
 / = render template: 'shared/grid'
-/ - if controller.template_exists?('filter', [controller.controller_name], true)
-/   .row<
-/     = render 'filter'
+- if controller.template_exists?('filter', [controller.controller_name], true)
+  = render 'filter'
 = render controller.controller_name
