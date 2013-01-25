@@ -9,13 +9,17 @@ $gridGutterWidth768:6px;
 body {
   padding-top: 45px;
 }
-// .row, *[class*='span'] {
-//   @include box-sizing(border-box);
-// }
-// form .controls {
-//   > input, > select, > textarea {
-//     @include box-sizing(border-box);
-//     height: inherit;
-//   }
-// }
 @import "bootstrap-responsive";
+
+.nav {
+  .dropdown-menu {
+      a:hover {
+        font-weight:bold;
+      }
+    .active {
+      a, a:hover {
+        color:$white;
+      }
+    }
+  }
+}

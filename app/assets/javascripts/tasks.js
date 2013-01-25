@@ -37,7 +37,7 @@ Tracker.Tasks.toggleIteration = function(e, iteration, fShow) {
 
 $(function() {
   $('body').on('click', '*[data-points]', function(event) {
-    var e, points, pointsClass;
+    var e, p, points, pointsClass;
     e = $(event.target);
     points = parseInt(e.attr('data-points'));
     pointsClass = points === 1
@@ -56,18 +56,25 @@ $(function() {
     }
     task = e.closest('.task');
     if (task.length > 0) {
-      task = task.attr('id').split('_')[1];
-      $.ajax({
-        type: 'POST',
-        beforeSend: function(xhr){
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-        },
-        dataType: 'script',
-        url: '/tasks/' + task + '/point?points=' + points,
-        error: function(jqXHR, textStatus, error) {
-          $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
+      if (task.hasClass('edit-mode')) {
+        p = task.find('#task_points');
+        if (p.length > 0) {
+          p.val(points);
         }
-      });
+      } else {
+        task = task.attr('id').split('_')[1];
+        $.ajax({
+          type: 'POST',
+          beforeSend: function(xhr){
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+          },
+          dataType: 'script',
+          url: '/tasks/' + task + '/point?points=' + points,
+          error: function(jqXHR, textStatus, error) {
+            $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
+          }
+        });
+      }
     }
     e.removeClass('zero-points one-point two-points three-points four-points five-points').addClass(pointsClass);
   });

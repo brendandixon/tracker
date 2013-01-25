@@ -16,7 +16,7 @@
               .span2
                 .glyphicon.collapse_top
                 .date= iteration.end_date.to_formatted_s(:medium)
-              .span5
+              .span3
                 %span.badge.badge-inverse= iteration.points
                 \|
                 %span.badge.badge-success= iteration.completed
@@ -33,18 +33,19 @@
           :javascript
             $(function() {$('body').trigger('iteration.visibility');});
       - else
-        - if @tasks.count > 0
-          .task-sort
-            %table.table
-              %thead
-                %tr
-                  = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'span3'}
-                  = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'span2'}
-                  = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'span2'}
+        .task-sort
+          %table.table
+            %thead
+              %tr
+                = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'span3'}
+                = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'span2'}
+                = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'span2'}
           .row
             .span7
               %ol.unstyled.task-list<
-                = render partial: 'task', collection: @tasks, locals: {edited: @edited, expanded: @expanded}
-        - else
-          %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
+                - if @tasks.count > 0
+                  = render partial: 'task', collection: @tasks, locals: {edited: @edited, expanded: @expanded}
+                - else
+                  %li{data: {collapsed: 0, empty: 1}}
+                    %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
   = render template: 'shared/bind_list'

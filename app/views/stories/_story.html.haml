@@ -1,12 +1,12 @@
-- classes = cycle('odd', 'even')
-- in_edit_mode ||= []
+- edited ||= []
+- expanded ||= []
 - story ||= @story
 - id = story.new_record? ? 'new' : story.id
 
-- if in_edit_mode.include?(id) || story.new_record?
-  %tr.story_edit#Story{id: id, class: classes}
+- if edited.include?(id) || story.new_record?
+  %tr.story.edit-mode.expanded#Story{id: id, data: {expanded: 1}}
     = render partial: 'edit', locals:{story:story, remote:true, stand_alone:false}
 
 - else
-  %tr.story_inline#Story{id: id, class: classes}
+  %tr.story.compact#Story{id: id}
     = render partial: 'show', locals:{story:story, remote:true, stand_alone:false}

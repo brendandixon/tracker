@@ -4,65 +4,73 @@
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 - task ||= @task
+- id = task.new_record? ? 'new' : task.id
+- classes = @edited.include?(id) ? 'edit-mode' : nil
+- row_classes = @expanded.include?(id) ? 'expanded' : 'compact'
 
-- if edited.include?(task.id) || task.new_record?
-  %li.task.edit-mode#Task{id: task.new_record? ? 'new' : task.id, class: classes, data: {iteration: iteration}}
-    = render partial: 'edit', locals: {task:task, remote:true}
+%li.task#Task{id: id, class: classes, data: {iteration: iteration, status: task.status, expanded: @expanded.include?(id) ? 1 : 0}}
+  .row{class: row_classes}
+    .span7
+      - if edited.include?(task.id) || task.new_record?
+        = render partial: 'edit', locals: {task:task, remote:true}
 
-- elsif expanded.include?(task.id)
-  %li.task#Task{id: task.id, data: {iteration: iteration, status: task.status, expanded: 1}}
-    .row.expanded
-      .span7
+      - elsif expanded.include?(task.id)
         %form
-          .row
-            .span5
-              %label= 'Title'
-              .title= task.title
-            .span2.box{class: task.status}
-              %div{style:'display:inline-block;'}
-                %label= 'Status'
-                .status= t(task.status, scope: [:activerecord, :labels, :task])
-              .command-block
-                = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
-                = link_to '&#215;'.html_safe, task_path(task), class: 'closer', remote:true
-          - if task.story.present?
-            .row
-              .span7.box{class: task.status}
-                %label= 'Story'
-                .story
-                  = link_to task.story.to_s, story_path(task.story.id)
-                  - if task.story.contact_us_number.present?
-                    %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
-          - if task.description.present?
-            .row
-              .span7.box{class: task.status}
-                %label= 'Description'
-                .description= task.description
-          .row
-            .span3
-              %label= 'Project'
-              .project= task.project.name
-            .span2
-              %label= 'Points'
-              = render partial: 'points', locals: {task: task}
-            .span2.box{class: task.status}
-              - if task.story.present? && task.story.release_date.present?
-                %label= 'Release Date'
-                .release-date
-                  =task.story.release_date.to_date.to_s(:medium)
-              - else
-                %label= '&nbsp;'.html_safe
-                .release-date= '&nbsp;'.html_safe
+          .row-fluid
+            .span12
+              .clearfix{class: task.status}
+                .row-fluid.section
+                  .span9
+                    %label= 'Title'
+                    .title= task.title
+                  .span3
+                    %div{style:'display:inline-block;'}
+                      %label= 'Status'
+                      .title= t(task.status, scope: [:activerecord, :labels, :task])
+                    .command-block
+                      = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
+                      = link_to '&#215;'.html_safe, task_path(task), class: 'closer', remote:true
+                - if task.story.present?
+                  .row-fluid.section
+                    .span12
+                      %label= 'Story'
+                      .title
+                        = link_to task.story.to_s, story_path(task.story.id)
+                        - if task.story.contact_us_number.present?
+                          %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
+                - if task.description.present?
+                  .row-fluid.section
+                    .span12
+                      %label= 'Description'
+                      .description= task.description
+                .row-fluid
+                  .span5
+                    %label= 'Project'
+                    .project= task.project.name
+                  .span4
+                    %label= 'Points'
+                    = render partial: 'points', locals: {task: task}
+                  .span3
+                    - if task.story.present? && task.story.release_date.present?
+                      %label= 'Release Date'
+                      .release-date
+                        =task.story.release_date.to_date.to_s(:medium)
+                    - else
+                      %label= '&nbsp;'.html_safe
+                      .release-date= '&nbsp;'.html_safe
 
-- else
-  %li.task#Task{id: task.id, data: {iteration: iteration, status: task.status}}
-    .row.compact
-      .span3
-        .title.has-tooltip{title: task.project.name}= task.to_s
-      .span1= render partial: 'points', locals: {task: task, editable: true}
-      .span3.text-right.box{class: task.status}
-        .release-date=task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
-        .command-block.on-hover
-          = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-check')
-          = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
-          = awesome_link_to '', task_path(task, expanded: 1), glyph: 'awesome-info-sign', remote:true
+      - else
+        .row-fluid
+          .span12
+            .clearfix{class: task.status}
+              .row-fluid
+                .span5
+                  .title.has-tooltip{title: task.project.name}
+                    = task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
+                .span3= render partial: 'points', locals: {task: task, editable: true}
+                .span4.text-right
+                  .release-date=task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
+                  .command-block.on-hover
+                    = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-check')
+                    = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
+                    = awesome_link_to '', task_path(task, expanded: 1), glyph: 'awesome-info-sign', remote:true

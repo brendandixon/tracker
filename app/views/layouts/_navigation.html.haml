@@ -1,5 +1,6 @@
 - current_area = controller.controller_name.to_sym
 - disable_filter = !controller.is_index_action || !controller.template_exists?('filter', [controller.controller_name], true)
+- has_print = controller.template_exists?('print_menu', [controller.controller_name], true)
 #Navigation
   %a.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
     %span.icon-bar
@@ -17,8 +18,18 @@
       %li
         = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: true
       %li.divider-vertical
-      %li.dropdown{class: disable_filter ? 'disabled' : nil, role: 'menu'}
+      - if has_print
+        %li.dropdown
+          %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+            = t(:print, scope: [:controllers])
+            %b.caret
+          %ul.dropdown-menu#PrintMenu
+            = render 'print_menu'
+      - else
+        %li= link_to t(:print, scope: [:controllers]), url_for(controller: current_area, action: :print)
+      %li.divider-vertical
+      %li.dropdown{class: disable_filter ? 'disabled' : nil}
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-          Filters
+          Filter
           %b.caret
         = render 'shared/filter_menu' unless disable_filter

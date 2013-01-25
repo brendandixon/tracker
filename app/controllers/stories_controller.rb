@@ -22,6 +22,7 @@ class StoriesController < ApplicationController
   # GET /stories/1.json
   def show
     @story = Story.find(params[:id])
+    @expanded << @story.id if params.has_key?(:expanded)
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
@@ -34,6 +35,8 @@ class StoriesController < ApplicationController
   # GET /stories/new.json
   def new
     @story = Story.new
+    @edited << 'new'
+    @expanded << 'new'
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
@@ -45,7 +48,8 @@ class StoriesController < ApplicationController
   # GET /stories/1/edit
   def edit
     @story = Story.find(params[:id])
-    @in_edit_mode << @story.id
+    @edited << @story.id
+    @expanded << @story.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
@@ -62,7 +66,7 @@ class StoriesController < ApplicationController
     respond_to do |format|
       if @story.save
         flash[:notice] = 'Story was successfully created.'
-        @was_changed << @story.id
+        @changed << @story.id
 
         format.html { redirect_to stories_path }
         format.js { render 'shared/index'; flash.discard }
@@ -83,7 +87,7 @@ class StoriesController < ApplicationController
     respond_to do |format|
       if @story.update_attributes(params[:story])
         flash[:notice] = 'Story was successfully updated.'
-        @was_changed << @story.id
+        @changed << @story.id
         
         format.html { redirect_to stories_path }
         format.js { render 'shared/index'; flash.discard }
@@ -151,8 +155,9 @@ class StoriesController < ApplicationController
   end
 
   def ensure_initial_state
-    @in_edit_mode = []
-    @was_changed = []
+    @edited = []
+    @expanded = []
+    @changed = []
   end
 
 end

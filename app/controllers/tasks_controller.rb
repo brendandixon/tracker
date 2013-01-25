@@ -36,6 +36,8 @@ class TasksController < ApplicationController
   # GET /tasks/new.json
   def new
     @task = Task.new
+    @edited << 'new'
+    @expanded << 'new'
     
     if @filter.content[:projects].present?
       @task.project_id = @filter.content[:projects].first
@@ -57,6 +59,7 @@ class TasksController < ApplicationController
   def edit
     @task = Task.find(params[:id])
     @edited << @task.id
+    @expanded << @task.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }

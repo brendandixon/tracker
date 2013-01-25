@@ -30,41 +30,43 @@
               = 'Group tasks by iteration'
 
         .row-fluid.section
-          .span4{style:'display:inline-block;'}
-            = label_tag 'filter_content_status', 'Status'
-            = select_tag 'filter[content][status]', options_for_select(StatusScopes.all_states, StatusScopes.collapse(content[:status]))
-          .span4{style:'display:inline-block;'}
-            = label_tag 'filter_content_teams', 'Team'
-            = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || '')
-          .span4{style:'display:inline-block;'}
-            = label_tag 'filter_content_projects', 'Projects'
-            = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || '')
+          .controls.controls-row
+            .span4
+              = label_tag 'filter_content_status', 'Status'
+              = select_tag 'filter[content][status]', options_for_select(StatusScopes.all_states, StatusScopes.collapse(content[:status]))
+            .span4
+              = label_tag 'filter_content_teams', 'Team'
+              = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || '')
+            .span4
+              = label_tag 'filter_content_projects', 'Projects'
+              = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || '')
 
         .row-fluid.section.task-filter{class: content[:group_by] ? 'hidden' : nil}
-          .span4.multi-select
-            = label_tag 'filter_content_features', 'Features'
-            = select_tag 'filter[content][features]', options_for_select(Feature.all_features, content[:features] || ''), multiple: true
-          .span4.multi-select
-            = label_tag 'filter_content_stories', 'Stories'
-            = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
-          .span4
-            .row-fluid
-              .span2
-                = label_tag 'filter_content_min_points', 'Minimum Points'
-                = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
-                = label_tag 'filter_content_max_points', 'Maximum Points'
-                = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
+          .controls.controls-row
+            .span4.multi-select
+              = label_tag 'filter_content_features', 'Features'
+              = select_tag 'filter[content][features]', options_for_select(Feature.all_features, content[:features] || ''), multiple: true
+            .span4.multi-select
+              = label_tag 'filter_content_stories', 'Stories'
+              = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
+            .span4
+              .row-fluid
+                .span2
+                  = label_tag 'filter_content_min_points', 'Minimum Points'
+                  = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
+                  = label_tag 'filter_content_max_points', 'Maximum Points'
+                  = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
 
         .row-fluid
-          .span6.offset6.text-right
-            = submit_tag 'Apply', name: :apply, class: 'btn btn-primary'
+          .span5.offset7.text-right
+            = submit_tag 'Apply', name: :apply, class: 'btn btn-small btn-primary'
             - if @filter.new_record?
               \|
-              = submit_tag 'Save', name: :commit_filter, class: 'btn btn-info'
+              = submit_tag 'Save', name: :commit_filter, class: 'btn btn-small btn-info'
             - else
               \|
-              = submit_tag 'Update', name: :commit_filter, class: 'btn btn-info'
+              = submit_tag 'Update', name: :commit_filter, class: 'btn btn-small btn-info'
               \|
-              = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true, class: 'btn btn-danger'
+              = link_to 'Delete', tasks_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true, class: 'btn btn-small btn-danger'
             \|
-            = link_to 'Close', '#', data: {filter_close: true}, class: 'btn btn-link'
+            = link_to 'Close', '#', data: {filter_close: true}, class: 'btn btn-small btn-link'

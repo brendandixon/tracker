@@ -1,21 +1,15 @@
 <%
-content = escape_javascript(render(partial: @story, locals: {in_edit_mode: @in_edit_mode}))
+content = escape_javascript(render(partial: @story, locals: {edited: @edited, expanded: @expanded}))
 id = @story.new_record? ? 'new' : @story.id
 %>
-<%= render template: 'shared/reset_transients' %>
-$('#Story_new').remove();
-if ($('#Story_<%= id %>').length <= 0) {
-  if ($('#StoryList > tbody > tr').length <= 0) {
-    $('#StoryList > tbody').html('<%= content %>');
-  } else {
-    $('#StoryList > tbody > tr').first().before('<%= content %>');
-  }
-} else {
+if ($('#Story_<%= id %>').length > 0) {
   $('#Story_<%= id%>').replaceWith('<%= content %>');
+} else if ($('.story-list > tbody > tr').length > 0) {
+  $('.story-list > tbody > tr').first().before('<%= content %>');
+  $('.story-list > tbody > tr[data-empty]').remove();
 }
-$('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
-$('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
-<% if @was_changed.include?(@story.id) %>
-$('#Story_<%= @story.id%>').effect('highlight',{duration: 750});
+<% if @changed.include?(id) %>
+$('#Story_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
-<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/reset_transients' %>

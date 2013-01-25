@@ -1,4 +1,4 @@
-# Sample localization file for English. Add more files in this directory for other locales.
+# Sample localization file for English. New more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
@@ -17,31 +17,34 @@ en:
       create: 'Create'
       destroy: 'Destroy'
       edit: 'Edit'
+      print: 'Print'
       in_progress: 'Begin development'
       completed: 'Complete'
     projects:
       name_html: 'Projects'
       none_html: 'No projects were found.'
-      new_html: 'Add Project&#8230;'
+      new_html: 'New Project&#8230;'
       edit_html: 'Edit Project&#8230;'
     features:
       name_html: 'Features'
       none_html: 'No features were found.'
-      new_html: 'Add Feature&#8230;'
+      new_html: 'New Feature&#8230;'
     stories:
       name_html: 'Stories'
       none_html: 'No stories were found.'
-      new_html: 'Add Story&#8230;'
+      new_html: 'New Story&#8230;'
       edit_html: 'Edit Story&#8230;'
     tasks:
       name_html: 'Tasks'
       none_html: 'No tasks were found.'
-      new_html: 'Add Task&#8230;'
+      new_html: 'New Task&#8230;'
       edit_html: 'Edit Task&#8230;'
+      print_cards_html: 'Print Cards'
+      print_list_html: 'Print List'
     teams:
       name_html: 'Teams'
       none_html: 'No teams were found.'
-      new_html: 'Add Team&#8230;'
+      new_html: 'New Team&#8230;'
   activerecord:
     attributes:
       story:

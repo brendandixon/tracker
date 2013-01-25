@@ -6,7 +6,7 @@ module StoriesHelper
             task = story.tasks.map{|task| task.project_id == project.id ? task : nil}.compact.sort{|task1, task2| task1.status <=> task2.status}.last
             task_status_tag(task, project)
           end.join.html_safe
-    link_to projects, tasks_path(filter: {content:{stories: story.id, projects: only_projects}}), class: 'projects', remote: true
+    link_to projects, tasks_path(filter: {content:{stories: story.id, projects: only_projects}}), class: 'projects'
   end
   
 end
