@@ -1,6 +1,6 @@
 - content = @filter.content || {}
 - classes = []
-- classes << 'visible' if !@filter.errors.empty? || params[:show] || true
+- classes << 'visible' if !@filter.errors.empty? || params[:show]
 
 .row#Filter{data: {filter: 1}, class: classes}
   .span7
