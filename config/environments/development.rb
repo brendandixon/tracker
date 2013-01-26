@@ -36,5 +36,5 @@ Tracker::Application.configure do
   config.assets.debug = true
 end
 
-Tracker::Application.jquery_version = '1.8.3'
-Tracker::Application.jquery_ui_version = '1.9.2'
+Tracker::Application.jquery_version = '1.9.0'
+Tracker::Application.jquery_ui_version = '1.10.0'

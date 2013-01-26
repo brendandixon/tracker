@@ -11,7 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery_ujs
-//= require jquery-tooltip/jquery.tooltip
 //= require jquery.cookie
 //= require bootstrap
 //= require underscore-min

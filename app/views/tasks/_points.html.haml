@@ -8,8 +8,8 @@
       - possible_points.each do |points|
         %span.badge.badge-inverse{data: {points: points}}><= points
     - possible_points.each do |points|
-      %span.badge.badge-inverse.disabled{data: {points: points}}><= points
+      %span.badge{data: {points: points}}><= points
 - else
   .points><
     - possible_points.each do |points|
-      %span.badge.badge-inverse{class: task.points < points ? 'disabled' : nil, data: {points: points}}><= points
+      %span.badge{class: task.points >= points ? 'badge-inverse' : nil, data: {points: points}}><= points

@@ -4,7 +4,7 @@
       - if @filter.empty?
         = t(:unfiltered_html, scope: [:filter])
       - else
-        = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? 'Dynamic' : @filter.name)
+        = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? t(:filtered_dynamic_html, scope: [:filter]) : @filter.name)
   .span7
     %p#notice
     .command-block

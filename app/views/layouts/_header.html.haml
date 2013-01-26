@@ -7,9 +7,6 @@
   = stylesheet_link_tag "http://code.jquery.com/ui/#{Tracker::Application.jquery_ui_version}/themes/base/jquery-ui.css"
   %script{src: "//ajax.googleapis.com/ajax/libs/jquery/#{Tracker::Application.jquery_version}/jquery.min.js"}
   %script{src: "//ajax.googleapis.com/ajax/libs/jqueryui/#{Tracker::Application.jquery_ui_version}/jquery-ui.min.js"}
-  / = stylesheet_link_tag 'jquery-ui.css'
-  / = javascript_include_tag 'jquery.min.js'
-  / = javascript_include_tag 'jquery-ui.min.js'
   = javascript_include_tag 'application'
   = csrf_meta_tags
   = yield :head

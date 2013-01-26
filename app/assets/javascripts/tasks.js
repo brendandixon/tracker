@@ -76,7 +76,7 @@ $(function() {
         });
       }
     }
-    e.removeClass('zero-points one-point two-points three-points four-points five-points').addClass(pointsClass);
+    e.removeClass('zero-points one-point two-points three-points five-points eight-points').addClass(pointsClass);
   });
 
   $('body').on('click', '.iteration-toggle', function(event) {
