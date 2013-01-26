@@ -1,16 +1,15 @@
+- possible_points = Task::POINTS[1,Task::POINTS.length]
 - editable = true unless defined?(editable)
 - task ||= @task
 
 - if editable
-  .points<
-    .overlay{class: points_to_class(task.points)}<
-      - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
-        %i.small.glyphicon{class: 'star', data: {points:points}}
-    - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
-      %span.small.glyphicon{data: {points:points}}<
-        %i.small.glyphicon{class: 'dislikes'}
+  .points><
+    .overlay{class: points_to_class(task.points)}><
+      - possible_points.each do |points|
+        %span.badge.badge-inverse{data: {points: points}}><= points
+    - possible_points.each do |points|
+      %span.badge.badge-inverse.disabled{data: {points: points}}><= points
 - else
-  .points<
-    - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |points|
-      %i.small.glyphicon{class: points > task.points ? 'dislikes' : 'star', data: {points:points}}
-
+  .points><
+    - possible_points.each do |points|
+      %span.badge.badge-inverse{class: task.points < points ? 'disabled' : nil, data: {points: points}}><= points

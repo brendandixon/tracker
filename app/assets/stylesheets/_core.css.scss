@@ -142,17 +142,8 @@
   cursor:pointer;
   display:inline-block;
   position:relative;
-  unicode-bidi: bidi-override;
-  direction: rtl;
-  & > span {
-    display:inline-block;
-    position:relative;
-    width:1em;
-  }
-  & > span:hover:before,
-  & > span:hover ~ span:before {
-    content: "\e050";
-    position: absolute;
+  .disabled {
+    background-color:$grayLight;
   }
   .overlay {
     cursor:pointer;
@@ -165,23 +156,32 @@
       width:0;
     }
     &.one-point {
-      width:$glyphWidthSmall + 0*$glyphPadding;
+      width:1*($pointsWidth + (2*$badgePadding) + 2px);
     }
     &.two-points {
-      width:2*$glyphWidthSmall + 1*$glyphPadding;
+      width:2*($pointsWidth + (2*$badgePadding) + 2px);
     }
     &.three-points {
-      width:3*$glyphWidthSmall + 2*$glyphPadding;
-    }
-    &.four-points {
-      width:4*$glyphWidthSmall + 3*$glyphPadding;
+      width:3*($pointsWidth + (2*$badgePadding) + 2px);
     }
     &.five-points {
-      width:5*$glyphWidthSmall + 4*$glyphPadding;
+      width:4*($pointsWidth + (2*$badgePadding) + 2px);
+    }
+    &.eight-points {
+      width:5*($pointsWidth + (2*$badgePadding) + 2px);
     }
   }
   .task-edit &, .task-inline & {
     cursor:pointer;
+  }
+  span {
+    display:inline-block;
+    font-size:$fontSizeMini;
+    margin-right:2px;
+    width:$pointsWidth;
+    &:hover {
+      background-color:$blue;
+    }
   }
 }
 

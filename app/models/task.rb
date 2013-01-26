@@ -23,8 +23,7 @@ class Task < ActiveRecord::Base
   RANK_MINIMUM = Float::MIN
   RANK_MAXIMUM = Float::MAX
 
-  POINTS_MAXIMUM = 5
-  POINTS_MINIMUM = 0
+  POINTS = [0, 1, 2, 3, 5, 8]
 
   attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
@@ -41,7 +40,7 @@ class Task < ActiveRecord::Base
   before_validation :ensure_title
 
   validate :has_title_or_story
-  validates_numericality_of :points, only_integer: true, greater_than_or_equal_to: POINTS_MINIMUM, less_than_or_equal_to: POINTS_MAXIMUM, allow_blank: true
+  validates_inclusion_of :points, in: POINTS
   validates_presence_of :project
   validates_inclusion_of :status, in: ALL_STATES
 
@@ -89,7 +88,7 @@ class Task < ActiveRecord::Base
   class<<self
 
     def all_points
-      @all_points ||= [['-', '']] + (Task::POINTS_MINIMUM..Task::POINTS_MAXIMUM).map{|p| [p, p]}
+      @all_points ||= [['-', '']] + Task::POINTS.map{|p| [p, p]}
     end
     
     def ensure_story_tasks(story)

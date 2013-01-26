@@ -46,9 +46,9 @@ $(function() {
                       ? 'two-points'
                       : points === 3
                         ? 'three-points'
-                        : points === 4
-                          ? 'four-points'
-                          : 'five-points';
+                        : points === 5
+                          ? 'five-points'
+                          : 'eight-points';
     e = e.closest('.points').children('.overlay');
     if (e.hasClass(pointsClass)) {
       points = 0;

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130117044201) do
+ActiveRecord::Schema.define(:version => 20130126190120) do
 
   create_table "categories", :force => true do |t|
     t.string   "name",       :null => false
@@ -30,19 +30,6 @@ ActiveRecord::Schema.define(:version => 20130117044201) do
 
   add_index "features", ["category_id"], :name => "index_features_on_category_id"
   add_index "features", ["name"], :name => "index_features_on_name", :unique => true
-
-  create_table "features_supported", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "feature_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "status"
-  end
-
-  add_index "features_supported", ["feature_id", "project_id"], :name => "index_features_supported_on_feature_id_and_project_id", :unique => true
-  add_index "features_supported", ["feature_id"], :name => "index_features_supported_on_feature_id"
-  add_index "features_supported", ["project_id"], :name => "index_supported_services_on_project_id"
-  add_index "features_supported", ["status"], :name => "index_features_supported_on_status"
 
   create_table "filters", :force => true do |t|
     t.string   "name"
@@ -78,6 +65,19 @@ ActiveRecord::Schema.define(:version => 20130117044201) do
   add_index "stories", ["contact_us_number"], :name => "index_features_on_contact_us_number", :unique => true
   add_index "stories", ["feature_id"], :name => "index_features_on_service_id"
   add_index "stories", ["release_date"], :name => "index_features_on_release_date"
+
+  create_table "supported_features", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "feature_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "status"
+  end
+
+  add_index "supported_features", ["feature_id", "project_id"], :name => "index_supported_features_on_feature_id_and_project_id", :unique => true
+  add_index "supported_features", ["feature_id"], :name => "index_supported_features_on_feature_id"
+  add_index "supported_features", ["project_id"], :name => "index_supported_features_on_project_id"
+  add_index "supported_features", ["status"], :name => "index_supported_features_on_status"
 
   create_table "tasks", :force => true do |t|
     t.integer  "story_id"

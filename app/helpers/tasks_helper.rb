@@ -6,8 +6,8 @@ module TasksHelper
     when 1 then 'one-point'
     when 2 then 'two-points'
     when 3 then 'three-points'
-    when 4 then 'four-points'
     when 5 then 'five-points'
+    when 8 then 'eight-points'
     end
   end
   

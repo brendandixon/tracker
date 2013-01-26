@@ -11,9 +11,7 @@
   - if task.story.present?
     .two.end.columns= task.story.feature.name
   .three.columns.end
-    .points<
-      - Task::POINTS_MAXIMUM.downto(Task::POINTS_MINIMUM+1) do |point|
-        %i.small.glyphicon{class: point <= (task.points || -1) ? 'star' : 'dislikes'}
+    = render partial: 'edit', locals: {task:task, remote:true}
 .row<
   .four.columns.offset-by-eight.text-right.actions
     = link_to 'Edit', edit_task_path(task)
