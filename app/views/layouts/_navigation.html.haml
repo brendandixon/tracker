@@ -18,16 +18,6 @@
       %li
         = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: true
       %li.divider-vertical
-      - if has_print
-        %li.dropdown
-          %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-            = t(:print, scope: [:controllers])
-            %b.caret
-          %ul.dropdown-menu#PrintMenu
-            = render 'print_menu'
-      - else
-        %li= link_to t(:print, scope: [:controllers]), url_for(controller: current_area, action: :print)
-      %li.divider-vertical
       %li.dropdown{class: disable_filter ? 'disabled' : nil}
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
           Filter

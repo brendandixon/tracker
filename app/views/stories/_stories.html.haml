@@ -1,9 +1,8 @@
 #Main
-  - unless @filter.empty?
-    .row
-      .span9
-        %p.overview
-          = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? 'Dynamic' : @filter.name)
+  .row
+    .span9
+      = render 'shared/filter_header'
+
   .row
     .span9
       %table.table.story-list#StoryList

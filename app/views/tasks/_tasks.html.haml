@@ -1,9 +1,8 @@
 #Main
-  - unless @filter.empty?
-    .row
-      .span7
-        %p.overview
-          = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? 'Dynamic' : @filter.name)
+  .row
+    .span7
+      = render 'shared/filter_header'
+
   .row
     .span7
       - if @tasks.is_a?(IterationEnumerator)

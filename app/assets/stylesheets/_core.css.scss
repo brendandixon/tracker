@@ -188,6 +188,29 @@
 .overview {
   @extend .lead;
   margin-bottom:15px;
+  position:relative;
+  .command-block {
+    display:inline-block;
+    font-size:$baseFontSize;
+    position:absolute;
+    text-align:right;
+    top:2px;
+    right:8px;
+    height:$glyphHeight;
+    line-height:$glyphHeight;
+    width:1 * ($glyphWidth + $glyphPadding);
+    z-index:1;
+  }
+  #notice {
+    color:$textColor;
+    font-size:$fontSizeLarge*0.9;
+  }
+  p {
+    margin-bottom:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
 }
 
 .story {

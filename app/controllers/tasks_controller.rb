@@ -160,7 +160,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.update_attribute(:points, params[:points].to_i)
-        flash[:notice] = "Task set to #{@task.points} points"
+        flash[:notice] = "Task set to #{view_context.pluralize(@task.points, 'point')}"
         @changed << @task.id
 
         format.html { redirect_to tasks_path(story_id: @task.story_id) }

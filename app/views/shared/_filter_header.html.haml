@@ -1,0 +1,11 @@
+.row-fluid.overview
+  .span5
+    %p
+      - if @filter.empty?
+        = t(:unfiltered_html, scope: [:filter])
+      - else
+        = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? 'Dynamic' : @filter.name)
+  .span7
+    %p#notice
+    .command-block
+      = awesome_link_to '', url_for(controller: controller.controller_name, action: :print), glyph: 'awesome-print'
