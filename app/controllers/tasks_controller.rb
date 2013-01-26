@@ -4,7 +4,7 @@ class TasksController < ApplicationController
 
   DEFAULT_SORT = ['status']
 
-  INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :rank, :update]
+  INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :print, :rank, :update]
 
   before_filter :ensure_initial_state
   before_filter :build_index_query, only: INDEX_ACTIONS
@@ -174,6 +174,13 @@ class TasksController < ApplicationController
         format.js { render 'task' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  # GET /tasks/print
+  def print
+    respond_to do |format|
+      format.html { render template: 'shared/print', layout: 'print'}
     end
   end
 

@@ -8,89 +8,56 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require foundation_base
- *= require glyphicons
  *= require_self
  */
 
-.command_block, .filter_container, .top-bar {
-  display:none;
-}
+@import 'glyphicons';
+@import 'font-awesome';
+@import 'bootstrap_and_overrides';
+@import 'variables';
 
-.task_sort {
-  display:none;
-}
-
-li {
-  display:none;
-  &[data-iteration='0'] {
-    display:inline-block;
+.task {
+  border:2px solid black;
+  font-weight:bold;
+  height:225px;
+  margin-bottom:15px;
+  padding:8px;
+  position:relative;
+  .badge {
+    background-color:transparent;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    color:$grayDark;
+    padding-left:5px;
+    padding-right:5px;
+    margin-right:2px;
+    &.badge-inverse {
+      background-color:transparent;
+      border:1px solid $grayDark;
+    }
   }
-  &.iteration_marker {
-    display:none;
+  .contact-us {
+    position:absolute;
+    bottom:8px;
+    left:8px;
+    width:75px;
   }
-  &.task_inline {
-    border:2px solid black;
-    list-style-type:none;
-    margin:0 0.25in 0.25in 0;
-    padding:8px;
-    page-break-inside:avoid;
-    position:relative;
-    height:2in;
-    width:2.25in;
-    .columns {
-      display:block;
-      margin:0;
-      width:100%;
+  .release-date {
+    position:absolute;
+    bottom:8px;
+    right:8px;
+    text-align:right;
+    width:150px;
+  }
+  .points {
+    .badge-inverse {
+      border:1px solid black;
     }
-    .contact-us {
-      display:none;
-    }
-    .description {
-      border-top:1px solid #999;
-      display:inline-block;
-      font-size:80%;
-      margin:0 5px 0 2px;
-      padding-top:4px;
-      overflow:hidden;
-      height:0.75in;
-      width:90%;
-    }
-    .iteration_toggle {
-      display:none;
-    }
-    .points {
-      display:none;
-    }
-    .printed-contact-us {
-      margin:0 8px;
-      position:absolute;
-      bottom:0;
-      left:0;
-      text-align:left;
-    }
-    .printed-points {
-      display:inline-block;
-    }
-    .printed-title {
-      border:none;
-      font-weight:bold;
-      margin:0 0 -5px;
-    }
-    .release-date {
-      position:absolute;
-      bottom:0;
-      left:0;
-      text-align:right;
-    }
-    .status {
-      display:none;
-    }
-    .task-rank {
-      display:none;
-    }
-    .title {
-      display:none;
-    }
+  }
+  .section {
+    border-bottom:1px solid black;
+    padding-bottom:8px;
+    margin-bottom:6px;
   }
 }
