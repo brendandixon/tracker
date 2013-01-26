@@ -62,14 +62,18 @@ $(function() {
           p.val(points);
         }
       } else {
-        task = task.attr('id').split('_')[1];
+        id = task.attr('id').split('_')[1];
+        query = 'points=' + points;
+        if (task.children('.expanded')) {
+          query += '&expanded=1';
+        }
         $.ajax({
           type: 'POST',
           beforeSend: function(xhr){
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
           },
           dataType: 'script',
-          url: '/tasks/' + task + '/point?points=' + points,
+          url: '/tasks/' + id + '/point?' + query,
           error: function(jqXHR, textStatus, error) {
             $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
           }

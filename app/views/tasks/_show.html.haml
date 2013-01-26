@@ -1,21 +1,11 @@
 - task ||= @task
 - description = task.description.present? ? task.description : t(:no_details_html, scope: [:activerecord, :labels, :task])
 
-.row.section<
-  .seven.columns.title= task.title
-  .three.columns.offset-by-two.text-right= task_status_tag(task)
-.row.section
-  .eleven.columns.description= description
-.row<
-  .two.columns= task.project.name
-  - if task.story.present?
-    .two.end.columns= task.story.feature.name
-  .three.columns.end
-    = render partial: 'edit', locals: {task:task, remote:true}
-.row<
-  .four.columns.offset-by-eight.text-right.actions
-    = link_to 'Edit', edit_task_path(task)
+= render partial: 'task', locals: {expanded: [task.id], stand_alone: true}
+.row-fluid
+  .span6.offset6.text-right
+    = link_to 'Edit', edit_task_path(task), class: 'btn btn-small btn-primary'
     \|
-    = link_to 'Delete', task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }
+    = link_to 'Delete', task, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this task?" }, class: 'btn btn-small btn-danger'
     \|
-    = link_to 'Back', tasks_path
+    = link_to 'Back', tasks_path, class: 'btn btn-small btn-link'

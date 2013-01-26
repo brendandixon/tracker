@@ -157,6 +157,7 @@ class TasksController < ApplicationController
   # POST /tasks/1/point?points=xx
   def point
     @task = Task.find(params[:id])
+    @expanded << @task.id if params.has_key?(:expanded)
 
     respond_to do |format|
       if @task.update_attribute(:points, params[:points].to_i)

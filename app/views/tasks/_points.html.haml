@@ -3,7 +3,7 @@
 - task ||= @task
 
 - if editable
-  .points><
+  .points.editable><
     .overlay{class: points_to_class(task.points)}><
       - possible_points.each do |points|
         %span.badge.badge-inverse{data: {points: points}}><= points

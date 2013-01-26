@@ -168,17 +168,17 @@
       width:5*($pointsWidth + (2*$badgePadding) + 2px);
     }
   }
-  .task-edit &, .task-inline & {
+  &.editable {
     cursor:pointer;
+    span:hover {
+      background-color:$blue;
+    }
   }
   span {
     display:inline-block;
     font-size:$fontSizeMini;
     margin-right:2px;
     width:$pointsWidth;
-    &:hover {
-      background-color:$blue;
-    }
   }
 }
 
@@ -243,12 +243,13 @@
   }
 }
 
+li.task:hover:not([data-expanded='1']) {
+  background-color:$colorHighlight;
+}
+
 .task {
   border-top:1px solid $grayLight;
   padding:4px 0;
-  &:hover:not([data-expanded='1']) {
-    background-color:$colorHighlight;
-  }
   &[data-status='pending'] {
     cursor:move;
   }
