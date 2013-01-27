@@ -348,6 +348,9 @@ li.task:hover:not([data-expanded='1']) {
     background-color:$grayLight;
     &.sortable {
       background-color:$blue;
+      &:not(.last) {
+        border-right:1px solid transparent;
+      }
     }
   }
   tr:hover:not([data-expanded='1']) {

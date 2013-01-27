@@ -1,4 +1,10 @@
-.row<
-  .eight.columns.offset-by-two
-    %h3.subheader= "New #{controller.controller_name.singularize.titleize}"
+- name = controller.controller_name.singularize
+- object = controller.instance_variable_get("@#{name}")
+.row
+  .span7
+    .row-fluid.overview
+      .span5
+        %p= "New #{name.titleize}"
+      .span7
+        %p#notice
     = render partial: "#{controller.controller_name}/edit"

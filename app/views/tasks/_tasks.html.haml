@@ -53,13 +53,13 @@
 
         - else
           - unless printing
-            .task-sort
+            .row-fluid.task-sort
               %table.table
                 %thead
                   %tr
-                    = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'span3'}
-                    = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'span2'}
-                    = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'span2'}
+                    = render partial: 'shared/sortable', locals: {name: 'Title', field: 'title', classes: 'span5'}
+                    = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'span3'}
+                    = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'span4 last'}
 
             .row
               .span7

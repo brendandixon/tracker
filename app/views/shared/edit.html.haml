@@ -1,8 +1,10 @@
 - name = controller.controller_name.singularize
 - object = controller.instance_variable_get("@#{name}")
-.row<
-  = render 'shared/top_bar'
 .row
-  .eight.columns.offset-by-two#Main
-    %h3.subheader= "Edit #{name.titleize} ##{object.id}"
+  .span7
+    .row-fluid.overview
+      .span5
+        %p= "Edit #{name.titleize} ##{object.id}"
+      .span7
+        %p#notice
     = render partial: "#{controller.controller_name}/edit"

@@ -40,10 +40,10 @@
     .row{class: row_classes}
       .span7
 
-        - if edited.include?(task.id)
+        - if edited.include?(id)
           = render partial: 'edit', locals: {task:task, remote:true}
 
-        - elsif expanded.include?(task.id)
+        - elsif expanded.include?(id)
           %form
             .row-fluid
               .span12
@@ -57,8 +57,9 @@
                         %label= 'Status'
                         .title= t(task.status, scope: [:activerecord, :labels, :task])
                       .command-block{class: stand_alone ? 'hidden' : nil}
+                        = awesome_link_to '', task_path(task), glyph: 'awesome-remove', data: {confirm: "WARNING: Are you sure you want to delete this task?", method: :delete}, remote: true
                         = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
-                        = awesome_link_to '', task_path(task), glyph: 'awesome-remove', remote:true
+                        = awesome_link_to '', task_path(task), glyph: 'awesome-eye-close', remote:true
                   - if task.story.present?
                     .row-fluid.section
                       .span12
@@ -102,4 +103,4 @@
                     .command-block.on-hover
                       = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-check')
                       = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
-                      = awesome_link_to '', task_path(task, expanded: 1), glyph: 'awesome-info-sign', remote:true
+                      = awesome_link_to '', task_path(task, expanded: 1), glyph: 'awesome-eye-open', remote:true
