@@ -1,3 +1,6 @@
+- projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
+- states = @filter.content[:status] || []
+- states = StatusScopes::ALL_STATES if states.empty?
 - printing = false unless defined?(printing)
 
 #Main
@@ -9,7 +12,7 @@
   - if printing
     - if @tasks.is_a?(IterationEnumerator)
       - @tasks.each_iteration(0) do |iteration|
-        - tasks = iteration.tasks
+        - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
         - break
     - else
       - tasks = @tasks

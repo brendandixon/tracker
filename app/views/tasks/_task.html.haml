@@ -30,10 +30,14 @@
     - if task.story.present?
       .row-fluid
         .span12
-          - if task.story.contact_us_number.present?
-            .contact-us= "CU# #{task.story.contact_us_number}"
-          - if task.story.release_date.present?
-            .release-date= task.story.release_date.to_date.to_s(:medium)
+          .footer
+            .row-fluid
+              .span6
+                - if task.story.contact_us_number.present?
+                  .contact-us= "CU# #{task.story.contact_us_number}"
+              .span6
+                - if task.story.release_date.present?
+                  .release-date= task.story.release_date.to_date.to_s(:medium)
 
 
   - else
