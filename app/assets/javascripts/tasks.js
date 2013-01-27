@@ -25,11 +25,11 @@ Tracker.Tasks.saveIterationState = function(iteration, fShow) {
 
 Tracker.Tasks.toggleIteration = function(e, iteration, fShow) {
   if (fShow) {
-    $('li[data-iteration=' + iteration + ']').removeClass('hidden').addClass('visible');
+    $('ol[data-iteration=' + iteration + ']').removeClass('hidden').addClass('visible');
     e.find('.glyphicon').removeClass('expand').addClass('collapse_top');
     e.attr('data-collapsed', 0);
   } else {
-    $('li[data-iteration=' + iteration + ']').removeClass('visible').addClass('hidden');
+    $('ol[data-iteration=' + iteration + ']').removeClass('visible').addClass('hidden');
     e.find('.glyphicon').removeClass('collapse_top').addClass('expand');
     e.attr('data-collapsed', 1);
   }

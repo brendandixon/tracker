@@ -1,6 +1,5 @@
 - edited ||= []
 - expanded ||= []
-- iteration = 0 unless defined?(iteration)
 - printing = false unless defined?(printing)
 - stand_alone = printing unless defined?(stand_alone)
 - task ||= @task
@@ -9,7 +8,7 @@
 - id = task.new_record? ? 'new' : task.id
 - classes = 'task'
 - classes << ' edit-mode' if @edited.include?(id)
-- data = {iteration: iteration, status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
+- data = {status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
 - data[:print] = 1 if printing
 - row_classes = @expanded.include?(id) ? 'expanded' : 'compact'
 

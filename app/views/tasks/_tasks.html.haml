@@ -39,10 +39,10 @@
                   %span.badge.badge-info= iteration.in_progress
                   %span.badge.badge-important= iteration.pending
             
-            %ol.unstyled.task-list<
+            %ol.unstyled.task-list{data: {iteration: iteration.number}}<
               - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
               - if tasks.count > 0
-                = render partial: 'task', collection: tasks, locals: {edited: @edited, expanded: @expanded, iteration: iteration.number}
+                = render partial: 'task', collection: tasks, locals: {edited: @edited, expanded: @expanded}
               - else
                 %li{data: {iteration: iteration.number, collapsed: 0, empty: 1}}
                   %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
