@@ -17,13 +17,10 @@
   - if printing
     .row-fluid
       .span12
-        .section
-          .title= task.title
+        .title= task.title
     .row-fluid
       .span12
-        .section
-          .project= task.project.name
-          .points= render partial: 'points', locals: {task: task}
+        .project= "#{task.project.name} &mdash; #{pluralize(task.points, 'Point')}".html_safe
     .row-fluid
       .span12
         .description= task.description

@@ -13,30 +13,25 @@
 
 @import 'glyphicons';
 @import 'font-awesome';
-@import 'bootstrap_and_overrides';
+@import "bootstrap";
 @import 'variables';
 
+@page {
+  size:8.5in 11in;
+  margin:2cm;
+}
+
 .task {
-  border:2px solid black;
+  border:3px solid black;
   height:225px;
   margin-bottom:15px;
   padding:8px;
+  page-break-inside:avoid;
   position:relative;
-  .badge {
-    background-color:transparent;
-    -webkit-border-radius:4px;
-    -moz-border-radius:4px;
-    border-radius:4px;
-    color:$grayDark;
-    padding-left:5px;
-    padding-right:5px;
-    margin-right:2px;
-    &.badge-inverse {
-      background-color:transparent;
-      border:1px solid $grayDark;
-    }
-  }
-  .contact-us {
+  .description {
+    max-height:115px;
+    text-overflow:ellipsis;
+    overflow:hidden;
   }
   .footer {
     border-top:1px solid black;
@@ -52,15 +47,19 @@
       border:1px solid black;
     }
   }
+  .project {
+    font-weight:bold;
+  }
   .release-date {
     text-align:right;
-  }
-  .section {
-    padding-bottom:8px;
-    margin-bottom:6px;
   }
   .title {
     border-bottom:1px solid black;
     font-weight:bold;
+    padding-bottom:8px;
+    margin-bottom:6px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
   }
 }
