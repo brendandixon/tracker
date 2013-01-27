@@ -64,7 +64,7 @@ $(function() {
       } else {
         id = task.attr('id').split('_')[1];
         query = 'points=' + points;
-        if (task.children('.expanded')) {
+        if (task.children('.expanded').length > 0) {
           query += '&expanded=1';
         }
         $.ajax({
