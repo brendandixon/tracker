@@ -1,6 +1,6 @@
-- projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
-- states = @filter.content[:status] || []
-- states = StatusScopes::ALL_STATES if states.empty?
+- if @tasks.is_a?(IterationEnumerator)
+  - projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
+  - states = @filter.content[:status] || StatusScopes::ALL_STATES
 - printing = false unless defined?(printing)
 
 #Main
@@ -26,9 +26,6 @@
     .row
       .span7
         - if @tasks.is_a?(IterationEnumerator)
-          - projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
-          - states = @filter.content[:status] || []
-          - states = StatusScopes::ALL_STATES if states.empty?
           - @tasks.each_iteration(printing ? 0 : -1) do |iteration|
             .iteration-marker{data: {iteration: iteration.number, collapsed: 0}}
               .row.iteration-toggle
