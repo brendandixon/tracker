@@ -211,6 +211,21 @@
 }
 
 .story {
+  .command-block {
+    display:inline-block;
+    position:absolute;
+    text-align:right;
+    top:1px;
+    right:4px;
+    width:2 * ($glyphWidth + $glyphPadding);
+    z-index:1;
+  }
+  .label {
+    font-size:$fontSizeMini;
+    margin-right:2px;
+    text-align:center;
+    width:55px;
+  }
   &.expanded {
     .projects {
       padding-top:10px;
@@ -227,24 +242,48 @@
       }
     }
     form {
-    margin-bottom:0;
-    label {
-      font-size:$fontSizeSmall;
-      font-weight:$fontThick;
       margin-bottom:0;
+      label {
+        font-size:$fontSizeSmall;
+        font-weight:$fontThick;
+        margin-bottom:0;
+      }
     }
   }
 }
-  .label {
-    font-size:$fontSizeMini;
-    margin-right:2px;
-    text-align:center;
-    width:55px;
+
+div {
+  .story {
+    &.expanded {
+      border-top:1px solid $grayLight;
+      padding:4px 0;
+    }
   }
 }
 
-li.task:hover:not([data-expanded='1']) {
-  background-color:$colorHighlight;
+.table {
+  td, th {
+    position:relative;
+  }
+  th {
+    color:$white;
+    background-color:$grayLight;
+    &.sortable {
+      background-color:$blue;
+      &:not(.last) {
+        border-right:1px solid transparent;
+      }
+    }
+  }
+  tr:hover:not([data-expanded='1']) {
+    background-color:$colorHighlight;
+  }
+  .sortable {
+    a, a:hover {
+      color:$white;
+      text-decoration:none;
+    }
+  }
 }
 
 .task {
@@ -327,41 +366,8 @@ li.task:hover:not([data-expanded='1']) {
   }
 }
 
-.story {
-  .command-block {
-    display:inline-block;
-    position:absolute;
-    text-align:right;
-    top:1px;
-    right:4px;
-    width:2 * ($glyphWidth + $glyphPadding);
-    z-index:1;
-  }
-}
-
-.table {
-  td, th {
-    position:relative;
-  }
-  th {
-    color:$white;
-    background-color:$grayLight;
-    &.sortable {
-      background-color:$blue;
-      &:not(.last) {
-        border-right:1px solid transparent;
-      }
-    }
-  }
-  tr:hover:not([data-expanded='1']) {
-    background-color:$colorHighlight;
-  }
-  .sortable {
-    a, a:hover {
-      color:$white;
-      text-decoration:none;
-    }
-  }
+li.task:hover:not([data-expanded='1']) {
+  background-color:$colorHighlight;
 }
 
 .task-sort {

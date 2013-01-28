@@ -2,7 +2,7 @@
 - stand_alone = true if stand_alone.nil?
 - story ||= @story
 
-= content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 5} do
+= content_tag stand_alone ? 'div' : 'td', stand_alone ? {class: 'story expanded'} : {colspan: 5} do
   = form_for story, remote:remote  do |f|
     .row-fluid
       .span12

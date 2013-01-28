@@ -1,5 +1,5 @@
 - possible_points = Task::POINTS[1,Task::POINTS.length]
-- editable = true unless defined?(editable)
+- editable = true if editable.nil?
 - task ||= @task
 
 - if editable

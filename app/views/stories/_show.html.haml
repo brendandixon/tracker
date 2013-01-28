@@ -3,21 +3,33 @@
 - stand_alone = true if stand_alone.nil?
 
 - if stand_alone
-  .row-fluid
-    .span7.title= @story.title
-    .span5.text-right= story_project_labels(@story)
-  .row-fluid
-    .span2= @story.feature.name if @story.feature.present?
-    .span2= @story.release_date.to_date.to_s(:medium) if @story.release_date.present?
-    .span2.offset6
-      %a{href: @story.contact_us_link, target: '_blank'}= @story.contact_us_number
-  .row-fluid
-    .span4.offset8.text-right
-      = link_to 'Edit', edit_story_path(@story), remote:remote, class: 'btn btn-primary'
-      \|
-      = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }, remote:remote, class: 'btn btn-danger'
-      \|
-      = link_to 'Back', :back, class: 'btn btn-link'
+  .story.expanded
+    %form
+      .row-fluid
+        .span9
+          %label= 'Title'
+          .title= @story.title
+        .span3
+          %label= 'Projects'
+          = story_project_labels(@story)
+      .row-fluid
+        .span2
+          %label= 'Feature'
+          = @story.feature.name if @story.feature.present?
+        .span3
+          %label= 'Release Date'
+          = @story.release_date.to_date.to_s(:medium) if @story.release_date.present?
+        - if @story.contact_us_number.present?
+          .span2
+            %label= 'Contact Us'
+            %a{href: @story.contact_us_link, target: '_blank'}= @story.contact_us_number
+      .row-fluid
+        .span4.offset8.text-right
+          = link_to 'Edit', edit_story_path(@story), remote:remote, class: 'btn btn-small btn-flat btn-primary'
+          \|
+          = link_to 'Delete', @story, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this story?" }, remote:remote, class: 'btn btn-small btn-flat btn-danger'
+          \|
+          = link_to 'Back', :back, class: 'btn btn-small btn-link'
 
 - else
   %td.span3= story.title

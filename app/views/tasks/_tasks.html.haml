@@ -1,7 +1,7 @@
 - if @tasks.is_a?(IterationEnumerator)
   - projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
   - states = @filter.content[:status] || StatusScopes::ALL_STATES
-- printing = false unless defined?(printing)
+- printing = false if printing.nil?
 
 #Main
   - unless printing

@@ -1,7 +1,7 @@
 - edited ||= []
 - expanded ||= []
-- printing = false unless defined?(printing)
-- stand_alone = printing unless defined?(stand_alone)
+- printing = false if printing.nil?
+- stand_alone = printing if stand_alone.nil?
 - task ||= @task
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
@@ -10,7 +10,7 @@
 - classes << ' edit-mode' if @edited.include?(id)
 - data = {status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
 - data[:print] = 1 if printing
-- row_classes = @expanded.include?(id) ? 'expanded' : 'compact'
+- row_classes = @expanded.include?(id) || stand_alone ? 'expanded' : 'compact'
 
 = content_tag stand_alone ? 'div' : 'li', {id: "Task_#{id}", class: classes, data: data} do
   - if printing
@@ -41,7 +41,7 @@
       .span7
 
         - if edited.include?(id)
-          = render partial: 'edit', locals: {task:task, remote:true}
+          = render partial: 'edit', locals: {task:task, remote:true, stand_alone: false}
 
         - elsif expanded.include?(id)
           %form
