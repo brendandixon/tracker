@@ -5,7 +5,11 @@ id = @task.new_record? ? 'new' : @task.id
 if ($('#Task_<%= id %>').length > 0) {
   $('#Task_<%= id%>').replaceWith('<%= content %>');
 } else if ($('.task-list > li').length > 0) {
-  $('.task-list > li').first().before('<%= content %>');
+  var e = $(".task-list > li[data-status='pending']");
+  if (e.length <= 0) {
+    e = $('.task-list > li');
+  }
+  e.first().before('<%= content %>');
   $('.task-list > li[data-empty]').remove();
 }
 <% if @changed.include?(id) %>

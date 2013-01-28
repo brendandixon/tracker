@@ -72,19 +72,19 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @task = Task.new(params[:task])
-    @edited << 'new'
-    @expanded << 'new'
 
     respond_to do |format|
       if @task.save
         flash[:notice] = 'Task was successfully created.'
-        @edited.delete_if {|id| id == 'new'}
         @changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @task, status: :created, location: @task }
       else
+        @edited << 'new'
+        @expanded << 'new'
+        
         format.html { render action: "new" }
         format.js { render 'task' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
@@ -96,7 +96,6 @@ class TasksController < ApplicationController
   # PUT /tasks/1.json
   def update
     @task = Task.find(params[:id])
-    @expanded << @task.id
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
@@ -108,6 +107,7 @@ class TasksController < ApplicationController
         format.json { head :no_content }
       else
         @edited << @task.id
+        @expanded << @task.id
 
         format.html { render action: "edit" }
         format.js { render 'task' }
