@@ -129,7 +129,7 @@ class StoriesController < ApplicationController
     features = @filter.content[:features]
     status = @filter.content[:status]
 
-    query = query.joins(:tasks).in_state(status) if status.present?
+    query = query.has_tasks_in_state(status)
 
     query = query.for_contact_us(contact_us) if contact_us.present?
     query = query.for_features(features) if features.present?

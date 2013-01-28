@@ -10,6 +10,7 @@ module StatusScopes
 
   included do  
     scope :in_state, lambda{|status| where('tasks.status IN (?)', status)}
+    scope :not_in_state, lambda{|status| where('tasks.status NOT IN (?)', status)}
     
     scope :started, in_state(StatusScopes::STARTED)
     scope :incomplete, in_state(StatusScopes::INCOMPLETE)
@@ -44,6 +45,10 @@ module StatusScopes
         else nil
         end
       end.compact.flatten
+    end
+
+    def invert(*states)
+      ALL_STATES.reject{|status| states.include?(status)}
     end
 
   end

@@ -28,6 +28,8 @@ class Story < ActiveRecord::Base
   validates_presence_of :feature, :title
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
 
+  scope :has_tasks_in_state, lambda{|status| where('(SELECT COUNT(*) FROM tasks WHERE tasks.story_id = stories.id AND tasks.status IN (?)) > 0', status)}
+
   scope :for_contact_us, lambda{|cu| where(contact_us_number: cu)}
   scope :for_features, lambda{|features| where(feature_id: features)}
   scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
