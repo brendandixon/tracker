@@ -198,10 +198,6 @@
     width:1 * ($glyphWidth + $glyphPadding);
     z-index:1;
   }
-  #notice {
-    color:$textColor;
-    font-size:$fontSizeLarge*0.9;
-  }
   p {
     margin-bottom:0;
     overflow:hidden;

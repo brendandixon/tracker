@@ -72,10 +72,13 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @task = Task.new(params[:task])
+    @edited << 'new'
+    @expanded << 'new'
 
     respond_to do |format|
       if @task.save
         flash[:notice] = 'Task was successfully created.'
+        @edited.delete_if {|id| id == 'new'}
         @changed << @task.id
         
         format.html { redirect_to tasks_path(story_id: @task.story_id) }
@@ -93,6 +96,7 @@ class TasksController < ApplicationController
   # PUT /tasks/1.json
   def update
     @task = Task.find(params[:id])
+    @expanded << @task.id
 
     respond_to do |format|
       if @task.update_attributes(params[:task])

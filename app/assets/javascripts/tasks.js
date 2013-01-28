@@ -75,7 +75,7 @@ $(function() {
           dataType: 'script',
           url: '/tasks/' + id + '/point?' + query,
           error: function(jqXHR, textStatus, error) {
-            $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
+            $('#messages').html(textStatus).show().delay(1250).fadeOut(800);
           }
         });
       }
@@ -154,12 +154,12 @@ $(function() {
             dataType: 'script',
             url: '/tasks/' + task + '/rank?' + query,
             error: function(jqXHR, textStatus, error) {
-              $('#notice').html(textStatus).show().delay(1250).fadeOut(800);
+              $('#messages').html(textStatus).show().delay(1250).fadeOut(800);
               $('#TaskList').sortable('cancel');
             }
           });
         } else {
-          $('#notice').html("Internal Error - Improper position").show().delay(1250).fadeOut(800);
+          $('#messages').html("Internal Error - Improper position").show().delay(1250).fadeOut(800);
         }    
       });
     $('.task-list li').disableSelection();

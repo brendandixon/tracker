@@ -2,9 +2,9 @@
 - object = controller.instance_variable_get("@#{name}")
 .row
   .span7
+    = render 'layouts/messages'
     .row-fluid.overview
       .span5
         %p= "#{name.titleize} ##{object.id}"
       .span7
-        %p#notice
     = render partial: "#{controller.controller_name}/show"

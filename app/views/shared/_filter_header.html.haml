@@ -6,7 +6,6 @@
       - else
         = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? t(:filtered_dynamic_html, scope: [:filter]) : @filter.name)
   .span7
-    %p#notice
     - if controller.respond_to?(:print)
       .command-block
         = awesome_link_to '', url_for(controller: controller.controller_name, action: :print), glyph: 'awesome-print', target: '_blank'
