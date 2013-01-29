@@ -19,7 +19,7 @@
         = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: !disabled
       %li.divider-vertical
       %li.dropdown{class: disabled ? 'disabled' : nil}
-        = content_tag disabled ? :span : :a, {class: 'dropdown-toggle', href: '#', data: {toggle: 'dropdown'}} do
+        = content_tag disabled ? :span : :a, {href: '#', data: {toggle: 'dropdown'}} do
           Filter
           %b.caret
           = render 'shared/filter_menu' unless disabled

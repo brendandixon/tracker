@@ -32,7 +32,7 @@ $gridGutterWidth768:6px;
 .nav {
   .dropdown-menu {
       a:hover {
-        font-weight:bold;
+        text-shadow:1px 1px 2px lighten($grayDark,5%);
       }
     .active {
       a, a:hover {
