@@ -20,6 +20,6 @@
 //= require tasks
 
 $(function() {
-  $('#messages').delay(1250).fadeOut(800);
+  $('#messages').show().delay(1250).fadeOut(800);
   $(".has-tooltip").tooltip();
 });

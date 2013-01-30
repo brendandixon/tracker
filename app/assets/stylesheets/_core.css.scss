@@ -194,6 +194,7 @@
 
 .overview {
   @extend .lead;
+  margin-top:5px;
   margin-bottom:15px;
   position:relative;
   .command-block {
@@ -216,18 +217,24 @@
   }
 }
 
-.story, .team {
+.feature, .project, .story, .task, .team {
+  .row-fluid.section {
+    margin-bottom:12px;
+  }
+}
+
+.feature, .project, .story, .team {
   .command-block {
     display:inline-block;
     position:absolute;
     text-align:right;
-    top:1px;
+    top:6px;
     right:4px;
     width:2 * ($glyphWidth + $glyphPadding);
     z-index:1;
   }
   &.expanded {
-    .projects {
+    .features, .projects {
       padding-top:10px;
       text-align:right;
       label {
@@ -248,6 +255,16 @@
         font-weight:$fontThick;
         margin-bottom:0;
       }
+    }
+  }
+  .label {
+    width:110px;
+  }
+}
+.project, .team {
+  &.expanded {
+    .features, .projects {
+      text-align:left;
     }
   }
 }

@@ -1,9 +1,10 @@
 - edited ||= []
+- expanded ||= []
 - team ||= @team
 - id = team.new_record? ? 'new' : team.id
 
-- if edited.include?(id) || team.new_record?
-  %tr.team.edit-mode#Team{id: id}
+- if edited.include?(id)
+  %tr.team.edit-mode.expanded#Team{id: id, data: {expanded: 1}}
     = render partial: 'edit', locals:{team:team, remote:true, stand_alone:false}
 
 - else

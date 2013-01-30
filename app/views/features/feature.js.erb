@@ -1,21 +1,15 @@
 <%
-content = escape_javascript(render(partial: @feature, locals: {in_edit_mode: @in_edit_mode}))
+content = escape_javascript(render(partial: @feature, locals: {edited: @edited, expanded: @expanded}))
 id = @feature.new_record? ? 'new' : @feature.id
 %>
-<%= render template: 'shared/reset_transients' %>
-$('#Feature_new').remove();
-if ($('#Feature_<%= id %>').length <= 0) {
-  if ($('#FeatureList > tbody > tr').length <= 0) {
-    $('#FeatureList > tbody').html('<%= content %>');
-  } else {
-    $('#FeatureList > tbody > tr').first().before('<%= content %>');
-  }
-} else {
+if ($('#Feature_<%= id %>').length > 0) {
   $('#Feature_<%= id%>').replaceWith('<%= content %>');
+} else if ($('.feature-list > tbody > tr').length > 0) {
+  $('.feature-list > tbody > tr').first().before('<%= content %>');
+  $('.feature-list > tbody > tr[data-empty]').remove();
 }
-$('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
-$('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
-<% if @was_changed.include?(id) %>
+<% if @changed.include?(id) %>
 $('#Feature_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
-<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/messages' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/reset_transients' %>

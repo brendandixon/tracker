@@ -5,14 +5,14 @@
 - if stand_alone
   .story.expanded
     %form
-      .row-fluid
+      .row-fluid.section
         .span9
           %label= 'Title'
           .title= @story.title
         .span3
           %label= 'Projects'
           = story_project_labels(@story)
-      .row-fluid
+      .row-fluid.section
         .span2
           %label= 'Feature'
           = @story.feature.name if @story.feature.present?

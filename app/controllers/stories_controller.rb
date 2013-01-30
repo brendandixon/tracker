@@ -72,6 +72,9 @@ class StoriesController < ApplicationController
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @story, status: :created, location: @story }
       else
+        @edited << 'new'
+        @expanded << 'new'
+
         format.html { render action: "new" }
         format.js { render 'story' }
         format.json { render json: @story.errors, status: :unprocessable_entity }
@@ -93,6 +96,9 @@ class StoriesController < ApplicationController
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
+        @edited << @story.id
+        @expanded << @story.id
+
         format.html { render action: "edit" }
         format.js { render 'story' }
         format.json { render json: @story.errors, status: :unprocessable_entity }

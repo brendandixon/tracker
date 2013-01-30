@@ -1,11 +1,11 @@
 - edit ||= false
 - classes = []
 - classes << ' disabled' unless edit || @project.features.include?(feature)
-- classes << ' end' if last < length
 
-.three.columns.features{class: classes}
+.span3.features{class: classes}
   - if edit
-    = check_box_tag 'project[features][]', feature.id, @project.features.include?(feature), id: "project_feature_#{feature.id}"
-    = label_tag "project_feature_#{feature.id}", feature.name, class: 'inline_label'
+    = label_tag "project_feature_#{feature.id}" do
+      = check_box_tag 'project[features][]', feature.id, @project.features.include?(feature), id: "project_feature_#{feature.id}"
+      = feature.name
   - else
     = feature.name

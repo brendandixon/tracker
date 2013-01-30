@@ -22,6 +22,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1.json
   def show
     @project = Project.find(params[:id])
+    @expanded << @project.id if params.has_key?(:expanded)
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
@@ -34,6 +35,8 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
+    @edited << 'new'
+    @expanded << 'new'
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
@@ -45,7 +48,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.includes(:features, :stories, :tasks).find(params[:id])
-    @in_edit_mode << @project.id
+    @edited << @project.id
+    @expanded << @project.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
@@ -63,12 +67,15 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.save
         flash[:notice] = 'Project was successfully created.'
-        @was_changed << @project.id
+        @changed << @project.id
         
         format.html { redirect_to projects_path }
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @project, status: :created, location: @project }
       else
+        @edited << 'new'
+        @expanded << 'new'
+
         format.html { render action: "new" }
         format.js { render 'project' }
         format.json { render json: @project.errors, status: :unprocessable_entity }
@@ -85,13 +92,14 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.update_attributes(params[:project])
         flash[:notice] = 'Project was successfully updated.'
-        @was_changed << @project.id
+        @changed << @project.id
 
         format.html { redirect_to projects_path }
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
-        @in_edit_mode << @project.id
+        @edited << @project.id
+        @expanded << @project.id
 
         format.html { render action: "edit" }
         format.js { render 'project' }
@@ -139,8 +147,9 @@ class ProjectsController < ApplicationController
   end
 
   def ensure_initial_state
-    @in_edit_mode = []
-    @was_changed = []
+    @edited = []
+    @expanded = []
+    @changed = []
   end
 
 end

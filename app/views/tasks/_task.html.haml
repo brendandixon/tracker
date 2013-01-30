@@ -16,7 +16,7 @@
   - if printing
     .row-fluid
       .span12
-        .title= task.title
+        .title= task.to_s
     .row-fluid
       .span12
         .project= "#{task.project.name} &mdash; #{pluralize(task.points, 'Point')}".html_safe
@@ -38,7 +38,7 @@
 
   - else
     .row{class: row_classes}
-      .span7
+      .span8
 
         - if edited.include?(id)
           = render partial: 'edit', locals: {task:task, remote:true, stand_alone: false}
@@ -74,10 +74,10 @@
                         %label= 'Description'
                         .description= task.description
                   .row-fluid
-                    .span5
+                    .span6
                       %label= 'Project'
                       .project= task.project.name
-                    .span4
+                    .span3
                       %label= 'Points'
                       = render partial: 'points', locals: {task: task, editable: true}
                     .span3
@@ -94,11 +94,11 @@
             .span12
               .clearfix{class: task.status}
                 .row-fluid
-                  .span5
+                  .span6
                     .title.has-tooltip{title: task.project.name}
                       = task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
                   .span3= render partial: 'points', locals: {task: task, editable: true}
-                  .span4.text-right
+                  .span3.text-right
                     .release-date=task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
                     .command-block.on-hover
                       = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-check')

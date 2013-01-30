@@ -1,14 +1,17 @@
-.nine.columns.centered#Main
-  %table.twelve#FeatureList
+#Main
+  = render 'layouts/messages'
+  = render 'shared/filter_header'
+
+  %table.table.feature-list#FeatureList
     %thead
       %tr
-        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'five'}
-        =render partial: 'shared/sortable', locals: {name: 'Category', field: 'category', classes: 'five'}
+        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'span5'}
+        =render partial: 'shared/sortable', locals: {name: 'Category', field: 'category', classes: 'span5'}
 
     %tbody
       - if @features.empty?
-        %tr.feature_inline#Feature_new
+        %tr.feature#Feature_new
           %td{colspan: 2}
             %h3.subheader= t(:none_html, scope: [:controllers, :features])
       - else
-        = render @features
+        = render partial: 'feature', collection: @features, locals: {edited: @edited, expanded: @expanded}

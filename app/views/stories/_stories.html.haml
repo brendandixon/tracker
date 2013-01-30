@@ -1,24 +1,20 @@
 #Main
-  .row
-    .span9
-      = render 'layouts/messages'
-      = render 'shared/filter_header'
+  = render 'layouts/messages'
+  = render 'shared/filter_header'
 
-  .row
-    .span9
-      %table.table.story-list#StoryList
-        %thead
-          %tr
-            = render partial: 'shared/sortable', locals: {name: 'Title', field: 'story', classes: 'span3'}
-            = render partial: 'shared/sortable', locals: {name: 'Feature', field: 'feature', classes: 'span1'}
-            = render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date', classes: 'span2'}
-            = render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu', classes: 'span1'}
-            %th.three.span2 Projects
+  %table.table.story-list#StoryList
+    %thead
+      %tr
+        = render partial: 'shared/sortable', locals: {name: 'Title', field: 'story', classes: 'span3'}
+        = render partial: 'shared/sortable', locals: {name: 'Feature', field: 'feature', classes: 'span1'}
+        = render partial: 'shared/sortable', locals: {name: 'Release Date', field: 'date', classes: 'span1'}
+        = render partial: 'shared/sortable', locals: {name: 'CU', field: 'cu', classes: 'span1'}
+        %th.three.span2 Projects
 
-        %tbody
-          - if @stories.empty?
-            %tr.story.expanded#Story_new{data: {empty: 1}}
-              %td{colspan: 5}
-                %h3.subheader= t(:none_html, scope: [:controllers, :stories])
-          - else
-            = render partial: 'story', collection: @stories, locals: {edited: @edited, expanded: @expanded}
+    %tbody
+      - if @stories.empty?
+        %tr.story.expanded#Story_new{data: {empty: 1}}
+          %td{colspan: 5}
+            %h3.subheader= t(:none_html, scope: [:controllers, :stories])
+      - else
+        = render partial: 'story', collection: @stories, locals: {edited: @edited, expanded: @expanded}

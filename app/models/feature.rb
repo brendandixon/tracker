@@ -12,7 +12,7 @@
 class Feature < ActiveRecord::Base
   include CacheCleanser
   
-  attr_accessible :name
+  attr_accessible :name, :category_id
 
   has_many :stories, dependent: :destroy
   has_many :supported_features, dependent: :destroy

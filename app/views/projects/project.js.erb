@@ -1,21 +1,15 @@
 <%
-content = escape_javascript(render(partial: @project, locals: {in_edit_mode: @in_edit_mode}))
+content = escape_javascript(render(partial: @project, locals: {edited: @edited, expanded: @expanded}))
 id = @project.new_record? ? 'new' : @project.id
 %>
-<%= render template: 'shared/reset_transients' %>
-$('#Project_new').remove();
-if ($('#Project_<%= id %>').length <= 0) {
-  if ($('#ProjectList > tbody > tr').length <= 0) {
-    $('#ProjectList > tbody').html('<%= content %>');
-  } else {
-    $('#ProjectList > tbody > tr').first().before('<%= content %>');
-  }
-} else {
+if ($('#Project_<%= id %>').length > 0) {
   $('#Project_<%= id%>').replaceWith('<%= content %>');
+} else if ($('.project-list > tbody > tr').length > 0) {
+  $('.project-list > tbody > tr').first().before('<%= content %>');
+  $('.project-list > tbody > tr[data-empty]').remove();
 }
-$('#Main tr:nth-child(even)').removeClass('odd').addClass('even');
-$('#Main tr:nth-child(odd)').removeClass('even').addClass('odd');
-<% if @was_changed.include?(id) %>
+<% if @changed.include?(id) %>
 $('#Project_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
-<%= render template: 'shared/notice' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/messages' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/reset_transients' %>

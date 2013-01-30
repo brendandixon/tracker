@@ -1,16 +1,19 @@
-.twelve.columns.centered#Main
-  %table.twelve#ProjectList
+#Main
+  = render 'layouts/messages'
+  = render 'shared/filter_header'
+
+  %table.table.project-list#ProjectList
     %thead
       %tr
-        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'two'}
-        = render partial: 'shared/sortable', locals: {name: 'Start Date', field: 'startdate', classes: 'two'}
-        = render partial: 'shared/sortable', locals: {name: 'End Date', field: 'enddate', classes: 'two'}
-        %th.seven= 'Features'
+        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'span2'}
+        = render partial: 'shared/sortable', locals: {name: 'Start Date', field: 'startdate', classes: 'span2'}
+        = render partial: 'shared/sortable', locals: {name: 'End Date', field: 'enddate', classes: 'span2'}
+        %th.span6= 'Features'
 
     %tbody
       - if @projects.empty?
-        %tr.project_inline#Project_new
+        %tr.project#Project_new{data: {empty: 1}}
           %td{colspan: 4}
             %h3.subheader= t(:none_html, scope: [:controllers, :projects])
       - else
-        = render @projects
+        = render partial: 'project', collection: @projects, locals: {edited: @edited, expanded: @expanded}

@@ -1,19 +1,20 @@
 #Main
-  .row
-    .span7
-      .row-fluid
-        %table.table.team-list#TeamList
-          %thead
-            %tr
-              = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'span4'}
-              = render partial: 'shared/sortable', locals: {name: 'Velocity', field: 'velocity', classes: 'span2'}
-              = render partial: 'shared/sortable', locals: {name: 'Iteration', field: 'iteration', classes: 'span2'}
-              %th.span4= 'Projects'
+  = render 'layouts/messages'
+  = render 'shared/filter_header'
 
-          %tbody
-            - if @teams.empty?
-              %tr.team#Team_new
-                %td{colspan: 4}
-                  %h3.subheader= t(:none_html, scope: [:controllers, :teams])
-            - else
-              = render @teams
+  %table.table.team-list#TeamList
+    %thead
+      %tr
+        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'span4'}
+        = render partial: 'shared/sortable', locals: {name: 'Velocity', field: 'velocity', classes: 'span2'}
+        = render partial: 'shared/sortable', locals: {name: 'Iteration', field: 'iteration', classes: 'span2'}
+        %th.span4= 'Projects'
+
+    %tbody
+      - if @teams.empty?
+        %tr.team#Team_new
+          %td{colspan: 4}
+            %h3.subheader= t(:none_html, scope: [:controllers, :teams])
+      - else
+        = render partial: 'team', collection: @teams, locals: {edited: @edited, expanded: @expanded}
+        = render @teams

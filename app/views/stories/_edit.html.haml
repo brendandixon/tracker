@@ -29,10 +29,10 @@
           .span3  
             = f.label :feature_id
             = f.select :feature_id, Feature.active.map{|f| [ f.name, f.id ] }, {}, class: 'span12'
-          .span2
+          .span3
             = f.label :contact_us_number
             = f.text_field :contact_us_number, size: 5, class: 'span12'
-          .span2
+          .span3
             = f.label :release_date
             = f.text_field :release_date, data: {datefield: true}, class: 'span12'
 

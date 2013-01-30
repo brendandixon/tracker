@@ -45,7 +45,7 @@ class Story < ActiveRecord::Base
   
   class<<self
     def all_stories
-      @all_stories ||= [['-', '']] + Story.in_title_order.map{|s| [ "#{s.title} (#{s.feature.name})", s.id ] }
+      @all_stories ||= [['-', '']] + Story.in_title_order.map{|s| [ s.to_s, s.id ] }
     end
     
     def refresh_cache
@@ -59,7 +59,10 @@ class Story < ActiveRecord::Base
   end
 
   def to_s
-    self.feature.present? ? "#{self.title} (#{self.feature.name})" : self.title
+    s = self.title
+    s += " (#{self.feature.name})" if self.feature.present?
+    s += " - #{self.release_date.to_date.to_s(:medium)}" if self.release_date.present?
+    s
   end
   
   private

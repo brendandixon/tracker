@@ -22,6 +22,7 @@ class FeaturesController < ApplicationController
   # GET /features/1.json
   def show
     @feature = Feature.find(params[:id])
+    @expanded << @feature.id if params.has_key?(:expanded)
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
@@ -34,6 +35,8 @@ class FeaturesController < ApplicationController
   # GET /features/new.json
   def new
     @feature = Feature.new
+    @edited << 'new'
+    @expanded << 'new'
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
@@ -45,7 +48,8 @@ class FeaturesController < ApplicationController
   # GET /features/1/edit
   def edit
     @feature = Feature.find(params[:id])
-    @in_edit_mode << @feature.id
+    @edited << @feature.id
+    @expanded << @feature.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
@@ -62,12 +66,15 @@ class FeaturesController < ApplicationController
     respond_to do |format|
       if @feature.save
         flash[:notice] = 'Feature was successfully created.'
-        @was_changed << @feature.id
+        @changed << @feature.id
         
         format.html { redirect_to features_path }
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @feature, status: :created, location: @feature }
       else
+        @edited << @feature.id
+        @expanded << @feature.id
+
         format.html { render action: "new" }
         format.js { render 'feature' }
         format.json { render json: @feature.errors, status: :unprocessable_entity }
@@ -83,13 +90,14 @@ class FeaturesController < ApplicationController
     respond_to do |format|
       if @feature.update_attributes(params[:feature])
         flash[:notice] = 'Feature was successfully updated.'
-        @was_changed << @feature.id
+        @changed << @feature.id
 
         format.html { redirect_to features_path }
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
-        @in_edit_mode << @feature.id
+        @edited << @feature.id
+        @expanded << @feature.id
 
         format.html { render action: "edit" }
         format.js { render 'feature' }
@@ -134,8 +142,9 @@ class FeaturesController < ApplicationController
   end
 
   def ensure_initial_state
-    @in_edit_mode = []
-    @was_changed = []
+    @edited = []
+    @expanded = []
+    @changed = []
   end
 
 end

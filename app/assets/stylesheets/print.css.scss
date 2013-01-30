@@ -21,6 +21,13 @@
   margin:2cm;
 }
 
+.row {
+  page-break-inside:avoid;
+  &.tasks {
+    margin-bottom:15px;
+  }
+}
+
 .task {
   border:3px solid black;
   height:225px;

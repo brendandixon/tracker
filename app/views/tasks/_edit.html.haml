@@ -45,7 +45,7 @@
               = f.text_area :description, rows: 5, placeholder: 'Provide a description or details', class: 'span12'
 
           .row-fluid
-            .span3
+            .span4
               = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
               = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }, {}, class: 'span12'
             .span3.offset2

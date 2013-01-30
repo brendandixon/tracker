@@ -3,7 +3,6 @@ $(function() {
     datefields = $('*[data-datefield]');
     datefields.datepicker({
       dateFormat: 'MM d, yy',
-      defaultDate: +7,
       minDate: '-6m',
       maxDate: '12m',
       showAnim: 'slideDown'
