@@ -3,21 +3,21 @@
 - team ||= @team
 
 - if stand_alone
-  .row
-    .twelve.columns= team.name
-  .row
-    .three.columns= "Velocity: #{team.velocity}"
-    .three.columns.end= "Sprint Days: #{team.iteration}"
-  .row
-    .twelve.columns
+  .row-fluid
+    .span12= team.name
+  .row-fluid
+    .span3= "Velocity: #{team.velocity}"
+    .span3= "Sprint Days: #{team.iteration}"
+  .row-fluid
+    .span12
       = team_project_labels(team.projects)
-  .row<
-    .four.columns.offset-by-eight.text-right.actions
-      = link_to 'Edit', edit_team_path(team)
+  .row-fluid
+    .span4.offset8.text-right
+      = link_to 'Edit', edit_team_path(team), class: 'btn btn-small btn-flat btn-primary'
       \|
-      = link_to 'Delete', team, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this team?" }, remote:remote
+      = link_to 'Delete', team, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this team?" }, remote:remote, class: 'btn btn-small btn-flat btn-danger'
       \|
-      = link_to 'Back', teams_path
+      = link_to 'Back', teams_path, class: 'btn btn-small btn-link'
 - else
   %td= team.name
   %td= team.velocity
@@ -25,5 +25,5 @@
   %td
     .projects
       = team_project_labels(team.projects)
-    .command_block.on_hover<
-      = glyph_link_to edit_team_path(team), glyph: 'edit', remote:remote
+    .command-block.on-hover<
+      = awesome_link_to '', edit_team_path(team), glyph: 'awesome-edit', remote:true

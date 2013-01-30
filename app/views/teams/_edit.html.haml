@@ -2,42 +2,44 @@
 - stand_alone = true if stand_alone.nil?
 - team ||= @team
 
-= content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 4} do
-  .row.team_edit
-    .twelve{class: stand_alone ? '' : 'columns'}
+= content_tag stand_alone ? 'div' : 'td', stand_alone ? {class: 'team expanded edit-mode'} : {colspan: 4} do
+  .row-fluid
+    .span12
       = form_for team, remote:remote do |f|
         - if team.errors.any?
-          .row
-            .twelve.columns#error_explanation
+          .row-fluid
+            .span12
+            #error_explanation
               %h2= "#{pluralize(team.errors.count, "error")} prohibited this team from being saved:"
               %ul
                 - team.errors.full_messages.each do |msg|
                   %li= msg
 
-        .row
-          .seven.columns
+        .row-fluid
+          .span7
             = f.label :name
-            = f.text_field :name
-            .row
-              .six.columns
+            = f.text_field :name, class: 'span11'
+            .row-fluid
+              .span4
                 = f.label :velocity
-                = f.text_field :velocity
-              .six.columns
+                = f.text_field :velocity, class: 'span11'
+              .span4
                 = f.label :iteration
-                = f.text_field :iteration
-          .five.columns<
+                = f.text_field :iteration, class: 'span11'
+          .span5
             = f.label :projects
             - Project.active.each_slice(3) do |projects|
-              .row<
+              .row-fluid
                 - projects.each do |project|
-                  .four.columns.projects<
-                    = check_box_tag 'team[projects][]', project.id, @team.projects.include?(project), id: "team_project_#{project.id}"
-                    = label_tag "team_project_#{project.id}", project.name, class: 'small'
-        .row
-          .four.columns.offset-by-eight.text-right.actions
-            = f.submit 'Save'
+                  .span4.projects<
+                    = label_tag "team_project_#{project.id}", project.name, class: 'small' do
+                      = check_box_tag 'team[projects][]', project.id, @team.projects.include?(project), id: "team_project_#{project.id}"
+        
+        .row-fluid
+          .span6.offset6.text-right<
+            = f.submit 'Save', class: 'btn btn-small btn-flat btn-primary'
             - unless team.new_record?
               \|
-              = link_to 'Delete', team, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this team?" }, remote:remote
+              = link_to 'Delete', team, method: :delete, class: 'btn btn-small btn-flat btn-danger', data: { confirm: "WARNING: Are you sure you want to delete this team?" }, remote:remote
             \|
-            = link_to 'Cancel', team.new_record? ? teams_path : team_path(team), remote:remote
+            = link_to 'Cancel', team.new_record? ? teams_path : team_path(team), class: 'btn btn-small btn-link', remote:remote

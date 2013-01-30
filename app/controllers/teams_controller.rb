@@ -45,7 +45,7 @@ class TeamsController < ApplicationController
   # GET /teams/1/edit
   def edit
     @team = Team.includes(:projects, :tasks).find(params[:id])
-    @in_edit_mode << @team.id
+    @edited << @team.id
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
@@ -63,7 +63,7 @@ class TeamsController < ApplicationController
     respond_to do |format|
       if @team.save
         flash[:notice] = 'Team was successfully created.'
-        @was_changed << @team.id
+        @changed << @team.id
         
         format.html { redirect_to teams_path }
         format.js { render 'shared/index'; flash.discard }
@@ -85,13 +85,13 @@ class TeamsController < ApplicationController
     respond_to do |format|
       if @team.update_attributes(params[:team])
         flash[:notice] = 'Team was successfully updated.'
-        @was_changed << @team.id
+        @changed << @team.id
 
         format.html { redirect_to teams_path }
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
-        @in_edit_mode << @team.id
+        @edited << @team.id
 
         format.html { render action: "edit" }
         format.js { render 'team' }
@@ -141,7 +141,7 @@ class TeamsController < ApplicationController
   end
 
   def ensure_initial_state
-    @in_edit_mode = []
-    @was_changed = []
+    @edited = []
+    @changed = []
   end
 end

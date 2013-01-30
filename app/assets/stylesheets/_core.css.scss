@@ -116,9 +116,9 @@
 
 .iteration-marker {
   border-top:2px solid $grayDark;
-  padding-bottom:5px;
+  padding:0 3px 5px;
   &[data-iteration='0'] {
-    background-color:lighten($grayLight, 32%);
+    background-color:$navbarBackground;
   }
   .iteration-toggle {
     cursor:pointer;
@@ -139,6 +139,13 @@
       width:20px;
     }
   }
+}
+
+.label {
+  font-size:$fontSizeMini;
+  margin-right:2px;
+  text-align:center;
+  width:55px;
 }
 
 .points {
@@ -209,7 +216,7 @@
   }
 }
 
-.story {
+.story, .team {
   .command-block {
     display:inline-block;
     position:absolute;
@@ -218,12 +225,6 @@
     right:4px;
     width:2 * ($glyphWidth + $glyphPadding);
     z-index:1;
-  }
-  .label {
-    font-size:$fontSizeMini;
-    margin-right:2px;
-    text-align:center;
-    width:55px;
   }
   &.expanded {
     .projects {

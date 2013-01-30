@@ -1,3 +1,6 @@
+$baseFontSize:14px;
+$baseLineHeight:18px;
+
 $gridColumnWidth:70px;
 $gridGutterWidth:10px;
 $gridColumnWidth1200:85px;
@@ -5,14 +8,51 @@ $gridGutterWidth1200:15px;
 $gridColumnWidth768:56px;
 $gridGutterWidth768:6px;
 
+$baseBorderRadius:1px;
+$borderRadiusLarge:1px;
+$borderRadiusSmall:1px;
+
+$inputBorderRadius:1px;
+
+$navbarHeight:30px;
+
 @import "bootstrap";
+
+@mixin gradient-remove {
+  background-image:none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled='false'); // IE9 and down
+}
+
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  border: 1px solid $inputBorder;
+  @include box-shadow(none);
+
+  // Focus state
+  &:focus {
+    border-color:$grayDark;
+    @include box-shadow(none);
+  }
+}
 
 .badge {
   padding-left: 5px;
   padding-right: 5px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  @include border-radius(0px);
 }
 
 .btn-inverse:active,
@@ -21,32 +61,45 @@ $gridGutterWidth768:6px;
 }
 
 .btn-flat {
-    filter:progid:DXImageTransform.Microsoft.Gradient(enabled='false');
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    background-image:none;
-    border:0;
+  border:0;
+  @include box-shadow(none);
+  @include gradient-remove;
 }
 
-.nav {
-  .dropdown-menu {
-      a:hover {
-        text-shadow:1px 1px 2px lighten($grayDark,5%);
-      }
-    .active {
-      a, a:hover {
-        color:$white;
+.navbar {
+  .navbar-inner {
+    @include gradient-remove;
+    @include box-shadow(none);
+    background-color:$navbarBackground;
+  }
+  .nav {
+    .dropdown-menu {
+        a:hover {
+          text-shadow:1px 1px 2px lighten($grayDark,5%);
+        }
+      .active {
+        a, a:hover {
+          color:$white;
+        }
       }
     }
-  }
-  .disabled {
-    span {
-      color:$grayLight;
-      cursor:pointer;
-      display:inline-block;
-      opacity:0.5;
-      padding:10px 15px;
+    .disabled {
+      span {
+        color:$grayLight;
+        cursor:pointer;
+        display:inline-block;
+        opacity:0.5;
+        padding:10px 15px;
+      }
+    }
+    .navbar-fixed-top .navbar-inner,
+    .navbar-static-top .navbar-inner,
+    .active > a,
+    .active > a:hover,
+    .active > a:focus {
+      -webkit-box-shadow:none;
+      -moz-box-shadow:none;
+      box-shadow:none;
     }
   }
 }
