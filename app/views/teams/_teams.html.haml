@@ -17,4 +17,3 @@
             %h3.subheader= t(:none_html, scope: [:controllers, :teams])
       - else
         = render partial: 'team', collection: @teams, locals: {edited: @edited, expanded: @expanded}
-        = render @teams
