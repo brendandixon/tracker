@@ -21,6 +21,17 @@
   margin:2cm;
 }
 
+.iteration-open {
+  border-top:2px solid $grayDark;
+  font-weight:bold;
+  padding:0 3px 5px;
+}
+
+.iteration-close {
+  border-top:2px solid $grayDark;
+  page-break-after:always;
+}
+
 .row {
   page-break-inside:avoid;
   &.tasks {

@@ -10,16 +10,26 @@
 
   - if printing
     - if @tasks.is_a?(IterationEnumerator)
-      - @tasks.each_iteration(0) do |iteration|
+      - @tasks.each_iteration(-2) do |iteration|
+        - next unless @iterations.include?(iteration.number)
+        - unless @iterations.length <= 1
+          .iteration-open= "Iteration #{iteration.number}"
         - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
-        - break
+        - tasks.each_slice(3) do |row_tasks|
+          .row.tasks
+            - row_tasks.compact.each do |task|
+              .span4
+                = render partial: 'task', locals: {task: task, printing: true, stand_alone: true}
+        - unless @iterations.length <= 1
+          .iteration-close
+            &nbsp;
+
     - else
-      - tasks = @tasks
-    - tasks.each_slice(3) do |row_tasks|
-      .row.tasks
-        - row_tasks.compact.each do |task|
-          .span4
-            = render partial: 'task', locals: {task: task, printing: true, stand_alone: true}
+      - @tasks.each_slice(3) do |row_tasks|
+        .row.tasks
+          - row_tasks.compact.each do |task|
+            .span4
+              = render partial: 'task', locals: {task: task, printing: true, stand_alone: true}
 
   - else
     - if @tasks.is_a?(IterationEnumerator)

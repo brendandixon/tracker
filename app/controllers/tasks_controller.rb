@@ -183,6 +183,8 @@ class TasksController < ApplicationController
 
   # GET /tasks/print
   def print
+    @iterations = (cookies[:iterations] || '0').split(',').map{|i| i.empty? ? nil : i.to_i}.compact.uniq
+    
     respond_to do |format|
       format.html { render template: 'shared/print', layout: 'print'}
     end
@@ -253,9 +255,10 @@ class TasksController < ApplicationController
   end
 
   def ensure_initial_state
+    @changed = []
     @edited = []
     @expanded = []
-    @changed = []
+    @iterations = [0]
   end
 
 end
