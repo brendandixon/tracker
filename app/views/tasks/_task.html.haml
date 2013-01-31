@@ -67,6 +67,7 @@
                         .title
                           = link_to task.story.to_s, story_path(task.story.id)
                           - if task.story.contact_us_number.present?
+                            &mdash;
                             %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
                   - if task.description.present?
                     .row-fluid.section
