@@ -13,7 +13,7 @@
       - @tasks.each_iteration(-2) do |iteration|
         - next unless @iterations.include?(iteration.number)
         - unless @iterations.length <= 1
-          .iteration-open= "Iteration #{iteration.number}"
+          .iteration-open= "Iteration #{iteration.number} - #{iteration.end_date.to_formatted_s(:medium)}"
         - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
         - tasks.each_slice(3) do |row_tasks|
           .row.tasks
