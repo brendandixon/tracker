@@ -49,7 +49,7 @@
           $(function() {$('body').trigger('iteration.visibility');});
 
     - else
-      .row-fluid.task-sort
+      .task-sort
         %table.table
           %thead
             %tr
@@ -57,11 +57,11 @@
               = render partial: 'shared/sortable', locals: {name: 'Points', field: 'point', classes: 'span3'}
               = render partial: 'shared/sortable', locals: {name: 'Status', field: 'status', classes: 'span4 last'}
 
-          %ol.unstyled.task-list<
-            - if @tasks.count > 0
-              = render partial: 'task', collection: @tasks, locals: {edited: @edited, expanded: @expanded}
-            - else
-              %li{data: {collapsed: 0, empty: 1}}
-                %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
+        %ol.unstyled.task-list<
+          - if @tasks.count > 0
+            = render partial: 'task', collection: @tasks, locals: {edited: @edited, expanded: @expanded}
+          - else
+            %li{data: {collapsed: 0, empty: 1}}
+              %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
     
     = render template: 'shared/bind_list'
