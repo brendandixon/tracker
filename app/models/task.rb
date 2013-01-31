@@ -24,6 +24,7 @@ class Task < ActiveRecord::Base
   RANK_MAXIMUM = Float::MAX
 
   POINTS = [0, 1, 2, 3, 5, 8]
+  DEFAULT_POINTS = 2
 
   attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
     
@@ -94,7 +95,7 @@ class Task < ActiveRecord::Base
     def ensure_story_tasks(story)
       story.feature.projects.each do |project|
         next if Task.for_stories(story).for_projects(project).exists?
-        Task.create(story_id:story.id, project_id:project.id, status: :pending)
+        Task.create(story_id:story.id, points: DEFAULT_POINTS, project_id:project.id, status: :pending)
       end
     end
 
@@ -213,7 +214,7 @@ class Task < ActiveRecord::Base
 
   def ensure_initial
     if self.new_record?
-      self.points ||= 0
+      self.points ||= DEFAULT_POINTS
       self.status ||= :pending
     end
   end
