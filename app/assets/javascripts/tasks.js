@@ -135,12 +135,12 @@ $(function() {
 
         task = ui.item.eq(0);
 
-        siblings = task.prevAll('li:not(.iteration-marker)');
-        query = siblings.length > 0 ? 'after=' + siblings.eq(0).attr('id').split('_')[1] : '';
+        siblings = task.nextAll('li:not(.iteration-marker)');
+        query = siblings.length > 0 ? 'before=' + siblings.eq(0).attr('id').split('_')[1] : '';
 
         if (query.length <= 0) {
-          siblings = task.nextAll('li:not(.iteration-marker)');
-          query = siblings.length > 0 ? 'before=' + siblings.eq(0).attr('id').split('_')[1] : '';
+          siblings = task.prevAll('li:not(.iteration-marker)');
+          query = siblings.length > 0 ? 'after=' + siblings.eq(0).attr('id').split('_')[1] : '';
         }
 
         if (query.length > 0) {
