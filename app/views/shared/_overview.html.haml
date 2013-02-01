@@ -1,0 +1,14 @@
+.row-fluid.overview
+  .span5
+    %p
+      - if @filter.empty?
+        = t(:unfiltered_html, scope: [:filter])
+      - else
+        = t(:filtered_by_html, scope: [:filter], name: @filter.new_record? ? t(:filtered_dynamic_html, scope: [:filter]) : @filter.name)
+  - if controller.controller_name == 'tasks'
+    .span7
+      .command-block
+        Print
+        = link_to 'Cards', url_for(controller: controller.controller_name, action: :print, style: :cards), target: '_blank'
+        \|
+        = link_to 'List', url_for(controller: controller.controller_name, action: :print, style: :list), target: '_blank'

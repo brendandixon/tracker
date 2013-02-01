@@ -1,0 +1,8 @@
+- iteration = nil unless defined?(iteration)
+- tasks = [] if tasks.nil?
+
+- tasks.each_slice(3) do |row_tasks|
+  .row.tasks
+    - row_tasks.compact.each do |task|
+      .span4
+        = render partial: 'task', locals: {task: task, printing: true, iteration: iteration}

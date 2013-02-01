@@ -34,8 +34,8 @@ module FilterHandler
     @filter.content ||= {}
     content = @filter.content
 
-    content[:group_by] = (params[:group_by] || content[:group_by]) ? :iteration : nil
-    group_by_iteration = content[:group_by] == :iteration
+    content[:group_by] = (params[:group_by] || content[:group_by]) ? 'iteration' : nil
+    group_by_iteration = content[:group_by] == 'iteration'
 
     content[:after] = params[:after] || content[:after]
     content[:before] = params[:before] || content[:before]
@@ -43,16 +43,20 @@ module FilterHandler
     content[:contact_us] = params[:contact_us] || content[:contact_us] || []
     content[:contact_us] = content[:contact_us].split(',') if content[:contact_us].is_a?(String)
     content[:contact_us] = Array(content[:contact_us]) unless content[:contact_us].is_a?(Array)
-    content[:contact_us] = content[:contact_us].map{|cu| cu =~ /^\d+$/ ? cu : nil}.compact
+    content[:contact_us] = content[:contact_us].map do |cu|
+      if cu.is_a?(Integer)
+        cu
+      elsif cu =~ /^\d+$/
+        cu.to_i
+      else
+        nil
+      end
+    end.flatten.compact
     
-    content[:iteration] = params[:iteration] || content[:iteration]
-    content[:iteration] = nil unless content[:iteration] =~ /^(-)?\d+$/
-    content[:iteration] = content[:iteration].to_i if content[:iteration].is_a?(String)
-
     content[:min_points] = params[:min_points] || content[:min_points]
-    content[:min_points] = nil unless content[:min_points] =~ /0|1|2|3|4|5/
+    content[:min_points] = nil unless content[:min_points].present? && content[:min_points] =~ /0|1|2|3|4|5/
     content[:max_points] = params[:max_points] || content[:max_points]
-    content[:max_points] = nil unless content[:max_points] =~ /0|1|2|3|4|5/
+    content[:max_points] = nil unless content[:max_points].present? && content[:max_points] =~ /0|1|2|3|4|5/
 
     content[:projects] = params[:projects] || content[:projects] || []
     content[:projects] = content[:projects].split(',') if content[:projects].is_a?(String)
@@ -88,21 +92,36 @@ module FilterHandler
     content[:status] = params[:status] || content[:status] || []
     content[:status] = content[:status].split(',') if content[:status].is_a?(String)
     content[:status] = Array(content[:status]) unless content[:status].is_a?(Array)
-    content[:status] = content[:status].map{|s| s.downcase.to_sym}
-    content[:status] = StatusScopes.expand(*content[:status])
+    content[:status] = content[:status].map{|s| s.downcase}
+    content[:status] = StatusScopes.expand(*content[:status]).map{|s| s.to_s}
 
     content[:stories] = params[:stories] || content[:stories] || []
     content[:stories] = content[:stories].split(',') if content[:stories].is_a?(String)
     content[:stories] = Array(content[:stories]) unless content[:stories].is_a?(Array)
-    content[:stories] = content[:stories].map{|s| s =~ /^\d+$/ ? s : nil}.compact
-    content[:stories] = content[:stories].map{|story| story =~ /^\d+$/ ? story : nil}.flatten.compact
-
+    content[:stories] = content[:stories].map do |story|
+      if story.is_a?(Integer)
+        story
+      elsif story =~ /^\d+$/
+        story.to_i
+      else
+        nil
+      end
+    end.flatten.compact
+    
     content[:teams] = params[:teams] || (group_by_iteration ? content[:iteration_team] : nil) || content[:teams] || []
     content[:teams] = content[:teams].split(',') if content[:teams].is_a?(String)
     content[:teams] = Array(content[:teams]) unless content[:teams].is_a?(Array)
     content[:teams] = content[:teams].map{|t| t.present? ? t : nil}.compact
     content[:teams] = [] if content[:teams].any?{|t| t =~ /all/i}
-    content[:teams] = content[:teams].map{|team| team =~ /^\d+$/ ? team : nil}.flatten.compact
+    content[:teams] = content[:teams].map do |team|
+      if team.is_a?(Integer)
+        team
+      elsif team =~ /^\d+$/
+        team.to_i
+      else
+        nil
+      end
+    end.flatten.compact
     content[:teams] = content[:teams][0...1] || [] if group_by_iteration
 
     content.delete_if{|k,v| v.blank?}

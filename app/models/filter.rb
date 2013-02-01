@@ -38,6 +38,7 @@ class Filter < ActiveRecord::Base
 
   def ensure_content
     self.content ||= {}
+    self.content = self.content.symbolize_keys
   end
 
 end

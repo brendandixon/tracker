@@ -206,8 +206,12 @@
     right:8px;
     height:$glyphHeight;
     line-height:$glyphHeight;
-    width:1 * ($glyphWidth + $glyphPadding);
+    // width:1 * ($glyphWidth + $glyphPadding);
+    width:auto;
     z-index:1;
+  }
+  a:hover {
+    text-decoration:underline;
   }
   p {
     margin-bottom:0;
