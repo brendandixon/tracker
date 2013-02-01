@@ -9,6 +9,6 @@
     .span7
       .command-block
         Print
-        = link_to 'Cards', url_for(controller: controller.controller_name, action: :print, style: :cards), target: '_blank'
+        = link_to 'Cards', url_for(controller: :tasks, action: :print, style: :cards), target: '_blank'
         \|
-        = link_to 'List', url_for(controller: controller.controller_name, action: :print, style: :list), target: '_blank'
+        = link_to 'List', url_for(controller: :tasks, action: :print, style: :list), target: '_blank'
