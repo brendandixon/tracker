@@ -4,6 +4,7 @@ gem 'bootstrap-sass', '~> 2.2.2.0'
 gem 'haml'
 gem 'mysql2'
 gem 'rails', '3.2.11'
+gem 'safe_yaml', git: 'git@github.com:dtao/safe_yaml.git', tag: '0.6.0'
 
 group :development do
   gem 'capistrano'

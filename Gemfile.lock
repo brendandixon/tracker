@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:dtao/safe_yaml.git
+  revision: d7140a790fc2f5b821c3525e78999ddde625148e
+  tag: 0.6.0
+  specs:
+    safe_yaml (0.6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -178,6 +185,7 @@ DEPENDENCIES
   quiet_assets
   rails (= 3.2.11)
   rspec-rails (~> 2.0)
+  safe_yaml!
   sass (= 3.2.5)
   sass-rails (= 3.2.5)
   sprockets (= 2.2.2)
