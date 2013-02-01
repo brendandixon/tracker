@@ -18,8 +18,10 @@
       .span12
         .title= task.to_s
     .row-fluid
-      .span12
+      .span8
         .project= "#{task.project.name} &mdash; #{pluralize(task.points, 'Point')}".html_safe
+      .span4
+        = t(task.status, scope: [:activerecord, :labels, :task])
     .row-fluid
       .span12
         .description= task.description
