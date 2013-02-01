@@ -21,6 +21,13 @@
   margin:2cm;
 }
 
+.text-left {
+  text-align:left;
+}
+.text-right {
+  text-align:right;
+}
+
 .iteration-open {
   border-top:2px solid $grayDark;
   font-weight:bold;
@@ -38,26 +45,41 @@
   }
 }
 
+.row-fluid [class*="span"] {
+  min-height:$baseLineHeight;
+}
+
 .task {
-  border:3px solid black;
-  height:225px;
-  margin-bottom:15px;
-  padding:8px;
   page-break-inside:avoid;
   position:relative;
-  .description {
-    max-height:115px;
-    text-overflow:ellipsis;
-    overflow:hidden;
+  &.cards {
+    border:3px solid black;
+    height:225px;
+    margin-bottom:15px;
+    padding:8px;
+    .description {
+      max-height:115px;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
+    .footer {
+      border-top:1px solid black;
+      padding-top:4px;
+      font-weight:bold;
+      position:absolute;
+      bottom:0;
+      left:4px;
+      right:4px;
+    }
+    .title {
+      border-bottom:1px solid black;
+      padding-bottom:8px;
+      margin-bottom:6px;
+    }
   }
-  .footer {
+  &.list {
     border-top:1px solid black;
-    padding-top:4px;
-    font-weight:bold;
-    position:absolute;
-    bottom:0;
-    left:4px;
-    right:4px;
+    margin-top:12px;
   }
   .points {
     .badge-inverse {
@@ -71,10 +93,7 @@
     text-align:right;
   }
   .title {
-    border-bottom:1px solid black;
     font-weight:bold;
-    padding-bottom:8px;
-    margin-bottom:6px;
     text-overflow:ellipsis;
     overflow:hidden;
     white-space:nowrap;

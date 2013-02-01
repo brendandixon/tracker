@@ -9,19 +9,20 @@
     = render 'shared/overview'
 
   - if printing
+    - task_style = @style == :list ? 'task_list' : 'task_cards'
     - if @tasks.is_a?(IterationEnumerator)
       - @tasks.each_iteration(-2) do |iteration|
         - next unless @iterations.include?(iteration.number)
         - unless @iterations.length <= 1
           .iteration-open= "Iteration Ending &mdash; #{iteration.end_date.to_formatted_s(:medium)}".html_safe
         - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
-        = render partial: 'task_cards', locals: {tasks: tasks, iteration: iteration}
+        = render partial: task_style, locals: {tasks: tasks, iteration: iteration}
         - unless @iterations.length <= 1
           .iteration-close
             &nbsp;
 
     - else
-      = render partial: 'task_cards', locals: {tasks: @tasks}
+      = render partial: task_style, locals: {tasks: @tasks}
 
   - else
     - if @tasks.is_a?(IterationEnumerator)

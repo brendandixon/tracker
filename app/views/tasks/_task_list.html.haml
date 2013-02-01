@@ -1,0 +1,7 @@
+- iteration = nil unless defined?(iteration)
+- tasks = [] if tasks.nil?
+
+- tasks.each do |task|
+  .row
+    .span12
+      = render partial: 'task', locals: {task: task, printing: true, iteration: iteration, style: :list}

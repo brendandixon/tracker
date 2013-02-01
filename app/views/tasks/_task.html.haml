@@ -2,11 +2,13 @@
 - expanded ||= []
 - printing = false if printing.nil?
 - stand_alone = printing if stand_alone.nil?
+- style = :cards if style.nil?
 - task ||= @task
 - options = {remote: true}
 - options[:disabled] = 'disabled' if task.completed?
 - id = task.new_record? ? 'new' : task.id
-- classes = 'task'
+- classes = 'task '
+- classes << style.to_s if printing
 - classes << ' edit-mode' if @edited.include?(id)
 - data = {status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
 - data[:print] = 1 if printing
@@ -14,27 +16,44 @@
 
 = content_tag stand_alone ? 'div' : 'li', {id: "Task_#{id}", class: classes, data: data} do
   - if printing
-    .row-fluid
-      .span12
-        .title= task.to_s
-    .row-fluid
-      .span8
-        .project= "#{task.project.name} &mdash; #{pluralize(task.points, 'Point')}".html_safe
-      .span4
-        = t(task.status, scope: [:activerecord, :labels, :task])
-    .row-fluid
-      .span12
-        .description= task.description
-    .row-fluid
-      .span12
-        .footer
-          .row-fluid
-            .span6
-              - if task.story.present? && task.story.contact_us_number.present?
-                .contact-us= "CU# #{task.story.contact_us_number}"
-            .span6
-              - if iteration.present?
-                .release-date= iteration.end_date.to_date.to_s(:medium)
+    - if style == :cards
+      .row-fluid
+        .span12
+          .title= task.to_s
+      .row-fluid
+        .span8
+          .project= "#{task.project.name} &mdash; #{pluralize(task.points, 'Point')}".html_safe
+        .span4.text-right
+          = t(task.status, scope: [:activerecord, :labels, :task])
+      .row-fluid
+        .span12
+          .description= task.description
+      .row-fluid
+        .span12
+          .footer
+            .row-fluid
+              .span6
+                - if task.story.present? && task.story.contact_us_number.present?
+                  .contact-us= "CU# #{task.story.contact_us_number}"
+              .span6
+                - if iteration.present?
+                  .release-date= iteration.end_date.to_date.to_s(:medium)
+    - else
+      .row-fluid
+        .span8
+          .title= task.to_s
+        .span4.text-right
+          = "#{pluralize(task.points, 'Point')} &mdash; #{t(task.status, scope: [:activerecord, :labels, :task])}".html_safe
+      .row-fluid
+        .span8
+          .project= task.project.name
+        .span4.text-right
+          - if task.story.present? && task.story.contact_us_number.present?
+            .contact-us= "CU# #{task.story.contact_us_number}"
+      - if task.description.present?
+        .row-fluid
+          .span12
+            .description= task.description
 
 
   - else
