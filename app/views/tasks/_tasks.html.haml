@@ -13,13 +13,13 @@
       - @tasks.each_iteration(-2) do |iteration|
         - next unless @iterations.include?(iteration.number)
         - unless @iterations.length <= 1
-          .iteration-open= "Iteration #{iteration.number} - #{iteration.end_date.to_formatted_s(:medium)}"
+          .iteration-open= "Iteration Ending &mdash; #{iteration.end_date.to_formatted_s(:medium)}".html_safe
         - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
         - tasks.each_slice(3) do |row_tasks|
           .row.tasks
             - row_tasks.compact.each do |task|
               .span4
-                = render partial: 'task', locals: {task: task, printing: true, stand_alone: true}
+                = render partial: 'task', locals: {task: task, printing: true, iteration: iteration}
         - unless @iterations.length <= 1
           .iteration-close
             &nbsp;
@@ -29,7 +29,7 @@
         .row.tasks
           - row_tasks.compact.each do |task|
             .span4
-              = render partial: 'task', locals: {task: task, printing: true, stand_alone: true}
+              = render partial: 'task', locals: {task: task, printing: true}
 
   - else
     - if @tasks.is_a?(IterationEnumerator)

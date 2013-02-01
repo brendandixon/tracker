@@ -25,17 +25,16 @@
     .row-fluid
       .span12
         .description= task.description
-    - if task.story.present?
-      .row-fluid
-        .span12
-          .footer
-            .row-fluid
-              .span6
-                - if task.story.contact_us_number.present?
-                  .contact-us= "CU# #{task.story.contact_us_number}"
-              .span6
-                - if task.story.release_date.present?
-                  .release-date= task.story.release_date.to_date.to_s(:medium)
+    .row-fluid
+      .span12
+        .footer
+          .row-fluid
+            .span6
+              - if task.story.present? && task.story.contact_us_number.present?
+                .contact-us= "CU# #{task.story.contact_us_number}"
+            .span6
+              - if iteration.present?
+                .release-date= iteration.end_date.to_date.to_s(:medium)
 
 
   - else
