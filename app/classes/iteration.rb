@@ -82,10 +82,10 @@ class Iteration
     # - Completed tasks belong to the iteration during which they were completed
     # - All in-progress tasks belong to the current iteration
     # - Pending tasks belong to the first iteration with room as long as adding the task
-    #   fits or exceeds the velocity by less the points needed to fill the iteration
+    #   fits or exceeds the velocity by less or equal to the points needed to fill the iteration
     task.completed_during?(@start_date, @end_date) ||
     (current? && task.started?) ||
-    (!before_current? && !full? && (task.points - points_remaining < points_remaining))
+    (!before_current? && !full? && (task.points - points_remaining <= points_remaining))
   end
 
   def tasks
