@@ -21,6 +21,11 @@
   margin:2cm;
 }
 
+body {
+  font-size:$baseFontSize * 1.2;
+  line-height:$baseLineHeight * 1.2;
+}
+
 .text-left {
   text-align:left;
 }
@@ -32,6 +37,7 @@
   border-top:2px solid $grayDark;
   font-weight:bold;
   padding:0 3px 5px;
+  margin-top:10px;
 }
 
 .iteration-close {
@@ -41,12 +47,12 @@
 .row {
   page-break-inside:avoid;
   &.tasks {
-    margin-bottom:15px;
+    margin-bottom:30px;
   }
 }
 
 .row-fluid [class*="span"] {
-  min-height:$baseLineHeight;
+  min-height:$baseLineHeight * 1.2;
 }
 
 .task {
@@ -54,11 +60,11 @@
   position:relative;
   &.cards {
     border:3px solid black;
-    height:225px;
+    height:275px;
     margin-bottom:15px;
     padding:8px;
     .description {
-      max-height:115px;
+      max-height:165px;
       text-overflow:ellipsis;
       overflow:hidden;
     }
@@ -74,7 +80,7 @@
     .title {
       border-bottom:1px solid black;
       padding-bottom:8px;
-      margin-bottom:6px;
+      margin-bottom:5px;
     }
   }
   &.list {
@@ -88,6 +94,7 @@
   }
   .project {
     font-weight:bold;
+    margin-bottom:10px;
   }
   .release-date {
     text-align:right;

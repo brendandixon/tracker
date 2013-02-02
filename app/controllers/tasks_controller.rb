@@ -27,7 +27,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
-      format.js { render 'task' }
+      format.js { render 'task'; flash.discard }
       format.json { render json: @task }
     end
   end
@@ -50,7 +50,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
-      format.js { render 'task' }
+      format.js { render 'task'; flash.discard }
       format.json { render json: @task }
     end
   end
@@ -63,7 +63,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
-      format.js { render 'task' }
+      format.js { render 'task'; flash.discard }
       format.json { render json: @task }
     end
   end
@@ -86,7 +86,7 @@ class TasksController < ApplicationController
         @expanded << 'new'
         
         format.html { render action: "new" }
-        format.js { render 'task' }
+        format.js { render 'task'; flash.discard }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -110,7 +110,7 @@ class TasksController < ApplicationController
         @expanded << @task.id
 
         format.html { render action: "edit" }
-        format.js { render 'task' }
+        format.js { render 'task'; flash.discard }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -138,7 +138,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { render json: @tasks }
     end
     
@@ -152,7 +152,7 @@ class TasksController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to :back }
-      format.js { render 'shared/index' }
+      format.js { render 'shared/index'; flash.discard }
       format.json { render json: @tasks }
     end
     
@@ -175,7 +175,7 @@ class TasksController < ApplicationController
         @edited << @task.id
 
         format.html { render action: "edit" }
-        format.js { render 'task' }
+        format.js { render 'task'; flash.discard }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end

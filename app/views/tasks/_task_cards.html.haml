@@ -1,8 +1,7 @@
 - iteration = nil unless defined?(iteration)
 - tasks = [] if tasks.nil?
 
-- tasks.each_slice(3) do |row_tasks|
+- tasks.each_slice(2) do |row_tasks|
   .row.tasks
-    - row_tasks.compact.each do |task|
-      .span4
-        = render partial: 'task', locals: {task: task, printing: true, iteration: iteration}
+    .span5= render partial: 'task', locals: {task: row_tasks.first, printing: true, iteration: iteration}
+    .span5.offset1= render partial: 'task', locals: {task: row_tasks.last, printing: true, iteration: iteration} if row_tasks.length > 1

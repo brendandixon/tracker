@@ -13,7 +13,7 @@ class StoriesController < ApplicationController
   def index
     respond_to do |format|
       format.html { render 'shared/index' }
-      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter' }
+      format.js { render @filter.errors.empty? ? 'shared/index' : 'filter'; flash.discard }
       format.json { render json: @stories }
     end
   end
@@ -26,7 +26,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/show' }
-      format.js { render 'story' }
+      format.js { render 'story'; flash.discard }
       format.json { render json: @story }
     end
   end
@@ -40,7 +40,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/new' }
-      format.js { render 'story' }
+      format.js { render 'story'; flash.discard }
       format.json { render json: @story }
     end
   end
@@ -53,7 +53,7 @@ class StoriesController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
-      format.js { render 'story' }
+      format.js { render 'story'; flash.discard }
       format.json { render json: @story }
     end
   end
@@ -76,7 +76,7 @@ class StoriesController < ApplicationController
         @expanded << 'new'
 
         format.html { render action: "new" }
-        format.js { render 'story' }
+        format.js { render 'story'; flash.discard }
         format.json { render json: @story.errors, status: :unprocessable_entity }
       end
     end
@@ -100,7 +100,7 @@ class StoriesController < ApplicationController
         @expanded << @story.id
 
         format.html { render action: "edit" }
-        format.js { render 'story' }
+        format.js { render 'story'; flash.discard }
         format.json { render json: @story.errors, status: :unprocessable_entity }
       end
     end
