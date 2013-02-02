@@ -25,7 +25,7 @@
       .row-fluid.section
         .span12
           %label.checkbox{for: 'filter_content_group_by'}
-            = check_box_tag 'filter[content][group_by]', 1, content[:group_by] == :iteration, data: {group_by: :iteration}
+            = check_box_tag 'filter[content][group_by]', 1, content[:group_by] == 'iteration', data: {group_by: :iteration}
             = 'Group tasks by iteration'
 
       .row-fluid.section

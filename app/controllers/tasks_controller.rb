@@ -214,7 +214,7 @@ class TasksController < ApplicationController
 
   def build_index_query
 
-    if @filter.content[:group_by] == :iteration
+    if @filter.content[:group_by] == 'iteration'
       query = IterationEnumerator.new(Team.find(@filter.content[:teams].first)) rescue nil
     end
 

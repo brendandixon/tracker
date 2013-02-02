@@ -32,8 +32,6 @@ class Task < ActiveRecord::Base
   has_one :feature, through: :story
   belongs_to :project
   has_many :teams, through: :project
-  
-  symbolize :status
 
   after_initialize :ensure_initial
   before_save :ensure_rank  
@@ -77,10 +75,10 @@ class Task < ActiveRecord::Base
   StatusScopes::ALL_STATES.each do |s|
     class_eval <<-EOM
       def #{s}?
-        self.status == :#{s}
+        self.status == '#{s}'
       end
       def #{s}!
-        self.status = :#{s}
+        self.status = '#{s}'
         self.save unless self.new_record?
       end
     EOM

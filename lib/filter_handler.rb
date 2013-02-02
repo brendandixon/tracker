@@ -34,8 +34,8 @@ module FilterHandler
     @filter.content ||= {}
     content = @filter.content
 
-    content[:group_by] = (params[:group_by] || content[:group_by]) ? :iteration : nil
-    group_by_iteration = content[:group_by] == :iteration
+    content[:group_by] = (params[:group_by] || content[:group_by]) ? 'iteration' : nil
+    group_by_iteration = content[:group_by] == 'iteration'
 
     content[:after] = params[:after] || content[:after]
     content[:before] = params[:before] || content[:before]
@@ -93,7 +93,7 @@ module FilterHandler
     content[:status] = content[:status].split(',') if content[:status].is_a?(String)
     content[:status] = Array(content[:status]) unless content[:status].is_a?(Array)
     content[:status] = content[:status].map{|s| s.downcase}
-    content[:status] = StatusScopes.expand(*content[:status]).map{|s| s.to_sym}
+    content[:status] = StatusScopes.expand(*content[:status]).map{|s| s.to_s}
 
     content[:stories] = params[:stories] || content[:stories] || []
     content[:stories] = content[:stories].split(',') if content[:stories].is_a?(String)
