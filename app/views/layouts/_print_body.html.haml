@@ -1,4 +1,8 @@
 %body
+  - unless Rails.is_production?
+    .watermark
+      - 0.upto(500) do
+        %span= Rails.env
   #main{role: 'main'}
     .container
       .row
