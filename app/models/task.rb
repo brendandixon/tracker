@@ -139,8 +139,8 @@ class Task < ActiveRecord::Base
   
   def next_status
     case self.status
-    when :pending then :in_progress
-    when :in_progress then :completed
+    when 'pending' then 'in_progress'
+    when 'in_progress' then 'completed'
     else self.status
     end
   end
