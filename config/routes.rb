@@ -14,6 +14,8 @@ class TaskRankConstraint
 end
 
 Tracker::Application.routes.draw do
+  devise_for :users
+
   root to: 'tasks#index'
 
   resources :features do
