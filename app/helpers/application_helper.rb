@@ -118,7 +118,7 @@ module ApplicationHelper
       "<span #{tag_options}><i class='#{family} #{glyph}'></i></span>".html_safe
     else
       href_attr = "href=\"#{ERB::Util.html_escape(url)}\"" unless href
-      "<a #{href_attr}#{tag_options}>#{name}<i class='#{family} #{glyph}'></i></a>".html_safe
+      "<a #{href_attr}#{tag_options}><i class='#{family} #{glyph}'></i>#{name}</a>".html_safe
     end
   end
 

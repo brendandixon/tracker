@@ -25,5 +25,6 @@
             %b.caret
             = render 'shared/filter_menu' unless disabled
         %li.divider-vertical
-        %li
-          = awesome_link_to '', destroy_user_session_path, method: :delete, glyph: 'awesome-signout'
+        %li.dropdown
+          = glyph_link_to '', '#', glyph: 'cogwheels', data: {toggle: 'dropdown'}
+          = render 'shared/settings_menu'
