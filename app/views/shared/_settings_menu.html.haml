@@ -1,6 +1,6 @@
 %ul.dropdown-menu
   %li
-    = awesome_link_to 'Account', '#', glyph: 'awesome-user'
+    = awesome_link_to 'Account', edit_user_registration_path, glyph: 'awesome-user'
   %li.divider
   %li
     = awesome_link_to 'Logout', destroy_user_session_path, method: :delete, glyph: 'awesome-signout'

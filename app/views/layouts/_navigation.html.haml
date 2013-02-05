@@ -1,5 +1,6 @@
+- is_devise = controller.is_a?(DeviseController)
 - current_area = controller.controller_name.to_sym
-- disabled = !user_signed_in? || !controller.is_index_action || !controller.template_exists?('filter', [controller.controller_name], true)
+- disabled = is_devise || !controller.is_index_action || !controller.template_exists?('filter', [controller.controller_name], true)
 - has_print = controller.template_exists?('print_menu', [controller.controller_name], true)
 #Navigation
   %a.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
@@ -13,17 +14,18 @@
         - [[:tasks, 'list'], [:stories, 'notes_2'], [:projects, 'folder_open'], [:teams, 'group']].each do |area|
           - classes = "has-tip #{current_area == area.first && controller.is_index_action ? 'active' : nil}"
           %li{class: classes, title: t(:name_html, scope:[:controllers, area.first])}
-            = glyph_link_to area.first.to_s.titleize, {controller: area.first, action: :index}, {glyph: "small #{area.last}"}
+            = glyph_link_to area.first.to_s.titleize, {controller: "/#{area.first}", action: :index}, {glyph: "small #{area.last}"}
       %ul.nav
-        %li.divider-vertical
-        %li
-          = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: !disabled
-        %li.divider-vertical
-        %li.dropdown{class: disabled ? 'disabled' : nil}
-          = content_tag disabled ? :span : :a, {href: '#', data: {toggle: 'dropdown'}} do
-            Filter
-            %b.caret
-            = render 'shared/filter_menu' unless disabled
+        - unless is_devise
+          %li.divider-vertical
+          %li
+            = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: !disabled
+          %li.divider-vertical
+          %li.dropdown{class: disabled ? 'disabled' : nil}
+            = content_tag disabled ? :span : :a, {href: '#', data: {toggle: 'dropdown'}} do
+              Filter
+              %b.caret
+              = render 'shared/filter_menu' unless disabled
         %li.divider-vertical
         %li.dropdown
           = glyph_link_to '', '#', glyph: 'cogwheels', data: {toggle: 'dropdown'}

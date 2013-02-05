@@ -224,13 +224,21 @@
   }
 }
 
-.feature, .project, .story, .task, .team {
+.devise {
+  form {
+    i {
+      font-size:$fontSizeMini;
+    }
+  }
+}
+
+.devise, .feature, .project, .story, .task, .team {
   .row-fluid.section {
     margin-bottom:12px;
   }
 }
 
-.feature, .project, .story, .team {
+.devise, .feature, .project, .story, .team {
   .command-block {
     display:inline-block;
     position:absolute;
