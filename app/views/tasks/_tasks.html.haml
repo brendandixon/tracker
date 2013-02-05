@@ -2,6 +2,7 @@
   - projects = @filter.content[:projects] || @tasks.team.projects.map{|p| p.id}
   - states = @filter.content[:status] || StatusScopes::ALL_STATES
 - printing = false if printing.nil?
+- show_rank = params.has_key?(:rank)
 
 #Main
   - unless printing
@@ -42,7 +43,7 @@
         %ol.unstyled.task-list{data: {iteration: iteration.number}}<
           - tasks = iteration.tasks.find_all{|task| states.include?(task.status) && projects.include?(task.project.id)}
           - if tasks.count > 0
-            = render partial: 'task', collection: tasks, locals: {edited: @edited, expanded: @expanded}
+            = render partial: 'task', collection: tasks, locals: {edited: @edited, expanded: @expanded, show_rank: show_rank}
           - else
             %li{data: {iteration: iteration.number, collapsed: 0, empty: 1}}
               %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
@@ -62,7 +63,7 @@
 
         %ol.unstyled.task-list<
           - if @tasks.count > 0
-            = render partial: 'task', collection: @tasks, locals: {edited: @edited, expanded: @expanded}
+            = render partial: 'task', collection: @tasks, locals: {edited: @edited, expanded: @expanded, show_rank: show_rank}
           - else
             %li{data: {collapsed: 0, empty: 1}}
               %h3.subheader= t(:none_html, scope: [:controllers, :tasks])

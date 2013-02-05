@@ -156,11 +156,11 @@ class Task < ActiveRecord::Base
     query = query.where("tasks.id <> ?", self.id) unless self.new_record?
 
     self.rank = if self.completed? || self.in_progress?
-                  sibling = query.in_rank_order.in_state(self.status).pick_rank.limit(1).first
-                  sibling.present? ? [sibling.rank, RANK_MAXIMUM-1].min + 1 : 1
-                else
                   sibling = query.in_rank_order.pending.pick_rank.limit(1).first
-                  sibling.present? ? [RANK_MINIMUM+1, sibling.rank].max - 1 : 1
+                  sibling.present? ? [sibling.rank, RANK_MINIMUM+1].max - 1 : 1
+                else
+                  sibling = query.in_rank_order('DESC').in_state(self.status).pick_rank.limit(1).first
+                  sibling.present? ? [sibling.rank, RANK_MAXIMUM-1].min + 1 : 1
                 end
   end
 

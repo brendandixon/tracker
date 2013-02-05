@@ -13,6 +13,7 @@
 - data = {status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
 - data[:print] = 1 if printing
 - row_classes = @expanded.include?(id) || stand_alone ? 'expanded' : 'compact'
+- show_rank = false if show_rank.nil?
 
 = content_tag stand_alone ? 'div' : 'li', {id: "Task_#{id}", class: classes, data: data} do
   - if printing
@@ -118,7 +119,10 @@
                   .span6
                     .title.has-tooltip{title: task.project.name}
                       = task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
-                  .span3= render partial: 'points', locals: {task: task, editable: true}
+                  .span3
+                    = render partial: 'points', locals: {task: task, editable: true}
+                    - if show_rank
+                      = task.rank
                   .span3.text-right
                     .release-date=task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
                     .command-block.on-hover
