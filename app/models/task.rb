@@ -93,7 +93,7 @@ class Task < ActiveRecord::Base
     def ensure_story_tasks(story)
       story.feature.projects.each do |project|
         next if Task.for_stories(story).for_projects(project).exists?
-        Task.create(story_id:story.id, points: DEFAULT_POINTS, project_id:project.id, status: :pending)
+        Task.create(story_id:story.id, points: DEFAULT_POINTS, project_id:project.id, status: 'pending')
       end
     end
 
