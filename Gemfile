@@ -6,7 +6,8 @@ gem 'haml'
 gem 'mysql2'
 gem 'rake'
 gem 'rails', '3.2.11'
-gem 'safe_yaml', git: 'git@github.com:dtao/safe_yaml.git', tag: '0.6.0'
+gem 'safe_yaml'
+# gem 'safe_yaml', git: 'git@github.com:dtao/safe_yaml.git', tag: '0.6.0'
 
 group :development do
   gem 'capistrano'
