@@ -41,7 +41,3 @@ production:
   port: <%= ENV['MYSQL_PORT'] %>
   username: <%= ENV['MYSQL_USER'] %>
   password: <%= ENV['MYSQL_PASSWORD'] %>
-  # host: tracker.ca1r9yaxwmjl.us-west-2.rds.amazonaws.com
-  # port: 8443
-  # username: awsuser
-  # password: '#Ptmt4m!'
