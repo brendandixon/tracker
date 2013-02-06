@@ -53,7 +53,7 @@ aws:
   pool: 5
   database: tracker
   host: 'tracker.ca1r9yaxwmjl.us-west-2.rds.amazonaws.com'
-  port: '8443'
+  port: 8443
   username: 'awsuser'
   password: '#Ptmt4m!'
   # host: "<%= ENV['MYSQL_HOST'] %>"
