@@ -6,6 +6,13 @@
   font-size:$fontSizeSmall;
 }
 
+// input[aria-invalid="true"],
+// textarea[aria-invalid="true"]
+// {
+//   border:1px solid #f00;
+//   box-shadow:0 0 4px 0 #f00;
+// }
+
 .glyphbutton {
   position:relative;
   input {
