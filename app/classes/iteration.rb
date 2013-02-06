@@ -29,7 +29,7 @@ class Iteration
       Rails.logger.info "START WEEK: #{start_date.beginning_of_week}"
       Rails.logger.info "NOW WEEK: #{DateTime.now.beginning_of_week}"
 
-      days_since_start = (DateTime.now.beginning_of_week - start_date.beginning_of_week).to_i
+      days_since_start = (DateTime.now.in_time_zone.beginning_of_week - start_date.beginning_of_week).to_i
       Rails.logger.info "DAYS SINCE START: #{days_since_start}"
       iterations_since_start = days_since_start / (@team.iteration * 7)
       Rails.logger.info "ITERATIONS SINCE START: #{iterations_since_start}"
