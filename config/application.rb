@@ -24,7 +24,7 @@ module Rails
     end
     
     def is_production?
-      [:production].include?(Rails.env.to_sym)
+      [:aws, :production].include?(Rails.env.to_sym)
     end
     
     def is_test?
