@@ -35,11 +35,17 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: tracker_production
+  # database: tracker_production
+  # pool: 5
+  # username: root
+  # password:
+  # socket: /tmp/mysql.sock
+  database: tracker
   pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  username: "<%= ENV['MYSQL_USER'] %>"
+  password: "<%= ENV['MYSQL_PASSWORD'] %>"
+  host: "<%= ENV['MYSQL_HOST'] %>"
+  port: 3306
 
 aws:
   adapter: mysql2
