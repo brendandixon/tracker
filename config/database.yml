@@ -12,8 +12,8 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: tracker_development
   pool: 5
+  database: tracker_development
   username: root
   password:
   socket: /tmp/mysql.sock
@@ -25,8 +25,8 @@ test:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: tracker_test
   pool: 5
+  database: tracker_test
   username: root
   password:
   socket: /tmp/mysql.sock
@@ -35,25 +35,24 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: tracker_production
   pool: 5
+  database: tracker_production
   username: root
   password:
   socket: /tmp/mysql.sock
   # database: tracker
-  # pool: 5
+  # host: "<%= ENV['MYSQL_HOST'] %>"
+  # port: "<%= ENV['MYSQL_PORT'] %>"
   # username: "<%= ENV['MYSQL_USER'] %>"
   # password: "<%= ENV['MYSQL_PASSWORD'] %>"
-  # host: "<%= ENV['MYSQL_HOST'] %>"
-  # port: 3306
 
 aws:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: tracker
   pool: 5
+  database: tracker
+  host: "<%= ENV['MYSQL_HOST'] %>"
+  port: "<%= ENV['MYSQL_PORT'] %>"
   username: "<%= ENV['MYSQL_USER'] %>"
   password: "<%= ENV['MYSQL_PASSWORD'] %>"
-  host: "<%= ENV['MYSQL_HOST'] %>"
-  port: 3306
