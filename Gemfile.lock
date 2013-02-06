@@ -194,6 +194,7 @@ DEPENDENCIES
   passenger
   quiet_assets
   rails (= 3.2.11)
+  rake
   rspec-rails (~> 2.0)
   safe_yaml!
   sass (= 3.2.5)
