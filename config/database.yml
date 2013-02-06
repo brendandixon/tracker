@@ -37,7 +37,7 @@ production:
   reconnect: false
   pool: 5
   database: tracker
-  host: "<%= ENV['MYSQL_HOST'] %>"
+  host: <%= ENV['MYSQL_HOST'] %>
   port: <%= ENV['MYSQL_PORT'] %>
-  username: "<%= ENV['MYSQL_USER'] %>"
-  password: "<%= ENV['MYSQL_PASSWORD'] %>"
+  username: <%= ENV['MYSQL_USER'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
