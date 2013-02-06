@@ -36,10 +36,15 @@ production:
   encoding: utf8
   reconnect: false
   pool: 5
-  database: tracker_production
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  # database: tracker_production
+  # username: root
+  # password:
+  # socket: /tmp/mysql.sock
+  database: tracker
+  host: 'tracker.ca1r9yaxwmjl.us-west-2.rds.amazonaws.com'
+  port: 8443
+  username: 'awsuser'
+  password: '#Ptmt4m!'
   # database: tracker
   # host: "<%= ENV['MYSQL_HOST'] %>"
   # port: "<%= ENV['MYSQL_PORT'] %>"
