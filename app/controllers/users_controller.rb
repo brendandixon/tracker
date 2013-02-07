@@ -95,7 +95,7 @@ class UsersController < ApplicationController
         flash[:notice] = 'User was successfully updated.'
         @changed << @user.id
         
-        sign_in @user, bypass: true
+        sign_in @user, bypass: true if current_user.id == user.id
 
         format.html { redirect_to root_path }
         format.js { render 'shared/index'; flash.discard }
