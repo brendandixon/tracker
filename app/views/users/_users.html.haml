@@ -5,14 +5,15 @@
   %table.table.user-list#UserList
     %thead
       %tr
-        =render partial: 'shared/sortable', locals: {name: 'Email', field: 'email', classes: 'span5'}
+        =render partial: 'shared/sortable', locals: {name: 'Email', field: 'email', classes: 'span4'}
         %th.span2= 'Signin Count'
-        %th.span5= 'Last Signin'
+        %th.span2= 'Last Signin'
+        %th.span4= 'Roles'
 
     %tbody
       - if @users.empty?
         %tr.user#User_new
-          %td{colspan: 2}
+          %td{colspan: 4}
             %h3.subheader= t(:none_html, scope: [:controllers, :users])
       - else
         = render partial: 'user', collection: @users, locals: {edited: @edited, expanded: @expanded}

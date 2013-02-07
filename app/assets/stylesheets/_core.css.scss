@@ -257,8 +257,13 @@
   }
   &.expanded {
     .features, .projects {
-      padding-top:10px;
       text-align:right;
+    }
+    .roles {
+      text-align:left;
+    }
+    .features, .projects, .roles {
+      padding-top:10px;
       label {
         font-size:normal;
         font-weight:normal;
@@ -328,7 +333,7 @@ div {
 .task {
   border-top:1px solid $grayLight;
   padding:4px 0;
-  &[data-status='pending'] {
+  &[data-draggable] {
     cursor:move;
   }
   .command-block {
@@ -433,29 +438,3 @@ li.task:hover:not([data-expanded='1']) {
   width: 110%;
   z-index: -1000;
 }
-
-// .disabled {
-//   cursor:auto;
-//   opacity:0.4;
-// }
-
-// .projects, .teams {
-//   display:inline-block;
-//   label {
-//     display:inline-block;
-//     line-height:$fontSizeSmall;
-//   }
-//   span, a {
-//     display:inline-block;
-//     font-size:$fontSizeSmall;
-//     margin:2px 2px;
-//     width:65px;
-//   }
-//   span.secondary, a.secondary {
-//     color:#999;
-//   }
-//   .row {
-//     line-height:$fontSizeSmall;
-//     height:$fontSizeSmall;
-//   }
-// }

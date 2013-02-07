@@ -72,8 +72,8 @@ class FeaturesController < ApplicationController
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @feature, status: :created, location: @feature }
       else
-        @edited << @feature.id
-        @expanded << @feature.id
+        @edited << 'new'
+        @expanded << 'new'
 
         format.html { render action: "new" }
         format.js { render 'feature' }

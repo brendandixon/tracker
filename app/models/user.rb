@@ -25,8 +25,22 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :roles
+  
+  has_and_belongs_to_many :roles
 
+  default_scope includes(:roles)
+  
   scope :in_email_order, lambda{|dir = 'ASC'| order("email #{dir}")}
+
+  def role?(role)
+    return !!self.roles.map{|r| r.name}.include?(role.to_s.camelize)
+  end
+
+  def roles?(*roles)
+    return (self.roles.map{|r| r.name} & roles.map{|r| r.to_s.camelize}).present?
+  end
+
 end

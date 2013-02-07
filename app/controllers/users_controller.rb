@@ -61,6 +61,7 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    params[:user][:roles] = Role.find_all_by_id(params[:user][:roles]) if params[:user][:roles].present?
     @user = User.new(params[:user])
 
     respond_to do |format|
@@ -72,8 +73,8 @@ class UsersController < ApplicationController
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @user, status: :created, location: @user }
       else
-        @edited << @user.id
-        @expanded << @user.id
+        @edited << 'new'
+        @expanded << 'new'
 
         format.html { render action: "new" }
         format.js { render 'user' }
@@ -85,10 +86,12 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
+
+    params[:user][:roles] = Role.find_all_by_id(params[:user][:roles]) if params[:user][:roles].present?
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if params[:password].present? ? @user.update_attributes(params[:user]) : @user.update_without_password(params[:user])
         flash[:notice] = 'User was successfully updated.'
         @changed << @user.id
         
@@ -140,7 +143,7 @@ class UsersController < ApplicationController
       end
     end
 
-    @users = query
+    @users = query.includes(:roles)
   end
 
   def ensure_initial_state

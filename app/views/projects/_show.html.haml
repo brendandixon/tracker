@@ -15,10 +15,12 @@
           .features= feature_labels(project.features)
       .row-fluid
         .span4.offset8.text-right
-          = link_to 'Edit', edit_project_path(project), remote:remote, class: 'btn btn-small btn-flat btn-primary'
-          \|
-          = link_to 'Delete', project, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this project?" }, remote:remote, class: 'btn btn-small btn-flat btn-danger'
-          \|
+          - if can? :edit, project
+            = link_to 'Edit', edit_project_path(project), remote:remote, class: 'btn btn-small btn-flat btn-primary'
+            \|
+          - if can? :destroy, project
+            = link_to 'Delete', project, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this project?" }, remote:remote, class: 'btn btn-small btn-flat btn-danger'
+            \|
           = link_to 'Back', projects_path, class: 'btn btn-small btn-flat btn-link'
 
 - else
@@ -28,4 +30,5 @@
   %td
     .features= feature_labels(project.features)
     .command-block.on-hover<
-      = awesome_link_to '', edit_project_path(project), glyph: 'awesome-edit', remote:true
+      - if can? :edit, project
+        = awesome_link_to '', edit_project_path(project), glyph: 'awesome-edit', remote:true

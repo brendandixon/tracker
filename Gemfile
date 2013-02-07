@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'bootstrap-sass', '~> 2.2.2.0'
+gem 'cancan'
 gem 'devise'
 gem 'haml'
 gem 'mysql2'

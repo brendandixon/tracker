@@ -67,5 +67,6 @@
           - else
             %li{data: {collapsed: 0, empty: 1}}
               %h3.subheader= t(:none_html, scope: [:controllers, :tasks])
-    
-    = render template: 'shared/bind_list'
+
+    - if can? :drag, Task
+      = render template: 'shared/bind_list'

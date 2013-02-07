@@ -36,6 +36,7 @@ GEM
     bootstrap-sass (2.2.2.0)
       sass (~> 3.2)
     builder (3.0.4)
+    cancan (1.6.9)
     capistrano (2.14.1)
       highline
       net-scp (>= 1.0.0)
@@ -176,6 +177,7 @@ DEPENDENCIES
   active_record_query_trace
   annotate
   bootstrap-sass (~> 2.2.2.0)
+  cancan
   capistrano
   coffee-rails
   devise
