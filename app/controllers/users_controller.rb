@@ -5,7 +5,10 @@ class UsersController < ApplicationController
   DEFAULT_SORT = ['email']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  load_and_authorize_resource
+
   before_filter :ensure_initial_state
+  before_filter :ensure_roles
   before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /users
@@ -21,7 +24,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
     @expanded << @user.id if params.has_key?(:expanded)
 
     respond_to do |format|
@@ -34,7 +36,6 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.json
   def new
-    @user = User.new
     @edited << 'new'
     @expanded << 'new'
 
@@ -47,7 +48,6 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
     @edited << @user.id
     @expanded << @user.id
 
@@ -61,9 +61,6 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    params[:user][:roles] = Role.find_all_by_id(params[:user][:roles]) if params[:user][:roles].present?
-    @user = User.new(params[:user])
-
     respond_to do |format|
       if @user.save
         flash[:notice] = 'User was successfully created.'
@@ -86,10 +83,6 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-
-    params[:user][:roles] = Role.find_all_by_id(params[:user][:roles]) if params[:user][:roles].present?
-    @user = User.find(params[:id])
-
     respond_to do |format|
       if params[:password].present? ? @user.update_attributes(params[:user]) : @user.update_without_password(params[:user])
         flash[:notice] = 'User was successfully updated.'
@@ -114,7 +107,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     flash[:notice] = 'User was successfully deleted.'
@@ -144,6 +136,10 @@ class UsersController < ApplicationController
     end
 
     @users = query.includes(:roles)
+  end
+
+  def ensure_roles
+    params[:user][:roles] = Role.find_all_by_id(params[:user][:roles]) if params.present? && params[:user].present? && params[:user][:roles].present?
   end
 
   def ensure_initial_state

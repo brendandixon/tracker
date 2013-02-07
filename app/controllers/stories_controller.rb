@@ -5,6 +5,8 @@ class StoriesController < ApplicationController
   DEFAULT_SORT = ['-date']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  load_and_authorize_resource
+
   before_filter :ensure_initial_state
   before_filter :build_index_query, only: INDEX_ACTIONS
   
@@ -21,7 +23,6 @@ class StoriesController < ApplicationController
   # GET /stories/1
   # GET /stories/1.json
   def show
-    @story = Story.find(params[:id])
     @expanded << @story.id if params.has_key?(:expanded)
 
     respond_to do |format|
@@ -34,7 +35,6 @@ class StoriesController < ApplicationController
   # GET /stories/new
   # GET /stories/new.json
   def new
-    @story = Story.new
     @edited << 'new'
     @expanded << 'new'
 
@@ -47,7 +47,6 @@ class StoriesController < ApplicationController
 
   # GET /stories/1/edit
   def edit
-    @story = Story.find(params[:id])
     @edited << @story.id
     @expanded << @story.id
 
@@ -61,8 +60,6 @@ class StoriesController < ApplicationController
   # POST /stories
   # POST /stories.json
   def create
-    @story = Story.new(params[:story])
-
     respond_to do |format|
       if @story.save
         flash[:notice] = 'Story was successfully created.'
@@ -85,8 +82,6 @@ class StoriesController < ApplicationController
   # PUT /stories/1
   # PUT /stories/1.json
   def update
-    @story = Story.find(params[:id])
-
     respond_to do |format|
       if @story.update_attributes(params[:story])
         flash[:notice] = 'Story was successfully updated.'
@@ -109,7 +104,6 @@ class StoriesController < ApplicationController
   # DELETE /stories/1
   # DELETE /stories/1.json
   def destroy
-    @story = Story.find(params[:id])
     @story.destroy
 
     flash[:notice] = 'Story was successfully deleted.'
@@ -128,7 +122,7 @@ class StoriesController < ApplicationController
   private
 
   def build_index_query
-    query = Story
+    query = @stories || Story
 
     contact_us = @filter.content[:contact_us]
     projects = @filter.content[:projects]

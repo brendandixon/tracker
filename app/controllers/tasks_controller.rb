@@ -6,6 +6,8 @@ class TasksController < ApplicationController
 
   INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :print, :rank, :update]
 
+  load_and_authorize_resource
+
   before_filter :ensure_initial_state
   before_filter :build_index_query, only: INDEX_ACTIONS
 
@@ -22,7 +24,6 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @task = Task.find(params[:id])
     @expanded << @task.id if params.has_key?(:expanded)
 
     respond_to do |format|
@@ -35,7 +36,6 @@ class TasksController < ApplicationController
   # GET /tasks/new
   # GET /tasks/new.json
   def new
-    @task = Task.new
     @edited << 'new'
     @expanded << 'new'
     
@@ -57,7 +57,6 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    @task = Task.find(params[:id])
     @edited << @task.id
     @expanded << @task.id
 
@@ -71,8 +70,6 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(params[:task])
-
     respond_to do |format|
       if @task.save
         flash[:notice] = 'Task was successfully created.'
@@ -95,8 +92,6 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
-    @task = Task.find(params[:id])
-
     respond_to do |format|
       if @task.update_attributes(params[:task])
         flash[:notice] = 'Task was successfully updated.'
@@ -119,7 +114,6 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    @task = Task.find(params[:id])
     flash[:notice] = 'Task was successfully deleted.'
     @task.destroy
     
@@ -132,7 +126,6 @@ class TasksController < ApplicationController
   
   # POST /tasks/1/advance
   def advance
-    @task = Task.find(params[:id])
     @task.advance!
     @changed << @task.id
 
@@ -146,7 +139,6 @@ class TasksController < ApplicationController
   
   # POST /tasks/1/complete
   def complete
-    @task = Task.find(params[:id])
     @task.completed!
     @changed << @task.id
     
@@ -160,7 +152,6 @@ class TasksController < ApplicationController
 
   # POST /tasks/1/point?points=xx
   def point
-    @task = Task.find(params[:id])
     @expanded << @task.id if params.has_key?(:expanded)
 
     respond_to do |format|
@@ -195,7 +186,6 @@ class TasksController < ApplicationController
 
   # POST /tasks/1/rank?before=xx or /tasks/1/rank?after=xx
   def rank
-    @task = Task.find(params[:id])
     @task.rank_between(params[:after], params[:before])
     flash[:notice] = "Unable to move task" unless @task.save
 
@@ -221,7 +211,7 @@ class TasksController < ApplicationController
     if query.blank?
       @filter.content[:group_by] = nil if @filter.content[:group_by].present?
       
-      query = Task
+      query = @tasks || Task
 
       projects = @filter.content[:projects]
       features = @filter.content[:features]

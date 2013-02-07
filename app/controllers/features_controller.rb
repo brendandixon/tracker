@@ -5,6 +5,8 @@ class FeaturesController < ApplicationController
   DEFAULT_SORT = ['name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  load_and_authorize_resource
+
   before_filter :ensure_initial_state
   before_filter :build_index_query, only: INDEX_ACTIONS
 
@@ -21,7 +23,6 @@ class FeaturesController < ApplicationController
   # GET /features/1
   # GET /features/1.json
   def show
-    @feature = Feature.find(params[:id])
     @expanded << @feature.id if params.has_key?(:expanded)
 
     respond_to do |format|
@@ -34,7 +35,6 @@ class FeaturesController < ApplicationController
   # GET /features/new
   # GET /features/new.json
   def new
-    @feature = Feature.new
     @edited << 'new'
     @expanded << 'new'
 
@@ -47,7 +47,6 @@ class FeaturesController < ApplicationController
 
   # GET /features/1/edit
   def edit
-    @feature = Feature.find(params[:id])
     @edited << @feature.id
     @expanded << @feature.id
 
@@ -61,8 +60,6 @@ class FeaturesController < ApplicationController
   # POST /features
   # POST /features.json
   def create
-    @feature = Feature.new(params[:feature])
-
     respond_to do |format|
       if @feature.save
         flash[:notice] = 'Feature was successfully created.'
@@ -85,8 +82,6 @@ class FeaturesController < ApplicationController
   # PUT /features/1
   # PUT /features/1.json
   def update
-    @feature = Feature.find(params[:id])
-
     respond_to do |format|
       if @feature.update_attributes(params[:feature])
         flash[:notice] = 'Feature was successfully updated.'
@@ -109,7 +104,6 @@ class FeaturesController < ApplicationController
   # DELETE /features/1
   # DELETE /features/1.json
   def destroy
-    @feature = Feature.find(params[:id])
     @feature.destroy
 
     flash[:notice] = 'Feature was successfully deleted.'
@@ -129,7 +123,7 @@ class FeaturesController < ApplicationController
   private
 
   def build_index_query
-    query = Feature
+    query = @features || Feature
     
     @sort.each do |sort|
       case sort

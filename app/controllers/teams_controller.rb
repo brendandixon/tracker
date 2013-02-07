@@ -5,7 +5,10 @@ class TeamsController < ApplicationController
   DEFAULT_SORT = ['-name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  load_and_authorize_resource
+
   before_filter :ensure_initial_state
+  before_filter :ensure_projects
   before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /teams
@@ -21,8 +24,6 @@ class TeamsController < ApplicationController
   # GET /teams/1
   # GET /teams/1.json
   def show
-    @team = Team.find(params[:id])
-
     respond_to do |format|
       format.html { render template: 'shared/show' }
       format.js { render 'team' }
@@ -33,8 +34,6 @@ class TeamsController < ApplicationController
   # GET /teams/new
   # GET /teams/new.json
   def new
-    @team = Team.new
-
     respond_to do |format|
       format.html { render template: 'shared/new' }
       format.js { render 'team' }
@@ -44,7 +43,6 @@ class TeamsController < ApplicationController
 
   # GET /teams/1/edit
   def edit
-    @team = Team.includes(:projects, :tasks).find(params[:id])
     @edited << @team.id
 
     respond_to do |format|
@@ -57,9 +55,6 @@ class TeamsController < ApplicationController
   # POST /teams
   # POST /teams.json
   def create
-    params[:team][:projects] = Project.find_all_by_id(params[:team][:projects]) if params[:team][:projects].present?
-    @team = Team.new(params[:team])
-
     respond_to do |format|
       if @team.save
         flash[:notice] = 'Team was successfully created.'
@@ -79,9 +74,6 @@ class TeamsController < ApplicationController
   # PUT /teams/1
   # PUT /teams/1.json
   def update
-    params[:team][:projects] = Project.find_all_by_id(params[:team][:projects]) if params[:team][:projects].present?
-    @team = Team.find(params[:id])
-
     respond_to do |format|
       if @team.update_attributes(params[:team])
         flash[:notice] = 'Team was successfully updated.'
@@ -103,7 +95,6 @@ class TeamsController < ApplicationController
   # DELETE /teams/1
   # DELETE /teams/1.json
   def destroy
-    @team = Team.find(params[:id])
     @team.destroy
     
     flash[:notice] = 'Team was successfully deleted.'
@@ -122,7 +113,7 @@ class TeamsController < ApplicationController
   private
 
   def build_index_query
-    query = Team
+    query = @teams || Team
 
     query = query.includes(:projects, :tasks)
 
@@ -138,6 +129,10 @@ class TeamsController < ApplicationController
     end
 
     @teams = query
+  end
+
+  def ensure_projects
+    params[:team][:projects] = Project.find_all_by_id(params[:team][:projects]) if params.present? && params[:team].present? && params[:team][:projects].present?
   end
 
   def ensure_initial_state

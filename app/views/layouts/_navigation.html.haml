@@ -1,5 +1,6 @@
 - is_devise = controller.is_a?(DeviseController)
 - current_area = controller.controller_name.to_sym
+- current_object = controller.controller_name.singularize.camelize.constantize rescue nil
 - in_index = !is_devise && controller.is_index_action
 - disabled = !in_index || !controller.template_exists?('filter', [controller.controller_name], true)
 - has_print = controller.template_exists?('print_menu', [controller.controller_name], true)
@@ -20,7 +21,11 @@
         - unless is_devise
           %li.divider-vertical
           %li
-            = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: in_index
+            - if current_object.present? && can?(:new, current_object)
+              = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: in_index
+            - else
+              .disabled
+                %span= t(:new_html, scope: [:controllers, current_area])
           %li.divider-vertical
           %li.dropdown{class: disabled ? 'disabled' : nil}
             = content_tag disabled ? :span : :a, {href: '#', data: {toggle: 'dropdown'}} do

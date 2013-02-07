@@ -5,7 +5,10 @@ class ProjectsController < ApplicationController
   DEFAULT_SORT = ['-name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  load_and_authorize_resource
+
   before_filter :ensure_initial_state
+  before_filter :ensure_features
   before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /projects
@@ -21,7 +24,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @project = Project.find(params[:id])
     @expanded << @project.id if params.has_key?(:expanded)
 
     respond_to do |format|
@@ -34,7 +36,6 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   # GET /projects/new.json
   def new
-    @project = Project.new
     @edited << 'new'
     @expanded << 'new'
 
@@ -47,7 +48,6 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
-    @project = Project.includes(:features, :stories, :tasks).find(params[:id])
     @edited << @project.id
     @expanded << @project.id
 
@@ -61,9 +61,6 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    params[:project][:features] = Feature.find_all_by_id(params[:project][:features]) if params[:project][:features].present?
-    @project = Project.new(params[:project])
-
     respond_to do |format|
       if @project.save
         flash[:notice] = 'Project was successfully created.'
@@ -86,9 +83,6 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    params[:project][:features] = Feature.find_all_by_id(params[:project][:features]) if params[:project][:features].present?
-    @project = Project.find(params[:id])
-
     respond_to do |format|
       if @project.update_attributes(params[:project])
         flash[:notice] = 'Project was successfully updated.'
@@ -111,7 +105,6 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @project = Project.find(params[:id])
     @project.destroy
 
     flash[:notice] = 'Project was successfully deleted.'
@@ -130,7 +123,7 @@ class ProjectsController < ApplicationController
   private
 
   def build_index_query
-    query = Project
+    query = @projects || Project
 
     features = @filter.content[:features] || []
 
@@ -144,6 +137,10 @@ class ProjectsController < ApplicationController
     end
 
     @projects = query.includes(:features, :stories, :tasks)
+  end
+
+  def ensure_features
+    params[:project][:features] = Feature.find_all_by_id(params[:project][:features]) if params.present? && params[:project].present? && params[:project][:features].present?
   end
 
   def ensure_initial_state

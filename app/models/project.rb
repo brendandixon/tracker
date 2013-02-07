@@ -36,7 +36,7 @@ class Project < ActiveRecord::Base
   scope :for_features, lambda{|*features| joins(:supported_features).where("? = (select count(*) from supported_features as sf where sf.feature_id in (?) and sf.project_id = projects.id)", features.length, features).uniq }
   scope :for_team, lambda{|team| where(team_id: (team.is_a?(Team) ? team.id : team))}
 
-  scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
+  scope :in_name_order, lambda{|dir = 'ASC'| order("projects.name #{dir}")}
 
   class<<self
     def active

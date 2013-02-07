@@ -27,7 +27,7 @@ class Feature < ActiveRecord::Base
   
   scope :with_name, lambda{|name| where(name: name)}
 
-  scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
+  scope :in_name_order, lambda{|dir = 'ASC'| order("features.name #{dir}")}
   
   class<<self
     def active

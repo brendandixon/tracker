@@ -11,5 +11,5 @@ if ($('#Feature_<%= id %>').length > 0) {
 <% if @changed.include?(id) %>
 $('#Feature_<%= id%>').effect('highlight',{duration: 750});
 <% end %>
-<%= render 'shared/messages' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/messages' unless flash.empty? %>
 <%= render 'shared/reset_transients' %>
