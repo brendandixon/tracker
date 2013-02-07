@@ -25,22 +25,15 @@ class Iteration
       start_date = @team.projects.map{|p| p.start_date}.compact.min
       start_date = DateTime.parse(DEFAULT_START_DATE) if start_date.blank?
       start_date = start_date.to_datetime unless start_date.is_a?(DateTime)
-      Rails.logger.info "START DATE: #{start_date}"
-      Rails.logger.info "START WEEK: #{start_date.beginning_of_week}"
-      Rails.logger.info "NOW WEEK: #{DateTime.now.beginning_of_week}"
 
       days_since_start = (DateTime.now.in_time_zone.to_datetime.beginning_of_week - start_date.beginning_of_week).to_i
-      Rails.logger.info "DAYS SINCE START: #{days_since_start}"
       iterations_since_start = days_since_start / (@team.iteration * 7)
-      Rails.logger.info "ITERATIONS SINCE START: #{iterations_since_start}"
       iterations_since_start += number
       if iterations_since_start < 0
         @number -= iterations_since_start
         iterations_since_start = 0
       end
-      Rails.logger.info "ITERATIONS SINCE START: #{iterations_since_start} (ADVANCED BY #{number})"
       
-      Rails.logger.info "COMPUTED START DATE: #{(start_date + (iterations_since_start * @team.iteration).weeks).beginning_of_week}"
       @start_date = (start_date + (iterations_since_start * @team.iteration).weeks).beginning_of_week
     end
 

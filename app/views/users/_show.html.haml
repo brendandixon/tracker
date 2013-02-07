@@ -1,0 +1,29 @@
+- user ||= @user
+- remote = false if remote.nil?
+- stand_alone = true if stand_alone.nil?
+
+- if stand_alone
+  .user.expanded
+    .row-fluid
+      .span6
+        %label= 'Name'
+        .title= user.email
+      .span6
+        %label= 'Last Signin'
+        = user.last_sign_in_at.present? ? user.last_sign_in_at.to_date.to_s(:medium) : 'Never'
+    
+    .row-fluid
+      .spanb4.offset8.text-right
+        = link_to 'Edit', edit_user_path(user), remote:remote, class: 'btn btn-small btn-flat btn-primary'
+        \|
+        = link_to 'Delete', user, method: :delete, data: { confirm: "WARNING: Are you sure you want to delete this user?" }, remote:remote, class: 'btn btn-small btn-flat btn-danger'
+        \|
+        = link_to 'Back', users_path, class: 'btn btn-small btn-flat btn-link'
+
+- else
+  %td= user.email
+  %td= user.sign_in_count
+  %td
+    = user.last_sign_in_at.present? ? user.last_sign_in_at.to_date.to_s(:medium) : 'Never'
+    .command-block.on-hover<
+      = awesome_link_to '', edit_user_path(user), glyph: 'awesome-edit', remote:true

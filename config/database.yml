@@ -13,7 +13,7 @@ development:
   encoding: utf8
   reconnect: false
   pool: 5
-  database: tracker_production
+  database: tracker_development
   username: root
   password:
   socket: /tmp/mysql.sock

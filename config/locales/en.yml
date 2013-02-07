@@ -47,6 +47,10 @@ en:
       name_html: 'Teams'
       none_html: 'No teams were found.'
       new_html: 'New Team&#8230;'
+    users:
+      name_html: 'Users'
+      none_html: 'No users were found.'
+      new_html: 'New User&#8230;'
   activerecord:
     attributes:
       story:

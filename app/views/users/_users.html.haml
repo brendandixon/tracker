@@ -1,0 +1,18 @@
+#Main
+  = render 'layouts/messages'
+  = render 'shared/overview'
+
+  %table.table.user-list#UserList
+    %thead
+      %tr
+        =render partial: 'shared/sortable', locals: {name: 'Email', field: 'email', classes: 'span5'}
+        %th.span2= 'Signin Count'
+        %th.span5= 'Last Signin'
+
+    %tbody
+      - if @users.empty?
+        %tr.user#User_new
+          %td{colspan: 2}
+            %h3.subheader= t(:none_html, scope: [:controllers, :users])
+      - else
+        = render partial: 'user', collection: @users, locals: {edited: @edited, expanded: @expanded}

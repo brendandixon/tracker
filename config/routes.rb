@@ -18,18 +18,14 @@ Tracker::Application.routes.draw do
 
   root to: 'tasks#index'
 
-  resources :features do
-    get 'print', on: :collection
-  end
+  resources :features
 
   resources :projects do
     delete 'index', on: :collection
-    get 'print', on: :collection
   end
   
   resources :stories do
     delete 'index', on: :collection
-    get 'print', on: :collection
   end
 
   resources :tasks do
@@ -43,9 +39,9 @@ Tracker::Application.routes.draw do
     end
   end
 
-  resources :teams do
-    get 'print', on: :collection
-  end
+  resources :teams
+
+  resources :users
   
   resources :test if Rails.is_test?
 

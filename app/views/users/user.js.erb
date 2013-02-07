@@ -1,0 +1,15 @@
+<%
+content = escape_javascript(render(partial: @user, locals: {edited: @edited, expanded: @expanded}))
+id = @user.new_record? ? 'new' : @user.id
+%>
+if ($('#User_<%= id %>').length > 0) {
+  $('#User_<%= id%>').replaceWith('<%= content %>');
+} else if ($('.user-list > tbody > tr').length > 0) {
+  $('.user-list > tbody > tr').first().before('<%= content %>');
+  $('.user-list > tbody > tr[data-empty]').remove();
+}
+<% if @changed.include?(id) %>
+$('#User_<%= id%>').effect('highlight',{duration: 750});
+<% end %>
+<%= render 'shared/messages' if flash.present? && flash[:notice].present? %>
+<%= render 'shared/reset_transients' %>

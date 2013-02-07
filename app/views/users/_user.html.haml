@@ -1,0 +1,12 @@
+- edited ||= []
+- expanded ||= []
+- user ||= @user
+- id = user.new_record? ? 'new' : user.id
+
+- if edited.include?(id)
+  %tr.user.edit-mode.expanded#User{id: id, data: {expanded: 1}}
+    = render partial: 'edit', locals:{user:user, remote:true, stand_alone:false}
+
+- else
+  %tr.user.compact#User{id: id}
+    = render partial: 'show', locals:{user:user, remote:true, stand_alone:false}
