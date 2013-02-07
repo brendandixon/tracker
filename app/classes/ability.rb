@@ -17,9 +17,8 @@ class Ability
 
     if user.role? :developer
       can :read, [Category, Feature, Project, Story, Task, Team, User]
-      can :create, [Story, Task]
-      can :edit, [Story, Task]
-      can :print, Task
+      can [:create, :edit, :new, :update], Story
+      can [:advance, :complete, :create, :edit, :new, :point, :print, :update], Task
       can :edit, User, id: user.id
     end
 
