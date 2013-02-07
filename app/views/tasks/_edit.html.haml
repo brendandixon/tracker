@@ -22,7 +22,7 @@
             .controls.controls-row
               .span9
                 = f.label :title
-                = f.text_field :title, placeholder: 'Enter task title', class: 'span12'
+                = f.text_field :title, placeholder: 'Enter task title', class: 'span12', autofocus: true
               .span3
                 = f.label :status
                 = f.select :status, Task::ALL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}, class: 'span12'}
@@ -34,10 +34,10 @@
                 = f.select :story_id, Story.all_stories, {}, class: 'span12'
               .span3.start_date{style: "display:#{task.in_progress? ? 'inline-block' : 'none'}"}
                 = f.label :start_date
-                = f.text_field :start_date, data: {datefield: true}, class: 'span12'
+                = f.text_field :start_date, data: {datefield: true}, class: 'span12', type: 'datetime-local'
               .span3.completed_date{style: "display:#{task.completed? ? 'inline-block' : 'none'}"}
                 = f.label :completed_date
-                = f.text_field :completed_date, data: {datefield: true}, class: 'span12'
+                = f.text_field :completed_date, data: {datefield: true}, class: 'span12', type: 'datetime-local'
 
           .row-fluid.section
             .span12

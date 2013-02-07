@@ -1,6 +1,7 @@
 - is_devise = controller.is_a?(DeviseController)
 - current_area = controller.controller_name.to_sym
-- disabled = is_devise || !controller.is_index_action || !controller.template_exists?('filter', [controller.controller_name], true)
+- in_index = !is_devise && controller.is_index_action
+- disabled = !in_index || !controller.template_exists?('filter', [controller.controller_name], true)
 - has_print = controller.template_exists?('print_menu', [controller.controller_name], true)
 #Navigation
   %a.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
@@ -19,7 +20,7 @@
         - unless is_devise
           %li.divider-vertical
           %li
-            = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: !disabled
+            = link_to t(:new_html, scope: [:controllers, current_area]), url_for(controller: current_area, action: :new), remote: in_index
           %li.divider-vertical
           %li.dropdown{class: disabled ? 'disabled' : nil}
             = content_tag disabled ? :span : :a, {href: '#', data: {toggle: 'dropdown'}} do

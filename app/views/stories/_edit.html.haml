@@ -18,7 +18,7 @@
         .row-fluid.section
           .span9
             = f.label :title
-            = f.text_field :title, class: 'span12'
+            = f.text_field :title, class: 'span12', autofocus: true
           .span3.projects
             = story_project_labels(story)
             = f.label :create_tasks, {} do
@@ -34,7 +34,7 @@
             = f.text_field :contact_us_number, size: 5, class: 'span12'
           .span3
             = f.label :release_date
-            = f.text_field :release_date, data: {datefield: true}, class: 'span12'
+            = f.text_field :release_date, data: {datefield: true}, class: 'span12', type: 'datetime-local'
 
         .row-fluid
           .span6.offset6.text-right<
