@@ -3,6 +3,7 @@ class StoriesController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-date']
+  SORT_FIELDS = ['cu', 'date', 'feature', 'title']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   load_and_authorize_resource
@@ -142,14 +143,14 @@ class StoriesController < ApplicationController
     
     @sort.each do |sort|
       case sort
-      when 'cu' then query = query.in_contact_us_order('ASC')
       when '-cu' then query = query.in_contact_us_order('DESC')
-      when 'date' then query = query.in_date_order('ASC')
+      when 'cu' then query = query.in_contact_us_order('ASC')
       when '-date' then query = query.in_date_order('DESC')
-      when 'story' then query = query.in_title_order('ASC')
-      when '-story' then query = query.in_title_order('DESC')
-      when 'feature' then query = query.in_feature_order('ASC')
+      when 'date' then query = query.in_date_order('ASC')
+      when '-title' then query = query.in_title_order('DESC')
+      when 'title' then query = query.in_title_order('ASC')
       when '-feature' then query = query.in_feature_order('DESC')
+      when 'feature' then query = query.in_feature_order('ASC')
       end
     end
 

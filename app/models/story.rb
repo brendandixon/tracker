@@ -24,6 +24,8 @@ class Story < ActiveRecord::Base
   belongs_to :feature
   has_many :tasks, dependent: :destroy
   has_many :projects, through: :tasks
+  has_many :referent_references, as: :referent, dependent: :destroy
+  has_many :references, through: :referent_references
   
   validates_presence_of :feature, :title
   validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
@@ -42,7 +44,7 @@ class Story < ActiveRecord::Base
   scope :in_contact_us_order, lambda{|dir = 'ASC'| order("contact_us_number #{dir}")}
   scope :in_date_order, lambda{|dir = 'ASC'| order("release_date #{dir}")}
   scope :in_feature_order, lambda{|dir = 'ASC'| joins(:feature).order("features.name #{dir}")}
-  scope :in_title_order, lambda{|dir = 'ASC'| order("title #{dir}")}
+  scope :in_title_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
   
   class<<self
     def all_stories

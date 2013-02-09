@@ -3,6 +3,7 @@ class TasksController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['status']
+  SORT_FIELDS = ['point', 'status', 'title']
 
   INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :print, :rank, :update]
 

@@ -239,13 +239,13 @@
   }
 }
 
-.devise, .feature, .project, .story, .task, .team, .user {
+.devise, .feature, .project, .reference-type, .story, .task, .team, .user {
   .row-fluid.section {
     margin-bottom:12px;
   }
 }
 
-.devise, .feature, .project, .story, .team, .user {
+.devise, .feature, .project, .reference-type, .story, .team, .user {
   .command-block {
     display:inline-block;
     position:absolute;
@@ -281,6 +281,11 @@
         font-size:$fontSizeSmall;
         font-weight:$fontThick;
         margin-bottom:0;
+        .note {
+          display:inline-block;
+          font-weight:$fontMedium;
+          padding-left:10px;
+        }
       }
     }
   }
@@ -293,6 +298,12 @@
     .features, .projects {
       text-align:left;
     }
+  }
+}
+.reference-type {
+  .reference-type-value {
+    color:$red;
+    font-weight:$fontThick;
   }
 }
 

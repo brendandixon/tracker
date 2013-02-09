@@ -31,6 +31,10 @@ en:
       name_html: 'Features'
       none_html: 'No features were found.'
       new_html: 'New Feature&#8230;'
+    reference_types:
+      name_html: 'Reference Types'
+      none_html: 'No reference types were found.'
+      new_html: 'New Type&#8230;'
     stories:
       name_html: 'Stories'
       none_html: 'No stories were found.'

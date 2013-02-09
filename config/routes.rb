@@ -23,6 +23,9 @@ Tracker::Application.routes.draw do
   resources :projects do
     delete 'index', on: :collection
   end
+
+  resources :reference_types
+  
   
   resources :stories do
     delete 'index', on: :collection

@@ -2,5 +2,20 @@
   %li
     = awesome_link_to 'Account', edit_user_path(current_user), glyph: 'awesome-user'
   %li.divider
+  - divide = false
+  - if can? :edit, Feature
+    - divide = true
+    %li
+      = awesome_link_to 'Features', features_path, glyph: 'awesome-beaker'
+  - if can? :edit, ReferenceType
+    - divide = true
+    %li
+      = awesome_link_to 'Types', reference_types_path, glyph: 'awesome-lightbulb'
+  - if can? :edit, User
+    - divide = true
+    %li
+      = awesome_link_to 'Users', users_path, glyph: 'awesome-group'
+  - if divide
+    %li.divider
   %li
     = awesome_link_to 'Logout', destroy_user_session_path, method: :delete, glyph: 'awesome-signout'

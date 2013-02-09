@@ -32,6 +32,8 @@ class Task < ActiveRecord::Base
   has_one :feature, through: :story
   belongs_to :project
   has_many :teams, through: :project
+  has_many :referent_references, as: :referent, dependent: :destroy
+  has_many :references, through: :referent_references
 
   after_initialize :ensure_initial
   before_save :ensure_rank  

@@ -3,6 +3,7 @@ class ProjectsController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-name']
+  SORT_FIELDS = ['name', '-name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   load_and_authorize_resource

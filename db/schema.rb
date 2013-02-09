@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130207041546) do
+ActiveRecord::Schema.define(:version => 20130208200159) do
 
   create_table "categories", :force => true do |t|
     t.string   "name",       :null => false
@@ -52,6 +52,36 @@ ActiveRecord::Schema.define(:version => 20130207041546) do
   end
 
   add_index "projects", ["name"], :name => "index_projects_on_name"
+
+  create_table "reference_types", :force => true do |t|
+    t.string   "name"
+    t.string   "url_pattern"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "reference_types", ["name"], :name => "index_reference_types_on_name", :unique => true
+
+  create_table "references", :force => true do |t|
+    t.integer  "reference_type_id"
+    t.string   "value"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "references", ["reference_type_id"], :name => "index_references_on_reference_type_id"
+
+  create_table "referent_references", :force => true do |t|
+    t.integer  "referent_id"
+    t.string   "referent_type"
+    t.integer  "reference_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "referent_references", ["reference_id"], :name => "index_referent_references_on_reference_id"
+  add_index "referent_references", ["referent_id", "referent_type", "reference_id"], :name => "referent_unique_reference", :unique => true
+  add_index "referent_references", ["referent_id", "referent_type"], :name => "index_referent_references_on_referent_id_and_referent_type"
 
   create_table "roles", :force => true do |t|
     t.string   "name"

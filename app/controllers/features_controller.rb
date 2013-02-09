@@ -3,6 +3,7 @@ class FeaturesController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['name']
+  SORT_FIELDS = ['category', 'name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   load_and_authorize_resource
@@ -127,12 +128,14 @@ class FeaturesController < ApplicationController
     
     @sort.each do |sort|
       case sort
+      when '-category' then query = query.in_category_order('ASC')
+      when 'category' then query = query.in_category_order('DESC')
       when '-name' then query = query.in_name_order('ASC')
       when 'name' then query = query.in_name_order('DESC')
       end
     end
 
-    @features = query.includes(:projects, :stories)
+    @features = query.includes(:category, :projects, :stories)
   end
 
   def ensure_initial_state

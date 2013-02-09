@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['email']
+  SORT_FIELDS = ['email']
+  
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   load_and_authorize_resource
@@ -126,7 +128,7 @@ class UsersController < ApplicationController
   private
 
   def build_index_query
-    query = User
+    query = @users || User
     
     @sort.each do |sort|
       case sort

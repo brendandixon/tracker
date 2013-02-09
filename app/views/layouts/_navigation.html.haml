@@ -13,10 +13,10 @@
   - if user_signed_in?
     .nav-collapse.collapse
       %ul.nav
-        - [[:tasks, 'list'], [:stories, 'notes_2'], [:projects, 'folder_open'], [:teams, 'group']].each do |area|
+        - [[:tasks, 'tasks'], [:stories, 'book'], [:projects, 'folder-open'], [:teams, 'sitemap']].each do |area|
           - classes = "has-tip #{current_area == area.first && controller.is_index_action ? 'active' : nil}"
           %li{class: classes, title: t(:name_html, scope:[:controllers, area.first])}
-            = glyph_link_to area.first.to_s.titleize, {controller: "/#{area.first}", action: :index}, {glyph: "small #{area.last}"}
+            = awesome_link_to area.first.to_s.titleize, {controller: "/#{area.first}", action: :index}, {glyph: "awesome-#{area.last}"}
       %ul.nav
         - unless is_devise
           %li.divider-vertical

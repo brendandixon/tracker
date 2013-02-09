@@ -3,6 +3,8 @@ class TeamsController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-name']
+  SORT_FIELDS = ['name', 'iteration', 'velocity']
+  
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   load_and_authorize_resource
@@ -115,8 +117,6 @@ class TeamsController < ApplicationController
   def build_index_query
     query = @teams || Team
 
-    query = query.includes(:projects, :tasks)
-
     @sort.each do |sort|
       case sort
       when '-name' then query = query.in_name_order('ASC')
@@ -127,6 +127,8 @@ class TeamsController < ApplicationController
       when 'velocity' then query = query.in_velocity_order('DESC')
       end
     end
+
+    query = query.includes(:projects, :tasks)
 
     @teams = query
   end
