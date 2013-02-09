@@ -1,0 +1,17 @@
+#Main
+  = render 'layouts/messages'
+  = render 'shared/overview'
+
+  %table.table.reference-type-list#ReferenceTypeList
+    %thead
+      %tr
+        =render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'span3'}
+        %th.span9= 'URL Pattern'
+
+    %tbody
+      - if @reference_types.empty?
+        %tr.reference-type#ReferenceType_new
+          %td{colspan: 2}
+            %h3.subheader= t(:none_html, scope: [:controllers, :reference_types])
+      - else
+        = render partial: 'reference_type', collection: @reference_types, locals: {edited: @edited, expanded: @expanded}

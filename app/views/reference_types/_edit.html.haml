@@ -1,0 +1,36 @@
+- reference_type ||= @reference_type
+- remote = false if remote.nil?
+- stand_alone = true if stand_alone.nil?
+
+= content_tag stand_alone ? 'div' : 'td', stand_alone ? {} : {colspan: 2} do
+  = form_for reference_type, remote:remote do |f|
+    .row-fluid
+      .span12
+        - if reference_type.errors.any?
+          .row-fluid
+            .span12
+              #error_explanation
+                %h2= "#{pluralize(reference_type.errors.count, "error")} prohibited this reference type from being saved:"
+                %ul
+                  - reference_type.errors.full_messages.each do |msg|
+                    %li= msg
+
+        .row-fluid.section
+          .span5
+            = f.label :name
+            = f.text_field :name, class: 'span12'
+
+        .row-fluid.section
+          .span11
+            = f.label :url_pattern do
+              URL Pattern
+              %span.note= "(All instances of <span class='reference-type-value'>#{ReferenceType::VALUE_MARKER}</span> will be replaced with the reference value)".html_safe
+            = f.url_field :url_pattern, class: 'span12'
+        
+        .row
+          .span4.offset8.text-right
+            = f.submit 'Save', class: 'btn btn-small btn-flat btn-primary'
+            \|
+            = link_to 'Delete', reference_type, method: :delete, data:{confirm: "WARNING: Are you sure you want to delete this reference type?" }, remote:remote, class: 'btn btn-small btn-flat btn-danger'
+            \|
+            = link_to 'Cancel', reference_type.new_record? ? reference_types_path : reference_type_path(reference_type), remote:remote, class: 'btn btn-small btn-flat btn-link'

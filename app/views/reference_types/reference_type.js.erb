@@ -1,0 +1,15 @@
+<%
+content = escape_javascript(render(partial: @reference_type, locals: {edited: @edited, expanded: @expanded}))
+id = @reference_type.new_record? ? 'new' : @reference_type.id
+%>
+if ($('#ReferenceType_<%= id %>').length > 0) {
+  $('#ReferenceType_<%= id%>').replaceWith('<%= content %>');
+} else if ($('.reference-type-list > tbody > tr').length > 0) {
+  $('.reference-type-list > tbody > tr').first().before('<%= content %>');
+  $('.reference-type-list > tbody > tr[data-empty]').remove();
+}
+<% if @changed.include?(id) %>
+$('#ReferenceType_<%= id%>').effect('highlight',{duration: 750});
+<% end %>
+<%= render 'shared/messages' unless flash.empty? %>
+<%= render 'shared/reset_transients' %>
