@@ -44,6 +44,10 @@
               = f.label :description, t(:description, scope: [:activerecord, :attributes, :task])
               = f.text_area :description, rows: 5, placeholder: 'Provide a description or details', class: 'span12'
 
+          .row-fluid.section
+            .span12
+              = render partial: 'shared/edit_references', locals: {references: task.references, referent_type: :task}
+
           .row-fluid
             .span4
               = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])

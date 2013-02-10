@@ -1,9 +1,0 @@
-- references = [] if references.nil?
-
-%label= 'References'
-.references
-  %ul.unstyled.references-list
-    - references.each do |reference|
-      = render partial: 'shared/reference', locals: {reference: reference, referent_type: referent_type}
-  .template{data: {contents: controller.render_to_string(partial: 'shared/reference', locals: {referent_type: referent_type})}}
-  = link_to t(:add_html, scope: [:controllers, :references]), 'javascript:void();', class: 'btn btn-small btn-flat btn-info', data:{add_reference: true}

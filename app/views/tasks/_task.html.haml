@@ -90,12 +90,17 @@
                         %label= 'Story'
                         .title
                           = link_to task.story.to_s, story_path(task.story.id)
-                        = render partial: 'stories/references', locals:{story: task.story}
+                        = render partial: 'shared/show_references', locals:{references: task.story.references}
                   - if task.description.present?
                     .row-fluid.section
                       .span12
                         %label= 'Description'
                         .description= task.description
+                  - if task.references.present?
+                    .row-fluid.section
+                      .span12
+                        %label= 'References'
+                        = render partial: 'shared/show_references', locals:{references: task.references}
                   .row-fluid
                     .span6
                       %label= 'Project'

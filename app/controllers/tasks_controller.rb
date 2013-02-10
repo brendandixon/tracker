@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   include FilterHandler
+  include ReferencesHandler
   include SortHandler
 
   DEFAULT_SORT = ['status']

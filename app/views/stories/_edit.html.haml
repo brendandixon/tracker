@@ -35,7 +35,7 @@
 
         .row-fluid.section
           .span12
-            = render partial: 'shared/references', locals: {references: story.references, referent_type: :story}
+            = render partial: 'shared/edit_references', locals: {references: story.references, referent_type: :story}
 
         .row-fluid
           .span6.offset6.text-right<

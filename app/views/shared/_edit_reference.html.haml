@@ -1,4 +1,4 @@
-- if reference.present?
+- if defined?(reference) && reference.present?
   - id = reference.id
   - reference_type_id = reference.reference_type.present? ? reference.reference_type.id : nil
   - value = reference.value

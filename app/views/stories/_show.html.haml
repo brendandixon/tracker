@@ -22,7 +22,7 @@
       .row-fluid.section
         .span9
           %label= 'References'
-          = render partial: 'references', locals:{story: story}
+          = render partial: 'shared/show_references', locals:{references: story.references}
       .row-fluid
         .span4.offset8.text-right
           - if can? :edit, story
@@ -37,7 +37,7 @@
   %td.span2= story.title
   %td.span1= story.feature.name if story.feature.present?
   %td.span2= story.release_date.in_time_zone.to_date.to_s(:medium) if story.release_date.present?
-  %td.span2= render partial: 'references', locals:{story: story}
+  %td.span2= render partial: 'shared/show_references', locals:{references: story.references}
   %td.span2
     = story_project_labels(story, (@filter.present? ? @filter.content : {})[:projects])
     .command-block.on-hover<
