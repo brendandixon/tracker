@@ -307,6 +307,12 @@
   }
 }
 
+.references {
+  .destroyed {
+    display:none;
+  }
+}
+
 div {
   .story {
     &.expanded {
@@ -323,6 +329,7 @@ div {
   th {
     color:$white;
     background-color:$grayLight;
+    white-space:nowrap;
     &.sortable {
       background-color:$blue;
     }

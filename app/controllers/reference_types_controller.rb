@@ -73,7 +73,7 @@ class ReferenceTypesController < ApplicationController
         @edited << 'new'
         @expanded << 'new'
 
-        format.html { render action: "new" }
+        format.html { render action: 'new', template: 'shared/new' }
         format.js { render 'reference_type' }
         format.json { render json: @reference_type.errors, status: :unprocessable_entity }
       end
@@ -95,7 +95,7 @@ class ReferenceTypesController < ApplicationController
         @edited << @reference_type.id
         @expanded << @reference_type.id
 
-        format.html { render action: "edit" }
+        format.html { render action: 'edit', template: 'shared/edit' }
         format.js { render 'reference_type' }
         format.json { render json: @reference_type.errors, status: :unprocessable_entity }
       end
@@ -128,8 +128,8 @@ class ReferenceTypesController < ApplicationController
 
     @sort.each do |sort|
       case sort
-      when '-name' then query = query.in_name_order('ASC')
-      when 'name' then query = query.in_name_order('DESC')
+      when '-name' then query = query.in_name_order('DESC')
+      when 'name' then query = query.in_name_order('ASC')
       end
     end
 

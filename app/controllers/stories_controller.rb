@@ -3,7 +3,7 @@ class StoriesController < ApplicationController
   include SortHandler
 
   DEFAULT_SORT = ['-date']
-  SORT_FIELDS = ['cu', 'date', 'feature', 'title']
+  SORT_FIELDS = ['date', 'feature', 'reference', 'title']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   load_and_authorize_resource
@@ -73,7 +73,7 @@ class StoriesController < ApplicationController
         @edited << 'new'
         @expanded << 'new'
 
-        format.html { render action: "new" }
+        format.html { render action: 'new', template: 'shared/new' }
         format.js { render 'story'; flash.discard }
         format.json { render json: @story.errors, status: :unprocessable_entity }
       end
@@ -95,7 +95,7 @@ class StoriesController < ApplicationController
         @edited << @story.id
         @expanded << @story.id
 
-        format.html { render action: "edit" }
+        format.html { render action: 'edit', template: 'shared/edit' }
         format.js { render 'story'; flash.discard }
         format.json { render json: @story.errors, status: :unprocessable_entity }
       end
@@ -143,18 +143,18 @@ class StoriesController < ApplicationController
     
     @sort.each do |sort|
       case sort
-      when '-cu' then query = query.in_contact_us_order('DESC')
-      when 'cu' then query = query.in_contact_us_order('ASC')
       when '-date' then query = query.in_date_order('DESC')
       when 'date' then query = query.in_date_order('ASC')
-      when '-title' then query = query.in_title_order('DESC')
-      when 'title' then query = query.in_title_order('ASC')
       when '-feature' then query = query.in_feature_order('DESC')
       when 'feature' then query = query.in_feature_order('ASC')
+      when '-reference' then query = query.in_reference_order('DESC')
+      when 'reference' then query = query.in_reference_order('ASC')
+      when '-title' then query = query.in_title_order('DESC')
+      when 'title' then query = query.in_title_order('ASC')
       end
     end
 
-    @stories = query.includes(:feature, :tasks).uniq
+    @stories = query.includes(:feature, :references, :tasks).uniq
   end
 
   def ensure_initial_state

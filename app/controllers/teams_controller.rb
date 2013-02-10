@@ -66,7 +66,7 @@ class TeamsController < ApplicationController
         format.js { render 'shared/index'; flash.discard }
         format.json { render json: @team, status: :created, location: @team }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new', template: 'shared/new' }
         format.js { render 'team' }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end
@@ -87,7 +87,7 @@ class TeamsController < ApplicationController
       else
         @edited << @team.id
 
-        format.html { render action: "edit" }
+        format.html { render action: 'edit', template: 'shared/edit' }
         format.js { render 'team' }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end

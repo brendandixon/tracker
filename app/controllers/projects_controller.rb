@@ -74,7 +74,7 @@ class ProjectsController < ApplicationController
         @edited << 'new'
         @expanded << 'new'
 
-        format.html { render action: "new" }
+        format.html { render action: 'new', template: 'shared/new' }
         format.js { render 'project' }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
@@ -96,7 +96,7 @@ class ProjectsController < ApplicationController
         @edited << @project.id
         @expanded << @project.id
 
-        format.html { render action: "edit" }
+        format.html { render action: 'edit', template: 'shared/edit' }
         format.js { render 'project' }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end

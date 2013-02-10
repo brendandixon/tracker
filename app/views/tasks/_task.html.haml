@@ -35,8 +35,8 @@
           .footer
             .row-fluid
               .span6
-                - if task.story.present? && task.story.contact_us_number.present?
-                  .contact-us= "CU# #{task.story.contact_us_number}"
+                - if task.story.present? && task.story.references.present?
+                  .contact-us= "#{task.story.references.first}"
               .span6
                 - if iteration.present?
                   .release-date= iteration.end_date.to_date.to_s(:medium)
@@ -50,8 +50,8 @@
         .span8
           .project= task.project.name
         .span4.text-right
-          - if task.story.present? && task.story.contact_us_number.present?
-            .contact-us= "CU# #{task.story.contact_us_number}"
+          - if task.story.present? && task.story.references.present?
+            .contact-us= "#{task.story.references.first}"
       - if task.description.present?
         .row-fluid
           .span12
@@ -90,9 +90,7 @@
                         %label= 'Story'
                         .title
                           = link_to task.story.to_s, story_path(task.story.id)
-                          - if task.story.contact_us_number.present?
-                            &mdash;
-                            %a.contact-us{href: task.story.contact_us_link, target: '_blank'}="CU ##{task.story.contact_us_number}"
+                        = render partial: 'stories/references', locals:{story: task.story}
                   - if task.description.present?
                     .row-fluid.section
                       .span12

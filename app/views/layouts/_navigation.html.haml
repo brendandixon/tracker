@@ -9,7 +9,7 @@
     %span.icon-bar
     %span.icon-bar
     %span.icon-bar
-  %a.brand{href: '#'}= 'Tracker'
+  %a.brand{href: 'javascript:void();'}= 'Tracker'
   - if user_signed_in?
     .nav-collapse.collapse
       %ul.nav
@@ -28,11 +28,11 @@
                 %span= t(:new_html, scope: [:controllers, current_area])
           %li.divider-vertical
           %li.dropdown{class: disabled ? 'disabled' : nil}
-            = content_tag disabled ? :span : :a, {href: '#', data: {toggle: 'dropdown'}} do
+            = content_tag disabled ? :span : :a, {href: 'javascript:void();', data: {toggle: 'dropdown'}} do
               Filter
               %b.caret
               = render 'shared/filter_menu' unless disabled
         %li.divider-vertical
         %li.dropdown
-          = glyph_link_to '', '#', glyph: 'cogwheels', data: {toggle: 'dropdown'}
+          = glyph_link_to '', 'javascript:void();', glyph: 'cogwheels', data: {toggle: 'dropdown'}
           = render 'shared/settings_menu'

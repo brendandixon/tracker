@@ -54,5 +54,5 @@
             \|
             = link_to 'Delete', stories_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true, class: 'btn btn-small btn-flat btn-danger'
           \|
-          = link_to 'Close', '#', data: {filter_close: true}, class: 'btn btn-small btn-link'
+          = link_to 'Close', 'javascript:void();', data: {filter_close: true}, class: 'btn btn-small btn-link'
   = render template: 'shared/bind_dates'

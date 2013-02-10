@@ -83,7 +83,7 @@ class TasksController < ApplicationController
         @edited << 'new'
         @expanded << 'new'
         
-        format.html { render action: "new" }
+        format.html { render action: 'new', template: 'shared/new' }
         format.js { render 'task'; flash.discard }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
@@ -105,7 +105,7 @@ class TasksController < ApplicationController
         @edited << @task.id
         @expanded << @task.id
 
-        format.html { render action: "edit" }
+        format.html { render action: 'edit', template: 'shared/edit' }
         format.js { render 'task'; flash.discard }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
@@ -242,7 +242,7 @@ class TasksController < ApplicationController
         end
       end
 
-      query = query.includes(:feature, :project).uniq
+      query = query.includes(:feature, :project, :references).uniq
     end
 
     @tasks = query

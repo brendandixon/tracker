@@ -43,4 +43,4 @@
           \|
           = link_to 'Delete', projects_path(destroy: true), method: :delete, data: { confirm: "#{t(:warning_html, scope: :filter)}" }, remote: true
         \|
-        = link_to 'Close', '#', data: {filter_close: true}
+        = link_to 'Close', 'javascript:void();', data: {filter_close: true}

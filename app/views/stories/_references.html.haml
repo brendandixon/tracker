@@ -1,0 +1,8 @@
+- story ||= @story
+- story.references.each do |reference|
+  .row-fluid
+    .span12
+      - if reference.linkable?
+        %a{href: reference.url_for}= reference
+      - else
+        = reference

@@ -26,7 +26,7 @@ class Task < ActiveRecord::Base
   POINTS = [0, 1, 2, 3, 5, 8]
   DEFAULT_POINTS = 2
 
-  attr_accessible :completed_date, :description, :points, :project_id, :start_date, :status, :story_id, :title
+  attr_accessible :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :title
     
   belongs_to :story
   has_one :feature, through: :story
@@ -34,6 +34,8 @@ class Task < ActiveRecord::Base
   has_many :teams, through: :project
   has_many :referent_references, as: :referent, dependent: :destroy
   has_many :references, through: :referent_references
+
+  accepts_nested_attributes_for :references, allow_destroy: true
 
   after_initialize :ensure_initial
   before_save :ensure_rank  

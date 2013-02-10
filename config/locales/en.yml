@@ -35,6 +35,8 @@ en:
       name_html: 'Reference Types'
       none_html: 'No reference types were found.'
       new_html: 'New Type&#8230;'
+    references:
+      add_html: 'Add Reference&#8230;'
     stories:
       name_html: 'Stories'
       none_html: 'No stories were found.'
@@ -58,7 +60,6 @@ en:
   activerecord:
     attributes:
       story:
-        contact_us_number: 'Contact Us'
         create_tasks: 'Ensure Tasks'
         release_date: 'Release Date'
         feature_id: 'Feature'

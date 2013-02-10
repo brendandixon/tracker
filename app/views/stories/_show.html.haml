@@ -19,10 +19,10 @@
         .span3
           %label= 'Release Date'
           = @story.release_date.to_date.to_s(:medium) if @story.release_date.present?
-        - if @story.contact_us_number.present?
-          .span2
-            %label= 'Contact Us'
-            %a{href: @story.contact_us_link, target: '_blank'}= @story.contact_us_number
+      .row-fluid.section
+        .span9
+          %label= 'References'
+          = render partial: 'references', locals:{story: story}
       .row-fluid
         .span4.offset8.text-right
           - if can? :edit, story
@@ -34,11 +34,10 @@
           = link_to 'Back', :back, class: 'btn btn-small btn-link'
 
 - else
-  %td.span3= story.title
+  %td.span2= story.title
   %td.span1= story.feature.name if story.feature.present?
   %td.span2= story.release_date.in_time_zone.to_date.to_s(:medium) if story.release_date.present?
-  %td.span1
-    %a{href: story.contact_us_link, target: '_blank'}= story.contact_us_number
+  %td.span2= render partial: 'references', locals:{story: story}
   %td.span2
     = story_project_labels(story, (@filter.present? ? @filter.content : {})[:projects])
     .command-block.on-hover<

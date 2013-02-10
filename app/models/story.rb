@@ -16,7 +16,7 @@ class Story < ActiveRecord::Base
   include StatusScopes
 
   attr_accessor :create_tasks
-  attr_accessible :contact_us_number, :create_tasks, :release_date, :feature_id, :title
+  attr_accessible :create_tasks, :references, :references_attributes, :release_date, :feature_id, :title
 
   after_initialize :initialize_create_tasks
   after_save :ensure_tasks
@@ -26,14 +26,14 @@ class Story < ActiveRecord::Base
   has_many :projects, through: :tasks
   has_many :referent_references, as: :referent, dependent: :destroy
   has_many :references, through: :referent_references
+
+  accepts_nested_attributes_for :references, allow_destroy: true
   
   validates_presence_of :feature, :title
-  validates_numericality_of :contact_us_number, only_integer: true, greater_than: 0, allow_nil: true
 
   scope :has_tasks_in_state, lambda{|status| where('(SELECT COUNT(*) FROM tasks WHERE tasks.story_id = stories.id AND tasks.status IN (?)) > 0', status)}
   scope :has_tasks_in_state_for_projects, lambda{|status, projects| where('(SELECT COUNT(*) FROM tasks WHERE tasks.story_id = stories.id AND tasks.status IN (?) AND tasks.project_id IN (?)) > 0', status, projects)}
 
-  scope :for_contact_us, lambda{|cu| where(contact_us_number: cu)}
   scope :for_features, lambda{|features| where(feature_id: features)}
   scope :for_projects, lambda{|projects| joins(:tasks).where(tasks: {project_id: projects})}
   
@@ -41,9 +41,9 @@ class Story < ActiveRecord::Base
   scope :on_or_before_date, lambda{|date| where('release_date <= ?', date)}
   scope :on_date, lambda{|date| where('release_date = ?', date)}
   
-  scope :in_contact_us_order, lambda{|dir = 'ASC'| order("contact_us_number #{dir}")}
   scope :in_date_order, lambda{|dir = 'ASC'| order("release_date #{dir}")}
   scope :in_feature_order, lambda{|dir = 'ASC'| joins(:feature).order("features.name #{dir}")}
+  scope :in_reference_order, lambda{|dir = 'ASC'| order("CAST(references.value AS UNSIGNED) #{dir}")}
   scope :in_title_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
   
   class<<self
@@ -54,11 +54,6 @@ class Story < ActiveRecord::Base
     def refresh_cache
       @all_stories = nil
     end
-  end
-
-  def contact_us_link
-    return nil unless self.contact_us_number.present?
-    "https://contactus.amazon.com/contact-us/ContactUsIssue.cgi?issue=#{self.contact_us_number}&profile=aws-dr-tools"
   end
 
   def to_s

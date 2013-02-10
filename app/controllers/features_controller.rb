@@ -73,7 +73,7 @@ class FeaturesController < ApplicationController
         @edited << 'new'
         @expanded << 'new'
 
-        format.html { render action: "new" }
+        format.html { render action: 'new', template: 'shared/new' }
         format.js { render 'feature' }
         format.json { render json: @feature.errors, status: :unprocessable_entity }
       end
@@ -95,7 +95,7 @@ class FeaturesController < ApplicationController
         @edited << @feature.id
         @expanded << @feature.id
 
-        format.html { render action: "edit" }
+        format.html { render action: 'edit', template: 'shared/edit' }
         format.js { render 'feature' }
         format.json { render json: @feature.errors, status: :unprocessable_entity }
       end
@@ -128,10 +128,10 @@ class FeaturesController < ApplicationController
     
     @sort.each do |sort|
       case sort
-      when '-category' then query = query.in_category_order('ASC')
-      when 'category' then query = query.in_category_order('DESC')
-      when '-name' then query = query.in_name_order('ASC')
-      when 'name' then query = query.in_name_order('DESC')
+      when '-category' then query = query.in_category_order('DESC')
+      when 'category' then query = query.in_category_order('ASC')
+      when '-name' then query = query.in_name_order('DESC')
+      when 'name' then query = query.in_name_order('ASC')
       end
     end
 

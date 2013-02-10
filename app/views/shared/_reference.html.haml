@@ -1,0 +1,20 @@
+- if reference.present?
+  - id = reference.id
+  - reference_type_id = reference.reference_type.present? ? reference.reference_type.id : nil
+  - value = reference.value
+- else
+  - id = nil
+  - reference_type_id = nil
+  - value = nil
+
+%li.reference
+  .row-fluid
+    .span3
+      = select_tag "#{referent_type}[references_attributes][][reference_type_id]", options_for_select(ReferenceType.all_types, reference_type_id), class: 'span12'
+    .span6
+      = text_field_tag "#{referent_type}[references_attributes][][value]", value, class: 'span12'
+    .span1
+      = awesome_link_to '', 'javascript:void(0);', glyph: 'awesome-remove', data:{remove_reference: true}
+    - if id.present?
+      = hidden_field_tag "#{referent_type}[references_attributes][][_destroy]", 0, data: {destroy: 1}
+      = hidden_field_tag "#{referent_type}[references_attributes][][id]", id
