@@ -59,7 +59,7 @@ class Story < ActiveRecord::Base
   def to_s
     s = self.title
     s += " (#{self.feature.name})" if self.feature.present?
-    s += " - #{self.release_date.to_date.to_s(:medium)}" if self.release_date.present?
+    s += " - #{self.release_date.to_date.to_s(:yy_mm_dd)}" if self.release_date.present?
     s
   end
   

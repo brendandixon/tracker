@@ -25,8 +25,8 @@
 
 - else
   %td= project.name
-  %td= project.start_date.to_formatted_s(:medium) if project.start_date.present?
-  %td= project.end_date.to_formatted_s(:medium) if project.end_date.present?
+  %td= project.start_date.to_formatted_s(:yy_mm_dd) if project.start_date.present?
+  %td= project.end_date.to_formatted_s(:yy_mm_dd) if project.end_date.present?
   %td
     .features= feature_labels(project.features)
     .command-block.on-hover<

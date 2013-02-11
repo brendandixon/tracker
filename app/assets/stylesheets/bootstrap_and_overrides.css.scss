@@ -103,3 +103,11 @@ $navbarHeight:30px;
     }
   }
 }
+
+.row.outline, .row-fluid.outline {
+  @for $i from 1 through 9 {
+    .span#{$i} {
+      outline:1px solid red;
+    }
+  }
+}

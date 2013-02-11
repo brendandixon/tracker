@@ -18,7 +18,7 @@
           = @story.feature.name if @story.feature.present?
         .span3
           %label= 'Release Date'
-          = @story.release_date.to_date.to_s(:medium) if @story.release_date.present?
+          = @story.release_date.to_date.to_s(:yy_mm_dd) if @story.release_date.present?
       .row-fluid.section
         .span9
           %label= 'References'
@@ -36,7 +36,7 @@
 - else
   %td.span2= story.title
   %td.span1= story.feature.name if story.feature.present?
-  %td.span2= story.release_date.in_time_zone.to_date.to_s(:medium) if story.release_date.present?
+  %td.span2= story.release_date.in_time_zone.to_date.to_s(:yy_mm_dd) if story.release_date.present?
   %td.span2= render partial: 'shared/show_references', locals:{references: story.references}
   %td.span2
     = story_project_labels(story, (@filter.present? ? @filter.content : {})[:projects])

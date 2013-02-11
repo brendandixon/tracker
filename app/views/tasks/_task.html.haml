@@ -12,7 +12,7 @@
 - classes << ' edit-mode' if @edited.include?(id)
 - data = {status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
 - data[:print] = 1 if printing
-- data[:draggable] = 1 if can? :drag, task
+- data[:draggable] = 1 if task.pending? && can?(:drag, task)
 - row_classes = @expanded.include?(id) || stand_alone ? 'expanded' : 'compact'
 - show_rank = false if show_rank.nil?
 
@@ -39,7 +39,7 @@
                   .contact-us= "#{task.story.references.first}"
               .span6
                 - if iteration.present?
-                  .release-date= iteration.end_date.to_date.to_s(:medium)
+                  .release-date= iteration.end_date.to_date.to_s(:yy_mm_dd)
     - else
       .row-fluid
         .span8
@@ -112,7 +112,7 @@
                       - if task.story.present? && task.story.release_date.present?
                         %label= 'Release Date'
                         .release-date
-                          =task.story.release_date.to_date.to_s(:medium)
+                          =task.story.release_date.to_date.to_s(:yy_mm_dd)
                       - else
                         %label= '&nbsp;'.html_safe
                         .release-date= '&nbsp;'.html_safe
@@ -123,16 +123,19 @@
               .clearfix{class: task.status}
                 .row-fluid
                   .span6
-                    .title.has-tooltip{title: task.project.name}
-                      = task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
-                  .span3
+                    .title= task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
+                  .span2
                     = render partial: 'points', locals: {task: task, editable: true}
                     - if show_rank
                       = task.rank
-                  .span3.text-right
-                    .release-date=task.story.release_date.to_date.to_s(:medium) if task.story.present? && task.story.release_date.present?
+                  .span1
+                    .project= task.project.name
+                  .span2
+                    .release-date=task.story.release_date.to_date.to_s(:yy_mm_dd) if task.story.present? && task.story.release_date.present?
+                  .span1.text-right
                     .command-block.on-hover
-                      - if can? :edit, task
-                        = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-check')
+                      - if can?:edit, task
+                        - unless task.completed?
+                          = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-ok')
                         = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
                       = awesome_link_to '', task_path(task, expanded: 1), glyph: 'awesome-eye-open', remote:true
