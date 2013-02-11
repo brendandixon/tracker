@@ -7,10 +7,11 @@ class UsersController < ApplicationController
   
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  before_filter :ensure_roles
+
   load_and_authorize_resource
 
   before_filter :ensure_initial_state
-  before_filter :ensure_roles
   before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /users

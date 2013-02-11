@@ -7,10 +7,11 @@ class TeamsController < ApplicationController
   
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  before_filter :ensure_projects
+
   load_and_authorize_resource
 
   before_filter :ensure_initial_state
-  before_filter :ensure_projects
   before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /teams

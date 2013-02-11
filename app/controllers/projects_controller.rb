@@ -6,10 +6,11 @@ class ProjectsController < ApplicationController
   SORT_FIELDS = ['name', '-name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
+  before_filter :ensure_features
+
   load_and_authorize_resource
 
   before_filter :ensure_initial_state
-  before_filter :ensure_features
   before_filter :build_index_query, only: INDEX_ACTIONS
 
   # GET /projects
