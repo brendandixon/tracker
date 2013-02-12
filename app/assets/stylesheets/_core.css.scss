@@ -1,3 +1,7 @@
+#main {
+  position:relative;
+}
+
 .box {
   @include box-sizing(border-box);
 }
@@ -465,11 +469,14 @@ li.task:hover:not([data-expanded='1']) {
   font-size:$fontSizeLarge * 5;
   font-weight:$fontThin;
   text-align:center;
-  height:100%;
-  width:100%;
   padding-top:35%;
   opacity:0.5;
-  position:absolute;
+
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
   z-index:1000;
 }
 
