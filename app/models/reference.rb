@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: references
+#
+#  id                :integer          not null, primary key
+#  reference_type_id :integer
+#  value             :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 class Reference < ActiveRecord::Base
   attr_accessible :reference_type_id, :value
 

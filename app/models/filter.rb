@@ -8,10 +8,13 @@
 #  area       :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :integer
 #
 
 class Filter < ActiveRecord::Base
-  attr_accessible :area, :content, :name
+  attr_accessible :area, :content, :name, :user_id, :user
+
+  belongs_to :user
 
   serialize :content
 
@@ -20,9 +23,11 @@ class Filter < ActiveRecord::Base
 
   validates_presence_of :area
   validates_presence_of :name
-  validates_uniqueness_of :name, scope: :area
+  validates_uniqueness_of :name, scope: [:area, :user_id]
 
-  scope :for_area, lambda {|area| where(area: area) }
+  scope :for_area, lambda{|area| where(area: area) }
+  scope :for_user, lambda{|user| where(user_id: user.is_a?(User) ? user.id : user) }
+  scope :for_all_users, where('user_id IS NULL')
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("name #{dir}")}
 

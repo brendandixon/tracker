@@ -1,8 +1,14 @@
-- filters = (controller.respond_to?(:filters) && controller.filters) || []
+- shared_filters = (controller.respond_to?(:shared_filters) && controller.shared_filters) || []
+- user_filters = (controller.respond_to?(:user_filters) && controller.user_filters) || []
 
 %ul.dropdown-menu#FilterMenu
-  - if filters.present?
-    - filters.each do |filter|
+  - if shared_filters.present?
+    - shared_filters.each do |filter|
+      %li{class: @filter.id == filter.id ? 'active' : nil}
+        = link_to filter.name, url_for(controller: controller.controller_name, action: :index, filter: filter.to_hash(:id)), remote: true
+    %li.divider
+  - if user_filters.present?
+    - user_filters.each do |filter|
       %li{class: @filter.id == filter.id ? 'active' : nil}
         = link_to filter.name, url_for(controller: controller.controller_name, action: :index, filter: filter.to_hash(:id)), remote: true
     %li.divider

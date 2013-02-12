@@ -131,8 +131,12 @@ module FilterHandler
     INDEX_ACTIONS.include?(action_name.to_sym)
   end
 
-  def filters
-    Filter.for_area(controller_name).in_name_order
+  def shared_filters
+    Filter.for_area(controller_name).for_all_users.in_name_order
+  end
+
+  def user_filters
+    Filter.for_area(controller_name).for_user(current_user).in_name_order
   end
 
   def handle_delete

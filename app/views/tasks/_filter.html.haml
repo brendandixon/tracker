@@ -18,9 +18,13 @@
                   %li= msg
       
       .row-fluid.section
-        .span12
+        .span8
           = f.label :name
-          = f.text_field :name, class: 'span8'
+          = f.text_field :name, class: 'span12'
+        - if current_user.role? :scrum_master
+          .span4
+            = f.label :user_id
+            = f.select :user_id, User.all_users
       
       .row-fluid.section
         .span12

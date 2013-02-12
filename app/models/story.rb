@@ -2,13 +2,12 @@
 #
 # Table name: stories
 #
-#  id                :integer          not null, primary key
-#  release_date      :datetime
-#  title             :string(255)
-#  feature_id        :integer
-#  contact_us_number :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id           :integer          not null, primary key
+#  release_date :datetime
+#  title        :string(255)
+#  feature_id   :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 
 class Story < ActiveRecord::Base

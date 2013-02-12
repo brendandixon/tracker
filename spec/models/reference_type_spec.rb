@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: reference_types
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  url_pattern :string(255)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 require 'spec_helper'
 
 describe ReferenceType do

@@ -14,6 +14,7 @@
 #  description    :text
 #  start_date     :datetime
 #  completed_date :datetime
+#  blocked        :boolean
 #
 
 require 'spec_helper'
