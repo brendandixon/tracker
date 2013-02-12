@@ -204,6 +204,7 @@ class Task < ActiveRecord::Base
 
   def ensure_blocked
     self.blocked = false if self.completed?
+    true
   end
 
   def ensure_dates
@@ -215,9 +216,10 @@ class Task < ActiveRecord::Base
       self.start_date = now if self.start_date.blank?
       self.completed_date = nil
     elsif self.completed?
-      self.start_date = now if self.start_date.blank?
       self.completed_date = now if self.completed_date.blank?
+      self.start_date = self.completed_date if self.start_date.blank?
     end
+    true
   end
 
   def ensure_initial
@@ -229,6 +231,7 @@ class Task < ActiveRecord::Base
 
   def ensure_title
     write_attribute(:title, nil) if read_attribute(:title).blank?
+    true
   end
   
   def has_title_or_story
