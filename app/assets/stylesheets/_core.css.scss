@@ -354,8 +354,18 @@ div {
 .task {
   border-top:1px solid $grayLight;
   padding:4px 0;
+  &[data-blocked] {
+    background-color:transparentize($orange, 0.8);
+  }
   &[data-draggable] {
     cursor:move;
+  }
+  .blocked {
+    display:inline-block;
+    font-size:$fontSizeMini;
+    font-weight:$fontThick;
+    padding-left:5px;
+    text-transform:uppercase;
   }
   .command-block {
     display:inline-block;
@@ -390,6 +400,11 @@ div {
         font-size:$fontSizeSmall;
         font-weight:$fontThick;
         margin-bottom:0;
+        input {
+          margin-right:4px;
+          position:relative;
+          top:-3px;
+        }
       }
     }
   }

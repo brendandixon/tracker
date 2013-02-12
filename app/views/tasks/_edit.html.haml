@@ -26,6 +26,10 @@
               .span3
                 = f.label :status
                 = f.select :status, Task::ALL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}, class: 'span12'}
+                = f.label :blocked do
+                  = f.check_box :blocked
+                  = t(:blocked, scope: [:activerecord, :labels, :task])
+
 
           .row-fluid.section
             .controls.controls-row

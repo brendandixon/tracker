@@ -26,7 +26,7 @@ class Task < ActiveRecord::Base
   POINTS = [0, 1, 2, 3, 5, 8]
   DEFAULT_POINTS = 2
 
-  attr_accessible :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :title
+  attr_accessible :blocked, :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :title
     
   belongs_to :story
   has_one :feature, through: :story
@@ -38,7 +38,8 @@ class Task < ActiveRecord::Base
   accepts_nested_attributes_for :references, allow_destroy: true
 
   after_initialize :ensure_initial
-  before_save :ensure_rank  
+  before_save :ensure_rank
+  before_validation :ensure_blocked
   before_validation :ensure_dates
   before_validation :ensure_title
 
@@ -199,6 +200,10 @@ class Task < ActiveRecord::Base
   end
 
   private
+
+  def ensure_blocked
+    self.blocked = false if self.completed?
+  end
 
   def ensure_dates
     now = DateTime.now

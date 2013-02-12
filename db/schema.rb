@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130210205031) do
+ActiveRecord::Schema.define(:version => 20130212002243) do
 
   create_table "categories", :force => true do |t|
     t.string   "name",       :null => false
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20130210205031) do
     t.text     "description"
     t.datetime "start_date"
     t.datetime "completed_date"
+    t.boolean  "blocked"
   end
 
   add_index "tasks", ["project_id"], :name => "index_stories_on_project_id"

@@ -65,6 +65,7 @@ en:
         feature_id: 'Feature'
         title: 'Title'
       task:
+        blocked: 'Blocked'
         description: 'Details'
         points: 'Points'
         project: 'Project'
@@ -83,6 +84,7 @@ en:
       story:
         create_tasks: 'Create tasks for the story?'
       task:
+        blocked: 'Blocked?'
         no_details_html: 'No details.'
         pending: 'Pending'
         in_progress: 'In Progress'
