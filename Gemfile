@@ -6,7 +6,7 @@ gem 'devise'
 gem 'haml'
 gem 'mysql2'
 gem 'rake'
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 gem 'safe_yaml'
 # gem 'safe_yaml', git: 'git@github.com:dtao/safe_yaml.git', tag: '0.6.0'
 
