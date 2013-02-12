@@ -19,6 +19,7 @@
 //= require references
 //= require status
 //= require tasks
+//= require waiter
 
 $(function() {
   $('#messages').show().delay(1250).fadeOut(800);

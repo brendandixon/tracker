@@ -462,7 +462,8 @@ li.task:hover:not([data-expanded='1']) {
   display:none;
   color:$white;
   background-color:$grayDark;
-  font-size:$fontSizeLarge * 4;
+  font-size:$fontSizeLarge * 5;
+  font-weight:$fontThin;
   text-align:center;
   height:100%;
   width:100%;

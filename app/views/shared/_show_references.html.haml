@@ -2,6 +2,6 @@
   .row-fluid
     .span12
       - if reference.linkable?
-        %a{href: reference.url_for}= reference
+        %a{href: reference.url_for, target: '_blank'}= reference
       - else
         = reference

@@ -67,6 +67,7 @@ $(function() {
         if (task.children('.expanded').length > 0) {
           query += '&expanded=1';
         }
+        $('.waiter').show();          
         $.ajax({
           type: 'POST',
           beforeSend: function(xhr){
@@ -145,7 +146,8 @@ $(function() {
 
         if (query.length > 0) {
           task = task.attr('id').split('_')[1];
-          
+
+          $('.waiter').show();          
           $.ajax({
             type: 'POST',
             beforeSend: function(xhr){
