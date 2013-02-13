@@ -56,6 +56,10 @@ module ApplicationHelper
     end
   end
 
+  def flat_select_tag(name, option_tags = nil, options = {})
+    "<div class='flat-select'><i class='awesome awesome-caret-down'></i>#{select_tag(name, option_tags, options)}</div>".html_safe
+  end
+
   private
 
   def font_button_to(family, name, options, html_options)

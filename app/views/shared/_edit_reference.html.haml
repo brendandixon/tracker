@@ -10,7 +10,7 @@
 %li.reference
   .row-fluid
     .span3
-      = select_tag "#{referent_type}[references_attributes][][reference_type_id]", options_for_select(ReferenceType.all_types, reference_type_id), class: 'span12'
+      = flat_select_tag "#{referent_type}[references_attributes][][reference_type_id]", options_for_select(ReferenceType.all_types, reference_type_id)
     .span6
       = text_field_tag "#{referent_type}[references_attributes][][value]", value, class: 'span12'
     .span1

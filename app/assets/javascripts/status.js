@@ -1,7 +1,7 @@
 $(function() {
   $('body').on('change', '*[data-status-select]', function(event) {
-    e = $(event.target);
-    form = e.parents('FORM');
+    var e = $(event.target);
+    var form = e.parents('FORM');
     if (e.val() === 'in_progress') {
       $('.start_date', form).show();
       $('.completed_date', form).hide();

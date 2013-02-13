@@ -25,7 +25,7 @@
                 = f.text_field :title, placeholder: 'Enter task title', class: 'span12', autofocus: true
               .span3
                 = f.label :status
-                = f.select :status, Task::ALL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, {}, {data: {status_select: true}, class: 'span12'}
+                = flat_select_tag 'task[status]', options_for_select(Task::ALL_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :task]), t]}, task.status), {data: {status_select: true}}
                 = f.label :blocked do
                   = f.check_box :blocked
                   = t(:blocked, scope: [:activerecord, :labels, :task])
@@ -35,7 +35,7 @@
             .controls.controls-row
               .span9
                 = f.label :story_id
-                = f.select :story_id, Story.all_stories, {}, class: 'span12'
+                = flat_select_tag 'task[story_id]', options_for_select(Story.all_stories, task.story_id)
               .span3.start_date{style: "display:#{task.in_progress? ? 'inline-block' : 'none'}"}
                 = f.label :start_date
                 = f.text_field :start_date, data: {datefield: true}, class: 'span12', type: 'datetime-local'
@@ -55,8 +55,8 @@
           .row-fluid
             .span4
               = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
-              = f.select :project_id, Project.in_name_order.all.collect {|p| [ p.name, p.id ] }, {}, class: 'span12'
-            .span3.offset2
+              = flat_select_tag 'task[project_id]', options_for_select(Project.in_name_order.all.collect{|p| [ p.name, p.id ]}, task.project_id)
+            .span3.offset1
               = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
               = render partial: 'points', locals: {task: task, editable: true}
 

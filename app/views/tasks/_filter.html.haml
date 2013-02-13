@@ -24,7 +24,7 @@
         - if current_user.role? :scrum_master
           .span4
             = f.label :user_id
-            = f.select :user_id, User.all_users
+            = flat_select_tag 'filter[user_id]', options_for_select(User.all_users, @filter.user_id)
       
       .row-fluid.section
         .span12
@@ -36,13 +36,13 @@
         .controls.controls-row
           .span4
             = label_tag 'filter_content_status', 'Status'
-            = select_tag 'filter[content][status]', options_for_select(StatusScopes.all_states, StatusScopes.collapse(content[:status]))
+            = flat_select_tag 'filter[content][status]', options_for_select(StatusScopes.all_states, StatusScopes.collapse(content[:status]))
           .span4
             = label_tag 'filter_content_teams', 'Team'
-            = select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || '')
+            = flat_select_tag 'filter[content][teams]', options_for_select(Team.all_teams, content[:teams] || '')
           .span4
             = label_tag 'filter_content_projects', 'Projects'
-            = select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || '')
+            = flat_select_tag 'filter[content][projects]', options_for_select(Project.all_projects, content[:projects] || '')
 
       .row-fluid.section.task-filter{class: content[:group_by] ? 'hidden' : nil}
         .controls.controls-row
@@ -54,11 +54,11 @@
             = select_tag 'filter[content][stories]', options_for_select(Story.all_stories, content[:stories] || ''), multiple: true
           .span4
             .row-fluid
-              .span2
+              .span8
                 = label_tag 'filter_content_min_points', 'Minimum Points'
-                = select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
+                = flat_select_tag 'filter[content][min_points]', options_for_select(Task.all_points, content[:min_points])
                 = label_tag 'filter_content_max_points', 'Maximum Points'
-                = select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
+                = flat_select_tag 'filter[content][max_points]', options_for_select(Task.all_points, content[:max_points])
 
       .row-fluid
         .span5.offset7.text-right

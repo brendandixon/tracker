@@ -21,7 +21,7 @@
             = f.text_field :name
           .span5
             = f.label :category_id
-            = f.select :category_id, Category.all_categories
+            = flat_select_tag 'feature[category_id]', options_for_select(Category.all_categories, feature.category_id)
         
         .row
           .span4.offset8.text-right
