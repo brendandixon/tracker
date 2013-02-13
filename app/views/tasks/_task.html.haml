@@ -111,7 +111,8 @@
                       .project= task.project.name
                     .span3
                       %label= 'Points'
-                      = render partial: 'points', locals: {task: task, editable: true}
+                      - cache action: :index, action_suffix: "points-#{task.points}" do
+                        = render partial: 'points', locals: {task: task, editable: true}
                     .span3
                       - if task.story.present? && task.story.release_date.present?
                         %label= 'Release Date'
@@ -129,7 +130,8 @@
                   .span6
                     .title= task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
                   .span2
-                    = render partial: 'points', locals: {task: task, editable: true}
+                    - cache action: :index, action_suffix: "points-#{task.points}" do
+                      = render partial: 'points', locals: {task: task, editable: true}
                     - if show_rank
                       = task.rank
                   .span1
