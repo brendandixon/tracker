@@ -72,10 +72,10 @@
               .span12
                 .clearfix{class: task.status}
                   .row-fluid.section
-                    .span9
+                    .span8
                       %label= 'Title'
                       .title= task.title
-                    .span3
+                    .span4
                       %div{style:'display:inline-block;'}
                         %label= 'Status'
                         .title
@@ -106,14 +106,14 @@
                         %label= 'References'
                         = render partial: 'shared/show_references', locals:{references: task.references}
                   .row-fluid
-                    .span6
+                    .span5
                       %label= 'Project'
                       .project= task.project.name
-                    .span3
+                    .span2
                       %label= 'Points'
                       - cache action: :index, action_suffix: "points-#{task.points}" do
                         = render partial: 'points', locals: {task: task, editable: true}
-                    .span3
+                    .span3.offset1
                       - if task.story.present? && task.story.release_date.present?
                         %label= 'Release Date'
                         .release-date
@@ -127,7 +127,7 @@
             .span12
               .clearfix{class: task.status}
                 .row-fluid
-                  .span6
+                  .span5
                     .title= task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
                   .span2
                     - cache action: :index, action_suffix: "points-#{task.points}" do
@@ -138,10 +138,15 @@
                     .project= task.project.name
                   .span2
                     .release-date=task.story.release_date.to_date.to_s(:yy_mm_dd) if task.story.present? && task.story.release_date.present?
-                  .span1.text-right
+                  .span2.text-right
                     .command-block.on-hover
-                      - if can?:edit, task
-                        - unless task.completed?
+                      - if task.incomplete?
+                        / - if task.blocked? && can?(:unblock, task)
+                        /   = awesome_button_to 'Unblock', url_for(controller: :tasks, action: :unblock, id: task.id), options.merge(glyph: 'awesome-circle-blank')
+                        / - if !task.blocked? && can?(:block, task)
+                        /   = awesome_button_to 'Block', url_for(controller: :tasks, action: :block, id: task.id), options.merge(glyph: 'awesome-ban-circle')
+                        - if can? :advance, task
                           = awesome_button_to 'Advance', url_for(controller: :tasks, action: :advance, id: task.id), options.merge(glyph: 'awesome-ok')
+                      - if can? :edit, task
                         = awesome_link_to '', edit_task_path(task), glyph: 'awesome-edit', remote:true
                       = awesome_link_to '', task_path(task, expanded: 1), glyph: 'awesome-eye-open', remote:true

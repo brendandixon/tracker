@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   DEFAULT_SORT = ['status']
   SORT_FIELDS = ['point', 'status', 'title']
 
-  INDEX_ACTIONS = [:advance, :complete, :create, :destroy, :index, :point, :print, :rank, :update]
+  INDEX_ACTIONS = [:advance, :block, :complete, :create, :destroy, :index, :point, :print, :rank, :unblock, :update]
 
   load_and_authorize_resource
 
@@ -136,7 +136,18 @@ class TasksController < ApplicationController
       format.js { render 'shared/index'; flash.discard }
       format.json { render json: @tasks }
     end
-    
+  end
+  
+  # POST /tasks/1/block
+  def block
+    @task.block!
+    @changed << @task.id
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js { render 'shared/index'; flash.discard }
+      format.json { render json: @tasks }
+    end
   end
   
   # POST /tasks/1/complete
@@ -149,7 +160,6 @@ class TasksController < ApplicationController
       format.js { render 'shared/index'; flash.discard }
       format.json { render json: @tasks }
     end
-    
   end
 
   # POST /tasks/1/point?points=xx
@@ -190,6 +200,18 @@ class TasksController < ApplicationController
   def rank
     @task.rank_between(params[:after], params[:before])
     flash[:notice] = "Unable to move task" unless @task.save
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js { render 'shared/index'; flash.discard }
+      format.json { render json: @tasks }
+    end
+  end
+  
+  # POST /tasks/1/unblock
+  def unblock
+    @task.unblock!
+    @changed << @task.id
 
     respond_to do |format|
       format.html { redirect_to :back }

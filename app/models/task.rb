@@ -111,6 +111,18 @@ class Task < ActiveRecord::Base
     self.save unless self.new_record?
   end
 
+  def block!
+    return if self.completed?
+    self.blocked = true
+    self.save unless self.new_record?
+  end
+
+  def unblock!
+    return if self.completed?
+    self.blocked = false
+    self.save unless self.new_record?
+  end
+
   def completed_after?(date)
     self.completed? && self.completed_date > date
   end

@@ -36,9 +36,11 @@ Tracker::Application.routes.draw do
     get 'print', on: :collection
     member do
       post 'advance'
+      post 'block'
       post 'complete'
       post 'point', constraints: TaskPointConstraint.new
       post 'rank', constraints: TaskRankConstraint.new
+      post 'unblock'
     end
   end
 
