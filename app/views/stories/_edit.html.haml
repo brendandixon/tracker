@@ -38,7 +38,7 @@
             = render partial: 'shared/edit_references', locals: {references: story.references, referent_type: :story}
 
         .row-fluid
-          .span6.offset6.text-right<
+          .span6.offset6.text-right
             = f.submit 'Save', class: 'btn btn-small btn-flat btn-primary'
             \|
             - if can? :edit, story
