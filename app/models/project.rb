@@ -14,16 +14,19 @@
 class Project < ActiveRecord::Base
   include CacheCleanser
   
-  attr_accessible :end_date, :name, :features, :start_date
+  attr_accessible :end_date, :name, :features, :feature_projects, :feature_projects_attributes, :start_date
 
   belongs_to :team
 
-  has_many :supported_features, dependent: :destroy
-  has_many :features, through: :supported_features
+  has_many :feature_projects, dependent: :destroy
+  has_many :features, through: :feature_projects
 
   has_many :tasks, dependent: :destroy
   has_many :stories, through: :tasks
 
+  accepts_nested_attributes_for :feature_projects, allow_destroy: true
+
+  after_create :ensure_features
   before_validation :ensure_start_date
   
   validates_presence_of :name
@@ -31,9 +34,10 @@ class Project < ActiveRecord::Base
   
   scope :with_name, lambda {|name| where(name: name) }
 
+  scope :supported, lambda{where('projects.start_date <= :date AND (projects.end_date IS NULL OR projects.end_date > :date)', date: Time.now)}
   scope :started_on_or_before, lambda{|date| where("projects.start_date <= ?", date)}
 
-  scope :for_features, lambda{|*features| joins(:supported_features).where("? = (select count(*) from supported_features as sf where sf.feature_id in (?) and sf.project_id = projects.id)", features.length, features).uniq }
+  scope :for_features, lambda{|*features| joins(:feature_projects).where("? = (select count(*) from feature_projects as fp where fp.feature_id in (?) and fp.project_id = projects.id and fp.status <> 'unsupported')", features.length, features).uniq }
   scope :for_team, lambda{|team| where(team_id: (team.is_a?(Team) ? team.id : team))}
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("projects.name #{dir}")}
@@ -53,7 +57,16 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def is_feature?(status, feature)
+    feature_project = self.feature_projects.for_feature(feature).first
+    (status == 'unsupported' && feature_project.blank?) || (feature_project.present? && feature_project.in_state?(status))
+  end
+
   private
+
+  def ensure_features
+    FeatureProject.ensure_project_features(self)
+  end
 
   def ensure_start_date
     self.start_date ||= DateTime.parse('2012-12-01')

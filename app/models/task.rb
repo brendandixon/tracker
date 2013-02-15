@@ -96,10 +96,11 @@ class Task < ActiveRecord::Base
       @all_points ||= [['-', '']] + Task::POINTS.map{|p| [p, p]}
     end
     
-    def ensure_story_tasks(story)
-      story.feature.projects.each do |project|
-        next if Task.for_stories(story).for_projects(project).exists?
-        Task.create(story_id:story.id, points: DEFAULT_POINTS, project_id:project.id, status: 'pending')
+    def ensure_story_tasks(story, project_ids = [])
+      story.feature.feature_projects.each do |feature_project|
+        next unless project_ids.empty? || project_ids.include?(feature_project.project_id)
+        next if feature_project.frozen? || feature_project.unsupported? || Task.for_stories(story).for_projects(feature_project.project_id).exists?
+        Task.create(story_id:story.id, points: DEFAULT_POINTS, project_id:feature_project.project_id, status: 'pending')
       end
     end
 

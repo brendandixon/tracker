@@ -12,7 +12,7 @@
       .row-fluid.section
         .span12
           %label= 'Features'
-          .features= feature_labels(project.features)
+          .features= feature_labels(project.feature_projects.in_feature_order)
       .row-fluid
         .span4.offset8.text-right
           - if can? :edit, project
@@ -25,10 +25,8 @@
 
 - else
   %td= project.name
-  %td= project.start_date.to_formatted_s(:yy_mm_dd) if project.start_date.present?
-  %td= project.end_date.to_formatted_s(:yy_mm_dd) if project.end_date.present?
   %td
-    .features= feature_labels(project.features)
+    .features= feature_labels(project.feature_projects.in_feature_order)
     .command-block.on-hover<
       - if can? :edit, project
         = awesome_link_to '', edit_project_path(project), glyph: 'awesome-edit', remote:true

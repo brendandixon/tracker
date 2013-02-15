@@ -16,6 +16,7 @@
 //= require underscore-min
 //= require dates
 //= require filter
+//= require project
 //= require references
 //= require status
 //= require tasks

@@ -15,10 +15,12 @@ class Feature < ActiveRecord::Base
   attr_accessible :name, :category_id
 
   has_many :stories, dependent: :destroy
-  has_many :supported_features, dependent: :destroy
-  has_many :projects, through: :supported_features
+  has_many :feature_projects, dependent: :destroy
+  has_many :projects, through: :feature_projects
 
   belongs_to :category
+
+  after_create :ensure_projects
   
   validates_presence_of :name
   validates_uniqueness_of :name
@@ -43,6 +45,12 @@ class Feature < ActiveRecord::Base
       @active = nil
       @all_features = nil
     end
+  end
+
+  private
+
+  def ensure_projects
+    FeatureProject.ensure_feature_projects(self)
   end
 
 end

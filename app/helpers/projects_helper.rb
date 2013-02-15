@@ -1,11 +1,8 @@
 module ProjectsHelper
   
-  def feature_labels(features = [])
-    features = features.map{|f| f.id}.sort
-    Feature.active.map do |feature|
-      classes = 'label '
-      classes << ' label-info' if features.include?(feature.id)
-      content_tag('span', feature.name, class: classes)
+  def feature_labels(feature_projects = [])
+    feature_projects.map do |feature_project|
+      status_tag feature_project.feature.name, feature_project.status
     end.join.html_safe
   end
   

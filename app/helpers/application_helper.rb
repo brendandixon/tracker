@@ -60,6 +60,21 @@ module ApplicationHelper
     "<div class='flat-select'><i class='awesome awesome-caret-down'></i>#{select_tag(name, option_tags, options)}</div>".html_safe
   end
 
+  def status_to_classes(state)
+    case state
+    when 'completed' then ' awesome awesome-circle completed'
+    when 'in_progress' then ' awesome awesome-adjust in_progress'
+    when 'pending' then ' awesome awesome-circle-blank pending'
+    else ' awesome awesome-ban-circle'
+    end
+  end
+
+  def status_tag(content, state)
+    content_tag :span, class: "status #{state}" do
+      "<i class='#{status_to_classes(state)}'></i>#{content}".html_safe
+    end
+  end
+
   private
 
   def font_button_to(family, name, options, html_options)

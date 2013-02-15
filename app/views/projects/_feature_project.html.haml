@@ -1,0 +1,11 @@
+.span3
+  = label_tag "project_feature_projects_#{feature_project.id}" do
+    .feature
+      = hidden_field_tag "project[feature_projects_attributes][#{feature_project.id}][id]", feature_project.id
+      = hidden_field_tag "project[feature_projects_attributes][#{feature_project.id}][feature_id]", feature_project.feature_id
+      = hidden_field_tag "project[feature_projects_attributes][#{feature_project.id}][project_id]", feature_project.project_id
+      - FeatureProject::ALL_STATES_UI_ORDERED.each do |state|
+        %span{data: {status: state}}
+          = radio_button_tag "project[feature_projects_attributes][#{feature_project.id}][status]", state, feature_project.status == state, {data: {status: state}}
+          %i{class: "#{state} #{status_to_classes(state)} #{feature_project.in_state?(state) ? 'active' : nil}"}
+    = feature_project.feature.name

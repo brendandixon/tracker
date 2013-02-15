@@ -138,7 +138,7 @@ class ProjectsController < ApplicationController
       end
     end
 
-    @projects = query.includes(:features, :stories, :tasks)
+    @projects = query.includes(:feature_projects, :features, :stories, :tasks)
   end
 
   def ensure_features
