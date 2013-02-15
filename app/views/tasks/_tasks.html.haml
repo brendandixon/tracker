@@ -27,8 +27,8 @@
 
   - else
     - if @tasks.is_a?(IterationEnumerator)
-      - @tasks.each_iteration(printing ? 0 : nil) do |iteration|
-        .iteration-marker{data: {iteration: iteration.number, collapsed: 0}}
+      - @tasks.each_iteration do |iteration|
+        .iteration-marker{data: {iteration: iteration.number.to_s, collapsed: 0}}
           .row.iteration-toggle
             .span2
               .glyphicon.collapse_top
