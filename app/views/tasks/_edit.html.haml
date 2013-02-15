@@ -38,10 +38,10 @@
                 = flat_select_tag 'task[story_id]', options_for_select(Story.all_stories, task.story_id)
               .span3.start_date{style: "display:#{task.in_progress? ? 'inline-block' : 'none'}"}
                 = f.label :start_date
-                = f.text_field :start_date, data: {datefield: true}, class: 'span12', type: 'datetime-local'
+                = f.text_field :start_date, data: {datefield: true}, class: 'span12', type: 'datetime'
               .span3.completed_date{style: "display:#{task.completed? ? 'inline-block' : 'none'}"}
                 = f.label :completed_date
-                = f.text_field :completed_date, data: {datefield: true}, class: 'span12', type: 'datetime-local'
+                = f.text_field :completed_date, data: {datefield: true}, class: 'span12', type: 'datetime'
 
           .row-fluid.section
             .span12
