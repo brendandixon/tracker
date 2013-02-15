@@ -3,7 +3,7 @@ class StoriesController < ApplicationController
   include ReferencesHandler
   include SortHandler
 
-  DEFAULT_SORT = ['-date']
+  DEFAULT_SORT = ['date']
   SORT_FIELDS = ['date', 'feature', 'reference', 'title']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 

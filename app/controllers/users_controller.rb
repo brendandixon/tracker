@@ -133,8 +133,8 @@ class UsersController < ApplicationController
     
     @sort.each do |sort|
       case sort
-      when '-email' then query = query.in_email_order('ASC')
-      when 'email' then query = query.in_email_order('DESC')
+      when '-email' then query = query.in_email_order('DESC')
+      when 'email' then query = query.in_email_order('ASC')
       end
     end
 

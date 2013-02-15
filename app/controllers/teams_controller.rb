@@ -2,7 +2,7 @@ class TeamsController < ApplicationController
   include FilterHandler
   include SortHandler
 
-  DEFAULT_SORT = ['-name']
+  DEFAULT_SORT = ['name']
   SORT_FIELDS = ['name', 'iteration', 'velocity']
   
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
@@ -120,12 +120,12 @@ class TeamsController < ApplicationController
 
     @sort.each do |sort|
       case sort
-      when '-name' then query = query.in_name_order('ASC')
-      when 'name' then query = query.in_name_order('DESC')
-      when '-iteration' then query = query.in_iteration_order('ASC')
-      when 'iteration' then query = query.in_iteration_order('DESC')
-      when '-velocity' then query = query.in_velocity_order('ASC')
-      when 'velocity' then query = query.in_velocity_order('DESC')
+      when '-name' then query = query.in_name_order('DESC')
+      when 'name' then query = query.in_name_order('ASC')
+      when '-iteration' then query = query.in_iteration_order('DESC')
+      when 'iteration' then query = query.in_iteration_order('ASC')
+      when '-velocity' then query = query.in_velocity_order('DESC')
+      when 'velocity' then query = query.in_velocity_order('ASC')
       end
     end
 
