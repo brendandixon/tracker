@@ -19,10 +19,16 @@
         .span3
           %label= 'Release Date'
           = @story.release_date.to_date.to_s(:yy_mm_dd) if @story.release_date.present?
-      .row-fluid.section
-        .span9
-          %label= 'References'
-          = render partial: 'shared/show_references', locals:{references: story.references}
+      - if story.tag_list.present?
+        .row-fluid.section
+          .span12
+            %label= 'Tags'
+            .tags= story.tag_list
+      - if story.references.present?
+        .row-fluid.section
+          .span9
+            %label= 'References'
+            = render partial: 'shared/show_references', locals:{references: story.references}
       .row-fluid
         .span4.offset8.text-right
           - if can? :edit, story

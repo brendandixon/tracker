@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: supported_features
+# Table name: feature_projects
 #
 #  id         :integer          not null, primary key
 #  project_id :integer

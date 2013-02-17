@@ -34,6 +34,11 @@
             = f.text_field :release_date, data: {datefield: true}, class: 'span12', type: 'datetime'
 
         .row-fluid.section
+          .span9
+            = f.label :tag_list, t(:tag_list, scope: [:activerecord, :attributes, :story])
+            = f.text_field :tag_list, class: 'span12'
+
+        .row-fluid.section
           .span12
             = render partial: 'shared/edit_references', locals: {references: story.references, referent_type: :story}
 

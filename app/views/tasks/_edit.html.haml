@@ -50,6 +50,11 @@
 
           .row-fluid.section
             .span12
+              = f.label :tag_list, t(:tag_list, scope: [:activerecord, :attributes, :task])
+              = f.text_field :tag_list, class: 'span12'
+
+          .row-fluid.section
+            .span12
               = render partial: 'shared/edit_references', locals: {references: task.references, referent_type: :task}
 
           .row-fluid

@@ -27,7 +27,7 @@ class Task < ActiveRecord::Base
   POINTS = [0, 1, 2, 3, 5, 8]
   DEFAULT_POINTS = 2
 
-  attr_accessible :blocked, :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :title
+  attr_accessible :blocked, :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :tag_list, :title
 
   acts_as_taggable
     

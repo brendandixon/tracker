@@ -15,7 +15,9 @@ class Story < ActiveRecord::Base
   include StatusScopes
 
   attr_accessor :create_tasks
-  attr_accessible :create_tasks, :references, :references_attributes, :release_date, :feature_id, :title
+  attr_accessible :create_tasks, :references, :references_attributes, :release_date, :feature_id, :tag_list, :title
+
+  acts_as_taggable
 
   after_initialize :initialize_create_tasks
   after_save :ensure_tasks

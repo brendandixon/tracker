@@ -21,26 +21,28 @@ Tracker::Application.routes.draw do
   resources :features
 
   resources :projects do
-    delete 'index', on: :collection
+    delete :index, on: :collection
   end
 
   resources :reference_types
   
   
   resources :stories do
-    delete 'index', on: :collection
+    delete :index, on: :collection
   end
 
   resources :tasks do
-    delete 'index', on: :collection
-    get 'print', on: :collection
+    collection do
+      delete :index
+      get :print
+    end
     member do
-      post 'advance'
-      post 'block'
-      post 'complete'
-      post 'point', constraints: TaskPointConstraint.new
-      post 'rank', constraints: TaskRankConstraint.new
-      post 'unblock'
+      post :advance
+      post :block
+      post :complete
+      post :point, constraints: TaskPointConstraint.new
+      post :rank, constraints: TaskRankConstraint.new
+      post :unblock
     end
   end
 
