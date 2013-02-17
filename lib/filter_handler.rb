@@ -16,7 +16,10 @@ module FilterHandler
 
     attributes = session[:filter][self.controller_name]
 
-    @filter = (Filter.for_area(self.controller_name).find(attributes['id']) rescue nil) if attributes['id'].present?
+    if attributes['id'].present?
+      @filter = (Filter.for_area(self.controller_name).find(attributes['id']) rescue nil)
+      session[:filter_hash] = @filter.present? ? @filter.hash : nil
+    end
     @filter ||= Filter.new(area: self.controller_name)
     @filter.attributes = attributes.reject{|k,v| [:id, 'id'].include?(k)} if attributes.is_a?(Hash) && !attributes.empty?
 

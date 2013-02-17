@@ -35,6 +35,10 @@ class Filter < ActiveRecord::Base
     self.content.empty?
   end
 
+  def hash
+    self.to_hash.hash
+  end
+
   def to_hash(*args)
     args = args.map{|v| v.to_sym}
     self.attributes.reject{|k, v| (args.present? && !args.include?(k.to_sym)) || [:created_at, :updated_at].include?(k.to_sym) }

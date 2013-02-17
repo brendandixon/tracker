@@ -28,6 +28,8 @@ class Task < ActiveRecord::Base
   DEFAULT_POINTS = 2
 
   attr_accessible :blocked, :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :title
+
+  acts_as_taggable
     
   belongs_to :story
   has_one :feature, through: :story

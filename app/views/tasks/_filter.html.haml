@@ -21,10 +21,10 @@
         .span8
           = f.label :name
           = f.text_field :name, class: 'span12'
-        - if current_user.role? :scrum_master
-          .span4
-            = f.label :user_id
-            = flat_select_tag 'filter[user_id]', options_for_select(User.all_users, @filter.user_id)
+        / - if current_user.role? :scrum_master
+        /   .span4
+        /     = f.label :user_id
+        /     = flat_select_tag 'filter[user_id]', options_for_select(User.all_users, @filter.user_id)
       
       .row-fluid.section
         .span12

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'acts-as-taggable-on', '~> 2.3.3'
 gem 'bootstrap-sass', '~> 2.2.2.0'
 gem 'cancan'
 gem 'devise'
@@ -8,7 +9,6 @@ gem 'mysql2'
 gem 'rake'
 gem 'rails', '3.2.12'
 gem 'safe_yaml'
-# gem 'safe_yaml', git: 'git@github.com:dtao/safe_yaml.git', tag: '0.6.0'
 
 group :development do
   gem 'capistrano'
