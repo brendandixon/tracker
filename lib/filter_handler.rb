@@ -27,7 +27,10 @@ module FilterHandler
 
     if params[:commit_filter]
       notice = t(@filter.new_record? ? :created_html : :updated_html, scope: :filter)
-      flash[:notice] = notice if @filter.save
+      if @filter.save
+        flash[:notice] = notice
+        session[:filter_hash] = @filter.hash
+      end
     end
 
     session[:filter][self.controller_name] = @filter.to_hash
