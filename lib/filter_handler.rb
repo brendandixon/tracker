@@ -13,15 +13,16 @@ module FilterHandler
     session[:filter] ||= {}
     session[:filter][self.controller_name] = params[:filter] if params[:filter]
     session[:filter][self.controller_name] ||= {}
-
     attributes = session[:filter][self.controller_name]
 
     if attributes['id'].present?
       @filter = (Filter.for_area(self.controller_name).find(attributes['id']) rescue nil)
+      attributes.delete('id')
+      normalize_filter if @filter.present?
       session[:filter_hash] = @filter.present? ? @filter.hash : nil
     end
     @filter ||= Filter.new(area: self.controller_name)
-    @filter.attributes = attributes.reject{|k,v| [:id, 'id'].include?(k)} if attributes.is_a?(Hash) && !attributes.empty?
+    @filter.attributes = attributes unless attributes.empty?
 
     normalize_filter
 
@@ -29,6 +30,7 @@ module FilterHandler
       notice = t(@filter.new_record? ? :created_html : :updated_html, scope: :filter)
       if @filter.save
         flash[:notice] = notice
+        normalize_filter
         session[:filter_hash] = @filter.hash
       end
     end
