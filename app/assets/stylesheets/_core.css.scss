@@ -201,9 +201,11 @@
     cursor:pointer;
     font-weight:$fontThick;
     line-height:1.15em;
+    position:relative;
     .glyphicon {
-      position:relative;
+      position:absolute;
       top:4px;
+      right:-5px;
       font-size:125%;
       font-weight:$fontThin;
     }
