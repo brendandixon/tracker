@@ -37,7 +37,6 @@ class Project < ActiveRecord::Base
   scope :supported, lambda{where('projects.start_date <= :date AND (projects.end_date IS NULL OR projects.end_date > :date)', date: Time.now)}
   scope :started_on_or_before, lambda{|date| where("projects.start_date <= ?", date)}
 
-  scope :for_features, lambda{|*features| joins(:feature_projects).where("? = (select count(*) from feature_projects as fp where fp.feature_id in (?) and fp.project_id = projects.id and fp.status <> 'unsupported')", features.length, features).uniq }
   scope :for_team, lambda{|team| where(team_id: (team.is_a?(Team) ? team.id : team))}
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("projects.name #{dir}")}

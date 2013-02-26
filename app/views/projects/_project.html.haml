@@ -4,9 +4,9 @@
 - id = project.new_record? ? 'new' : project.id
 
 - if edited.include?(id)
-  %tr.project.edit-mode.expanded#Project{id: id, data: {expanded: 1}}
+  %li.project.edit-mode.expanded#Project{id: id, data: {expanded: 1}}
     = render partial: 'edit', locals:{project:project, remote:true, stand_alone:false}
 
 - else
-  %tr.project#Project{id: id}
+  %li.project#Project{id: id}
     = render partial: 'show', locals:{project:project, remote:true, stand_alone:false}

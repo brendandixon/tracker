@@ -3,16 +3,9 @@
   = render 'layouts/messages'
   = render 'shared/overview'
 
-  %table.table.project-list#ProjectList
-    %thead
-      %tr
-        = render partial: 'shared/sortable', locals: {name: 'Name', field: 'name', classes: 'span3'}
-        %th.span9= 'Features'
-
-    %tbody
-      - if @projects.empty?
-        %tr.project#Project_new{data: {empty: 1}}
-          %td{colspan: 2}
-            %h3.subheader= t(:none_html, scope: [:controllers, :projects])
-      - else
-        = render partial: 'project', collection: @projects, locals: {edited: @edited, expanded: @expanded}
+  %ol.unstyled.project-list#ProjectList
+    - if @projects.empty?
+      %li.project#Project_new{data: {empty: 1}}
+        %h3.subheader= t(:none_html, scope: [:controllers, :projects])
+    - else
+      = render partial: 'project', collection: @projects, locals: {edited: @edited, expanded: @expanded}

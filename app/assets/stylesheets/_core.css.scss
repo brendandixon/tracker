@@ -306,6 +306,7 @@
 }
 
 .devise, .feature, .project, .reference-type, .story, .task, .team, .user {
+  position:relative;
   .row-fluid.section {
     margin-bottom:12px;
   }
@@ -436,6 +437,12 @@
     .features, .projects {
       text-align:left;
     }
+  }
+}
+.project-list {
+  li {
+    border-top:1px solid $grayDark;
+    padding:4px 8px;
   }
 }
 .reference-type {

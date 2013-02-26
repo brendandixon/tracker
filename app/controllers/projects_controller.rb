@@ -1,9 +1,6 @@
 class ProjectsController < ApplicationController
   include FilterHandler
-  include SortHandler
 
-  DEFAULT_SORT = ['name']
-  SORT_FIELDS = ['name']
   INDEX_ACTIONS = [:create, :destroy, :index, :update]
 
   before_filter :ensure_features
@@ -126,19 +123,7 @@ class ProjectsController < ApplicationController
 
   def build_index_query
     query = @projects || Project
-
-    features = @filter.content[:features] || []
-
-    query = query.for_features(*features) if features.present?
-
-    @sort.each do |sort|
-      case sort
-      when '-name' then query = query.in_name_order('DESC')
-      when 'name' then query = query.in_name_order('ASC')
-      end
-    end
-
-    @projects = query.includes(:feature_projects, :features, :stories, :tasks)
+    @projects = query.includes(:feature_projects, :features, :stories, :tasks).in_name_order('ASC')
   end
 
   def ensure_features

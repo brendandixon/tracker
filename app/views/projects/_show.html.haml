@@ -24,9 +24,16 @@
           = link_to 'Back', projects_path, class: 'btn btn-small btn-flat btn-link'
 
 - else
-  %td= project.name
-  %td
-    .features= feature_labels(project.feature_projects.in_feature_order)
-    .command-block.on-hover<
-      - if can? :edit, project
-        = awesome_link_to '', edit_project_path(project), glyph: 'awesome-edit', remote:true
+  .project.expanded
+    %form
+      .row-fluid.section
+        .span7
+          %label= 'Name'
+          .title= project.name
+      .row-fluid.section
+        .span12
+          %label= 'Features'
+          .features= feature_labels(project.feature_projects.in_feature_order)
+          .command-block.on-hover<
+            - if can? :edit, project
+              = awesome_link_to '', edit_project_path(project), glyph: 'awesome-edit', remote:true
