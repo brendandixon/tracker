@@ -23,10 +23,10 @@ class Iteration
       @number = options[:number] || 0
   
       start_date = @team.projects.map{|p| p.start_date}.compact.min
-      start_date = DateTime.parse(DEFAULT_START_DATE) if start_date.blank?
-      start_date = start_date.to_datetime unless start_date.is_a?(DateTime)
+      start_date = Time.zone.parse(DEFAULT_START_DATE) if start_date.blank?
+      start_date = start_date.in_time_zone.to_datetime
 
-      days_since_start = (DateTime.now.in_time_zone.to_datetime.beginning_of_week - start_date.beginning_of_week).to_i
+      days_since_start = (DateTime.now.in_time_zone.to_datetime.beginning_of_week - start_date.beginning_of_week).round
       iterations_since_start = days_since_start / (@team.iteration * 7)
       iterations_since_start += number
       if iterations_since_start < 0
@@ -34,10 +34,10 @@ class Iteration
         iterations_since_start = 0
       end
       
-      @start_date = (start_date + (iterations_since_start * @team.iteration).weeks).beginning_of_week
+      @start_date = ((start_date + (iterations_since_start * @team.iteration).weeks).beginning_of_week).in_time_zone.to_datetime
     end
 
-    @end_date = @start_date + @weeks - 1.day
+    @end_date = (@start_date + @weeks - 1.day).in_time_zone.to_datetime
     @blocked = 0
     @completed = 0
     @in_progress = 0
