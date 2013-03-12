@@ -229,7 +229,7 @@ class TasksController < ApplicationController
   def build_index_query
 
     if @filter.content[:group_by] == 'iteration'
-      initial_iteration = (params.has_key?(:initial_iteration) ? params[:initial_iteration].to_i : -2) rescue -2
+      initial_iteration = (params.has_key?(:initial_iteration) ? params[:initial_iteration].to_i : -3) rescue -3
       query = IterationEnumerator.new(Team.find(@filter.content[:teams].first), initial_iteration) rescue nil
     end
 
