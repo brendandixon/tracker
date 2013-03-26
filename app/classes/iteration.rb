@@ -16,9 +16,10 @@ class Iteration
 
     @weeks = @team.iteration.weeks
 
+    # The following code is sensitive to Standard / Daylight time transitions
     if previous.present?
       @number = previous.number + 1
-      @start_date = previous.start_date + @weeks
+      @start_date = (previous.start_date.utc + @weeks).in_time_zone.beginning_of_day.to_datetime
     else
       @number = options[:number] || 0
   
