@@ -4,9 +4,9 @@ id = @project.new_record? ? 'new' : @project.id
 %>
 if ($('#Project_<%= id %>').length > 0) {
   $('#Project_<%= id%>').replaceWith('<%= content %>');
-} else if ($('.project-list > tbody > tr').length > 0) {
-  $('.project-list > tbody > tr').first().before('<%= content %>');
-  $('.project-list > tbody > tr[data-empty]').remove();
+} else if ($('ol.project-list > li').length > 0) {
+  $('ol.project-list > li').first().before('<%= content %>');
+  $('ol.project-list > li[data-empty]').remove();
 }
 <% if @changed.include?(id) %>
 $('#Project_<%= id%>').effect('highlight',{duration: 750});
