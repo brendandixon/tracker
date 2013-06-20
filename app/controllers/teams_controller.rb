@@ -29,7 +29,7 @@ class TeamsController < ApplicationController
   def show
     respond_to do |format|
       format.html { render template: 'shared/show' }
-      format.js { render 'team' }
+      format.js { render 'team'; flash.discard }
       format.json { render json: @team }
     end
   end
@@ -37,9 +37,11 @@ class TeamsController < ApplicationController
   # GET /teams/new
   # GET /teams/new.json
   def new
+    @edited << 'new'
+
     respond_to do |format|
       format.html { render template: 'shared/new' }
-      format.js { render 'team' }
+      format.js { render 'team'; flash.discard }
       format.json { render json: @team }
     end
   end
@@ -50,7 +52,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       format.html { render template: 'shared/edit' }
-      format.js { render 'team' }
+      format.js { render 'team'; flash.discard }
       format.json { render json: @team }
     end
   end
@@ -68,7 +70,7 @@ class TeamsController < ApplicationController
         format.json { render json: @team, status: :created, location: @team }
       else
         format.html { render action: 'new', template: 'shared/new' }
-        format.js { render 'team' }
+        format.js { render 'team'; flash.discard }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
