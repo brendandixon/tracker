@@ -87,7 +87,7 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     respond_to do |format|
-      if params[:password].present? ? @user.update_attributes(params[:user]) : @user.update_without_password(params[:user])
+      if params[:user][:password].present? ? @user.update_attributes(params[:user]) : @user.update_without_password(params[:user])
         flash[:notice] = 'User was successfully updated.'
         @changed << @user.id
         
