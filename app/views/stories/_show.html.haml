@@ -19,11 +19,11 @@
         .span3
           %label= 'Release Date'
           = @story.release_date.to_date.to_s(:yy_mm_dd) if @story.release_date.present?
-      - if story.tag_list.present?
-        .row-fluid.section
-          .span12
-            %label= 'Tags'
-            .tags= story.tag_list
+      / - if story.tag_list.present?
+      /   .row-fluid.section
+      /     .span12
+      /       %label= 'Tags'
+      /       .tags= story.tag_list
       - if story.references.present?
         .row-fluid.section
           .span9

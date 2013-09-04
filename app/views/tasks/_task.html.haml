@@ -100,11 +100,11 @@
                       .span12
                         %label= 'Description'
                         .description= task.description
-                  - if task.tag_list.present?
-                    .row-fluid.section
-                      .span12
-                        %label= 'Tags'
-                        .tags= task.tag_list
+                  / - if task.tag_list.present?
+                  /   .row-fluid.section
+                  /     .span12
+                  /       %label= 'Tags'
+                  /       .tags= task.tag_list
                   - if task.references.present?
                     .row-fluid.section
                       .span12
