@@ -14,7 +14,7 @@ class ReferenceType < ActiveRecord::Base
 
   VALUE_MARKER = ':value:'
   
-  attr_accessible :name, :url_pattern
+  attr_accessible :name, :url_pattern, :deprecated
 
   has_many :references, dependent: :destroy
 
@@ -23,7 +23,7 @@ class ReferenceType < ActiveRecord::Base
 
   scope :with_name, lambda{|name| where(name: name)}
 
-  scope :in_name_order, lambda{|dir = 'ASC'| order("reference_types.name #{dir}")}
+  scope :in_name_order, lambda{|dir = 'ASC'| where(deprecated: false).order("reference_types.name #{dir}")}
   
   class<<self
     def active
