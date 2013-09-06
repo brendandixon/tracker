@@ -450,11 +450,20 @@
     color:$red;
     font-weight:$fontThick;
   }
+  &[data-deprecated] {
+    background-color:transparentize($orange, 0.8);
+  }
 }
 
 .references {
   .destroyed {
     display:none;
+  }
+  .tip {
+    color:$blue;
+    display: inline-block;
+    font-size:$fontSizeSmall;
+    font-style: italic;
   }
   a {
     font-size:$fontSizeSmall;

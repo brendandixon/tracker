@@ -84,6 +84,8 @@ en:
         task:
           title_or_story_required: 'Either a Story or Title are required'
     labels:
+      refrence_type:
+        deprecated: 'Deprecated?'
       story:
         create_tasks: 'Create tasks for the story?'
       task:

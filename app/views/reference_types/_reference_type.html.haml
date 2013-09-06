@@ -4,9 +4,9 @@
 - id = reference_type.new_record? ? 'new' : reference_type.id
 
 - if edited.include?(id)
-  %tr.reference-type.edit-mode.expanded#ReferenceType{id: id, data: {expanded: 1}}
+  %tr.reference-type.edit-mode.expanded#ReferenceType{id: id, data: {expanded: 1, deprecated: reference_type.deprecated}}
     = render partial: 'edit', locals:{reference_type:reference_type, remote:true, stand_alone:false}
 
 - else
-  %tr.reference-type.compact#ReferenceType{id: id}
+  %tr.reference-type.compact#ReferenceType{id: id, data: {deprecated: reference_type.deprecated}}
     = render partial: 'show', locals:{reference_type:reference_type, remote:true, stand_alone:false}

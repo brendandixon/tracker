@@ -19,6 +19,10 @@
           .span5
             = f.label :name
             = f.text_field :name, class: 'span12'
+          .span5
+            = f.label :deprecated do
+              = f.check_box :deprecated
+              = t(:deprecated, scope: [:activerecord, :labels, :reference_type])
 
         .row-fluid.section
           .span11
@@ -26,6 +30,11 @@
               URL Pattern
               %span.note= "(All instances of <span class='reference-type-value'>#{ReferenceType::VALUE_MARKER}</span> will be replaced with the reference value)".html_safe
             = f.url_field :url_pattern, class: 'span12'
+
+        .row-fluid.section
+          .span11
+            = f.label :tip
+            = f.text_field :tip, class: 'span12'
         
         .row
           .span4.offset8.text-right

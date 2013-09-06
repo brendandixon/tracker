@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130904172211) do
+ActiveRecord::Schema.define(:version => 20130906193541) do
 
   create_table "categories", :force => true do |t|
     t.string   "name",       :null => false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20130904172211) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.boolean  "deprecated",  :default => false
+    t.string   "tip"
   end
 
   add_index "reference_types", ["name"], :name => "index_reference_types_on_name", :unique => true

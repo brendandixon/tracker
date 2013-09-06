@@ -7,6 +7,8 @@
 #  url_pattern :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  deprecated  :boolean          default(FALSE)
+#  tip         :string(255)
 #
 
 class ReferenceType < ActiveRecord::Base
@@ -14,7 +16,7 @@ class ReferenceType < ActiveRecord::Base
 
   VALUE_MARKER = ':value:'
   
-  attr_accessible :name, :url_pattern, :deprecated
+  attr_accessible :name, :url_pattern, :deprecated, :tip
 
   has_many :references, dependent: :destroy
 
@@ -23,15 +25,15 @@ class ReferenceType < ActiveRecord::Base
 
   scope :with_name, lambda{|name| where(name: name)}
 
-  scope :in_name_order, lambda{|dir = 'ASC'| where(deprecated: false).order("reference_types.name #{dir}")}
+  scope :in_name_order, lambda{|dir = 'ASC'| order("reference_types.name #{dir}")}
   
   class<<self
     def active
-      @active ||= ReferenceType.in_name_order.all
+      @active ||= ReferenceType.in_name_order.where(deprecated: false).all
     end
-    
+
     def all_types
-      @all_types ||= [['-', '']] + ReferenceType.active.map{|rt| [ rt.name, rt.id ] }
+      @all_types ||= [['-', '']] + ReferenceType.active.map{|rt| [ rt.name, rt.id, {'data-tip' => rt.tip} ] }
     end
     
     def refresh_cache

@@ -2,17 +2,19 @@
   - id = reference.id
   - reference_type_id = reference.reference_type.present? ? reference.reference_type.id : nil
   - value = reference.value
+  - tip = reference.tip
 - else
   - id = nil
   - reference_type_id = nil
   - value = nil
+  - tip = nil
 
 %li.reference
   .row-fluid
     .span3
-      = flat_select_tag "#{referent_type}[references_attributes][][reference_type_id]", options_for_select(ReferenceType.all_types, reference_type_id)
-    .span6
-      = text_field_tag "#{referent_type}[references_attributes][][value]", value, class: 'span12'
+      = flat_select_tag "#{referent_type}[references_attributes][][reference_type_id]", options_for_select(ReferenceType.all_types, reference_type_id), data:{reference_type: true}
+    .span7
+      = text_field_tag "#{referent_type}[references_attributes][][value]", value, class: 'span12', 'data-reference-tip' => true
     .span1
       = awesome_link_to '', 'javascript:void(0);', glyph: 'awesome-remove', data:{remove_reference: true}
     - if id.present?
