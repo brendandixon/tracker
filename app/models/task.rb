@@ -15,6 +15,7 @@
 #  start_date     :datetime
 #  completed_date :datetime
 #  blocked        :boolean
+#  category       :string(255)      default("development")
 #
 
 class Task < ActiveRecord::Base
@@ -27,7 +28,9 @@ class Task < ActiveRecord::Base
   POINTS = [0, 1, 2, 3, 5, 8]
   DEFAULT_POINTS = 2
 
-  attr_accessible :blocked, :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :tag_list, :title
+  CATEGORIES = ['development', 'release', 'sprint']
+
+  attr_accessible :blocked, :category, :completed_date, :description, :points, :project_id, :references, :references_attributes, :start_date, :status, :story_id, :tag_list, :title
 
   acts_as_taggable
     
@@ -47,12 +50,14 @@ class Task < ActiveRecord::Base
   before_validation :ensure_title
 
   validate :has_title_or_story
+  validates_inclusion_of :category, in: CATEGORIES
   validates_inclusion_of :points, in: POINTS
   validates_presence_of :project
   validates_inclusion_of :status, in: ALL_STATES
 
   scope :for_iteration, lambda{|iteration_start_date = (DateTime.now - 5.years)| includes(:project, :feature).completed_on_or_after(iteration_start_date).in_iteration_order('ASC').uniq }
   
+  scope :for_categories, lambda{|categories| where(category: categories)}
   scope :for_projects, lambda {|projects| where(project_id: projects)}
   scope :for_features, lambda{|features| joins(:story).where(stories: {feature_id: features})}
   scope :for_stories, lambda {|stories| where(story_id: stories)}
@@ -97,6 +102,10 @@ class Task < ActiveRecord::Base
     def all_points
       @all_points ||= [['-', '']] + Task::POINTS.map{|p| [p, p]}
     end
+
+    def all_categories
+      @all_categories ||= Task::CATEGORIES.map{|c| [c.to_s.humanize, c]}
+    end
     
     def ensure_story_tasks(story, project_ids = [])
       story.feature.feature_projects.each do |feature_project|
@@ -124,6 +133,18 @@ class Task < ActiveRecord::Base
     return if self.completed?
     self.blocked = false
     self.save unless self.new_record?
+  end
+
+  def development?
+    self.category.nil? || self.category == 'development'
+  end
+
+  def release?
+    self.category == 'release'
+  end
+
+  def sprint?
+    self.category == 'spring'
   end
 
   def completed_after?(date)

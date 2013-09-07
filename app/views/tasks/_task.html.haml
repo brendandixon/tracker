@@ -10,10 +10,12 @@
 - classes = 'task '
 - classes << style.to_s if printing
 - classes << ' edit-mode' if @edited.include?(id)
-- data = {status: task.status, expanded: @expanded.include?(id) ? 1 : 0}
+- data = {expanded: @expanded.include?(id) ? 1 : 0}
+- data[:status] = task.status
 - data[:blocked] = 1 if task.blocked?
 - data[:print] = 1 if printing
 - data[:draggable] = 1 if task.pending? && can?(:drag, task)
+- data[task.category.to_sym] = 1
 - row_classes = @expanded.include?(id) || stand_alone ? 'expanded' : 'compact'
 - show_rank = false if show_rank.nil?
 
@@ -115,9 +117,10 @@
                       %label= 'Project'
                       .project= task.project.name
                     .span2
-                      %label= 'Points'
-                      - cache action: :index, action_suffix: "points-#{task.points}-#{can?(:edit, task)}" do
-                        = render partial: 'points', locals: {task: task, editable: can?(:edit, task)}
+                      - if task.development?
+                        %label= 'Points'
+                        - cache action: :index, action_suffix: "points-#{task.points}-#{can?(:edit, task)}" do
+                          = render partial: 'points', locals: {task: task, editable: can?(:edit, task)}
                     .span3.offset1
                       - if task.story.present? && task.story.release_date.present?
                         %label= 'Release Date'
@@ -126,6 +129,11 @@
                       - else
                         %label= '&nbsp;'.html_safe
                         .release-date= '&nbsp;'.html_safe
+                  .row-fluid
+                    .span5
+                      %label= 'Category'
+                      .category
+                        = t(task.category, scope: [:activerecord, :labels, :task])
 
         - else
           .row-fluid
@@ -135,8 +143,9 @@
                   .span5
                     .title= task.story.present? ? link_to(task.to_s, story_path(task.story.id)) : task.to_s
                   .span2
-                    - cache action: :index, action_suffix: "points-#{task.points}-#{can?(:edit, task)}" do
-                      = render partial: 'points', locals: {task: task, editable: can?(:edit, task)}
+                    - if task.development?
+                      - cache action: :index, action_suffix: "points-#{task.points}-#{can?(:edit, task)}" do
+                        = render partial: 'points', locals: {task: task, editable: can?(:edit, task)}
                     - if show_rank
                       = task.rank
                   .span1

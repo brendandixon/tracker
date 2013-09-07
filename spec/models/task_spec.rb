@@ -15,6 +15,7 @@
 #  start_date     :datetime
 #  completed_date :datetime
 #  blocked        :boolean
+#  category       :string(255)      default("development")
 #
 
 require 'spec_helper'

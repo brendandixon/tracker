@@ -57,13 +57,18 @@
             .span12
               = render partial: 'shared/edit_references', locals: {references: task.references, referent_type: :task}
 
-          .row-fluid
+          .row-fluid.section
             .span4
               = f.label :project_id, t(:project, scope: [:activerecord, :attributes, :task])
               = flat_select_tag 'task[project_id]', options_for_select(Project.in_name_order.all.collect{|p| [ p.name, p.id ]}, task.project_id)
             .span3.offset1
               = f.label :points, t(:points, scope: [:activerecord, :attributes, :task])
               = render partial: 'points', locals: {task: task, editable: true}
+
+          .row-fluid
+            .span4
+              = f.label :category, t(:category, scope: [:activerecord, :attributes, :task])
+              = flat_select_tag 'task[category]', options_for_select(Task.all_categories, task.category), data:{task_category: true}
 
           .row-fluid
             .span6.offset6.text-right

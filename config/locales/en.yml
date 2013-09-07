@@ -68,6 +68,7 @@ en:
         title: 'Title'
       task:
         blocked: 'Blocked'
+        category: 'Category'
         description: 'Details'
         points: 'Points'
         project: 'Project'
@@ -94,6 +95,9 @@ en:
         pending: 'Pending'
         in_progress: 'In Progress'
         completed: 'Completed'
+        development: 'Development'
+        release: 'Release'
+        sprint: 'Sprint'
     models:
       project: 'Project'
       story: 'Story'

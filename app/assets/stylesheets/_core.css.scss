@@ -635,6 +635,30 @@ div {
     overflow:hidden;
     white-space:nowrap;
   }
+  &[data-release] {
+    background-color: transparentize($purple, 0.8);
+    .completed {
+      border-right-color: transparent;
+    }
+    .in_progress {
+      border-right-color: transparent;
+    }
+    .pending {
+      border-right-color: transparent;
+    }
+  }
+  &[data-sprint] {
+    background-color: transparentize($green, 0.8);
+    .completed {
+      border-right-color: transparent;
+    }
+    .in_progress {
+      border-right-color: transparent;
+    }
+    .pending {
+      border-right-color: transparent;
+    }
+  }
 }
 
 li.task:hover:not([data-expanded='1']) {

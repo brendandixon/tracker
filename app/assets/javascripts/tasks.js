@@ -36,6 +36,18 @@ Tracker.Tasks.toggleIteration = function(e, iteration, fShow) {
 };
 
 $(function() {
+  $('body').on('change', 'select[data-task-category]', function(event) {
+    var e = $(event.target);
+    var t = e.closest('.task');
+    var s = $('option:selected', e).val();
+
+    t.removeAttr('data-development');
+    t.removeAttr('data-release');
+    t.removeAttr('data-sprint');
+    
+    t.attr('data-' + s, 1);
+  });
+
   $('body').on('click', '*[data-points]', function(event) {
     var e, p, points, pointsClass;
     e = $(event.target);
