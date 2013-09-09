@@ -26,18 +26,24 @@ class ReferenceType < ActiveRecord::Base
   scope :with_name, lambda{|name| where(name: name)}
 
   scope :in_name_order, lambda{|dir = 'ASC'| order("reference_types.name #{dir}")}
+  scope :is_active, where(deprecated: false)
   
   class<<self
     def active
-      @active ||= ReferenceType.in_name_order.where(deprecated: false).all
+      @active ||= ReferenceType.in_name_order.is_active.all
+    end
+
+    def active_types
+      @active_types ||= [['-', '']] + ReferenceType.active.map{|rt| [ rt.name, rt.id, {'data-tip' => rt.tip} ] }
     end
 
     def all_types
-      @all_types ||= [['-', '']] + ReferenceType.active.map{|rt| [ rt.name, rt.id, {'data-tip' => rt.tip} ] }
+      @all_types ||= [['-', '']] + ReferenceType.in_name_order.all.map{|rt| [ rt.name, rt.id, {'data-tip' => rt.tip} ] }
     end
     
     def refresh_cache
       @active = nil
+      @active_types = nil
       @all_types = nil
     end
   end
