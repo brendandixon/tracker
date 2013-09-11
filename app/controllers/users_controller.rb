@@ -93,7 +93,7 @@ class UsersController < ApplicationController
         
         sign_in @user, bypass: true if current_user.id == @user.id
 
-        format.html { redirect_to root_path }
+        format.html { redirect_to :back }
         format.js { render 'shared/index'; flash.discard }
         format.json { head :no_content }
       else
