@@ -8,6 +8,7 @@
 #  feature_id   :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  date_status  :string(255)      default("planned")
 #
 
 require 'spec_helper'

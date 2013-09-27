@@ -63,6 +63,7 @@ en:
       story:
         create_tasks: 'Ensure Tasks'
         release_date: 'Release Date'
+        release_date_status: 'Release Date Status'
         feature_id: 'Feature'
         tag_list: 'Tags (comma separated)'
         title: 'Title'
@@ -89,6 +90,9 @@ en:
         deprecated: 'Deprecated?'
       story:
         create_tasks: 'Create tasks for the story?'
+        unknown: 'Unknown'
+        estimated: 'Estimated'
+        planned: 'Planned'
       task:
         blocked: 'Blocked?'
         no_details_html: 'No details.'

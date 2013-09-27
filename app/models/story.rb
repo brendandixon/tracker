@@ -8,18 +8,22 @@
 #  feature_id   :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  date_status  :string(255)      default("planned")
 #
 
 class Story < ActiveRecord::Base
   include CacheCleanser
   include StatusScopes
 
+  DATE_STATES = ['planned', 'estimated', 'unknown']
+
   attr_accessor :create_tasks
-  attr_accessible :create_tasks, :references, :references_attributes, :release_date, :feature_id, :tag_list, :title
+  attr_accessible :create_tasks, :references, :references_attributes, :release_date, :release_date_status, :feature_id, :tag_list, :title
 
   acts_as_taggable
 
   after_initialize :initialize_create_tasks
+  before_validation :ensure_release_date_status
   after_save :ensure_tasks
   
   belongs_to :feature
@@ -31,6 +35,7 @@ class Story < ActiveRecord::Base
   accepts_nested_attributes_for :references, allow_destroy: true
   
   validates_presence_of :feature, :title
+  validates_inclusion_of :release_date_status, in: DATE_STATES
 
   scope :has_tasks_in_state, lambda{|status| where('(SELECT COUNT(*) FROM tasks WHERE tasks.story_id = stories.id AND tasks.status IN (?)) > 0', status)}
   scope :has_tasks_in_state_for_projects, lambda{|status, projects| where('(SELECT COUNT(*) FROM tasks WHERE tasks.story_id = stories.id AND tasks.status IN (?) AND tasks.project_id IN (?)) > 0', status, projects)}
@@ -48,6 +53,10 @@ class Story < ActiveRecord::Base
   scope :in_title_order, lambda{|dir = 'ASC'| order("stories.title #{dir}")}
   
   class<<self
+    def all_date_states
+      @all_states ||= Story::DATE_STATES.map{|s| [s.humanize, s]}
+    end
+
     def all_stories
       @all_stories ||= [['-', '']] + Story.in_title_order.map{|s| [ s.to_s, s.id ] }
     end
@@ -68,6 +77,10 @@ class Story < ActiveRecord::Base
   
   def initialize_create_tasks
     self.create_tasks ||= true
+  end
+
+  def ensure_release_date_status
+    self.release_date_status = 'planned' if self.release_date_status.nil? && self.release_date.present?
   end
   
   def ensure_tasks

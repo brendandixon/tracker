@@ -124,7 +124,7 @@
                     .span3.offset1
                       - if task.story.present? && task.story.release_date.present?
                         %label= 'Release Date'
-                        .release-date
+                        .release-date{data: {date_status: task.story.release_date_status}}
                           =task.story.release_date.to_date.to_s(:yy_mm_dd)
                       - else
                         %label= '&nbsp;'.html_safe
@@ -150,8 +150,10 @@
                       = task.rank
                   .span1
                     .project= task.project.name
-                  .span2
-                    .release-date=task.story.release_date.to_date.to_s(:yy_mm_dd) if task.story.present? && task.story.release_date.present?
+                  - if task.story.present? && task.story.release_date.present?
+                    .span2
+                      .release-date{data: {date_status: task.story.release_date_status}}
+                        =task.story.release_date.to_date.to_s(:yy_mm_dd)
                   .span2.text-right
                     .command-block.on-hover
                       - if task.incomplete?

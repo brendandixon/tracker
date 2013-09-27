@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130906231032) do
+ActiveRecord::Schema.define(:version => 20130927173912) do
 
   create_table "categories", :force => true do |t|
     t.string   "name",       :null => false
@@ -115,8 +115,9 @@ ActiveRecord::Schema.define(:version => 20130906231032) do
     t.datetime "release_date"
     t.string   "title"
     t.integer  "feature_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.string   "release_date_status", :default => "planned"
   end
 
   add_index "stories", ["feature_id"], :name => "index_features_on_service_id"

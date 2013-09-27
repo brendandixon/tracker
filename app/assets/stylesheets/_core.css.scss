@@ -508,6 +508,16 @@ div {
   }
 }
 
+div[data-date-status='estimated'], span[data-date-status='estimated'] {
+  color: $grayLight;
+}
+div[data-date-status='planned'], span[data-date-status='planned'] {
+  color: $green;
+}
+div[data-date-status='unknown'], span[data-date-status='unknown'] {
+  color: $grayLight;
+}
+
 .table {
   td, th {
     position:relative;

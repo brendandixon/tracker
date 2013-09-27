@@ -32,6 +32,9 @@
           .span3
             = f.label :release_date
             = f.text_field :release_date, data: {datefield: true}, class: 'span12', type: 'datetime'
+          .span3
+            = f.label :release_date_status
+            = flat_select_tag 'story[release_date_status]', options_for_select(Story::DATE_STATES.map{|t| [I18n.t(t, scope: [:activerecord, :labels, :story]), t]}, story.release_date_status), {data: {status_select: true}}
 
         / .row-fluid.section
         /   .span9
