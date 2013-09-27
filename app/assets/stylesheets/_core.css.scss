@@ -162,6 +162,16 @@
   }
 }
 
+*[data-date-status='estimated'] {
+  color: $grayLight;
+}
+*[data-date-status='planned'] {
+  color: $grayDark;
+}
+*[data-date-status='unknown'] {
+  color: $grayLight;
+}
+
 *[data-filter] {
   display:none;
   &.visible {
@@ -508,16 +518,6 @@ div {
   }
 }
 
-div[data-date-status='estimated'], span[data-date-status='estimated'] {
-  color: $grayLight;
-}
-div[data-date-status='planned'], span[data-date-status='planned'] {
-  color: $green;
-}
-div[data-date-status='unknown'], span[data-date-status='unknown'] {
-  color: $grayLight;
-}
-
 .table {
   td, th {
     position:relative;
@@ -633,7 +633,7 @@ div[data-date-status='unknown'], span[data-date-status='unknown'] {
   }
   .release-date {
     display:inline-block;
-    font-size:90%;
+    font-size:$fontSizeSmall;
     position:relative;
     margin-right:5px;
   }
@@ -668,6 +668,9 @@ div[data-date-status='unknown'], span[data-date-status='unknown'] {
     .pending {
       border-right-color: transparent;
     }
+  }
+  *[data-date-status='planned'] {
+    font-weight: $fontThick;
   }
 }
 
