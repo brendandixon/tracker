@@ -9,6 +9,29 @@ namespace :tracker do
 
   end
 
+  namespace :seed do
+
+    desc 'Purge all data'
+    task purge: :environment do
+      [Category, Feature, FeatureProject, Filter, Project, Reference, ReferenceType, ReferentReference, Role, Story, Task, Team, User].each do |model|
+        model.delete_all
+      end
+    end
+
+    desc 'Create standard roles'
+    task default: :environment do
+      [:admin, :developer, :scrum_master, :observer].each do |role|
+        r = Role.new(name: role.to_s.camelize)
+        r.save
+      end
+      u = User.new(email: 'brendandixon@me.com', password: 'idlmkvvm')
+      u.roles << Role.where(name: 'Admin').first
+      u.roles << Role.where(name: 'ScrumMaster').first
+      u.save
+    end
+
+  end
+
   namespace :task do
 
     desc 'Ensure task dates'
